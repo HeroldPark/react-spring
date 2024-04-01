@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="true">
+
+    <!-- OS-specific properties -->
+    <property name="LOG_PATH_WINDOWS" value="C:/logs" />
+    <property name="LOG_PATH_LINUX" value="/hdd/smart_perception_group/kia_pass/resource/logs" />
+
+    <!-- Choose log path based on OS -->
+    <property name="LOG_PATH" value="${LOG_PATH_WINDOWS}" />
+    <if condition='property("os.name").contains("Linux")'>
+        <then>
+            <property name="LOG_PATH" value="${LOG_PATH_LINUX}" />
+        </then>
+    </if>
+
+    <!-- Common log file name -->
+    <property name="LOG_FILE_NAME" value="bbs.log" />
+
+    <property name="CONSOLE_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %magenta([%thread]) %highlight([%-3level]) %logger{5} - %msg %n" />
+    <property name="ROLLING_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS}  %logger{5} - %msg %n" />
+    <property name="FILE_NAME" value="${LOG_PATH}/${LOG_FILE_NAME}" />
+    <property name="LOG_NAME_PATTERN" value="${LOG_PATH}/bbs-%d{yyyy-MM-dd}.%i.log" />
+    <property name="MAX_FILE_SIZE" value="1GB" />   <!-- 분할할 용량 사이즈 -->
+    <property name="TOTAL_SIZE" value="10GB" />     <!-- 전체 파일 크기를 제어하며, 전체 크기 제한을 초과하면 가장 오래된 파일을 삭제한다. -->
+    <property name="MAX_HISTORY" value="10" />      <!-- 보관할 최대 파일 수를 제어합니다. -->
+    <!-- totalSizeCap을 사용하기 위해서는 maxHistory 속성이 필수이며, maxHistory와 totalSizeCap의 우선순위는 maxHistory가 더 높다. -->
+
+    <!-- Appenders -->
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <charset>UTF-8</charset>
+            <!-- <Pattern>%d %5p [%c] %m%n</Pattern> -->
+            <Pattern>${CONSOLE_PATTERN}</Pattern>
+        </encoder>
+    </appender>
+
+    <appender name="console-infolog" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <charset>UTF-8</charset>
+            <Pattern>%d %5p %m%n</Pattern>
+        </encoder>
+    </appender>
+
+    <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${FILE_NAME}</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_NAME_PATTERN}</fileNamePattern>
+            <maxFileSize>${MAX_FILE_SIZE}</maxFileSize>
+            <totalSizeCap>${TOTAL_SIZE}</totalSizeCap>
+            <maxHistory>${MAX_HISTORY}</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <charset>UTF-8</charset>
+            <Pattern>${ROLLING_PATTERN}</Pattern>
+        </encoder>
+        <append>true</append>
+    </appender>
+
+    <!-- Logger -->
+    <logger name="org" level="error" additivity="false">
+        <appender-ref ref="console" />
+        <appender-ref ref="file" />
+    </logger>
+    <logger name="me.hellonayeon.backend.bbs" level="debug" appender-ref="console" />
+    <logger name="jdbc.connection" level="error" appender-ref="console-infolog" />
+    <logger name="jdbc.sqltiming" level="error" appender-ref="console-infolog" />
+    <logger name="jdbc.sqlonly" level="debug" appender-ref="console-infolog" />
+    <logger name="jdbc.audit" level="error" appender-ref="console-infolog" />
+    <logger name="jdbc.resultset" level="error" appender-ref="console-infolog" />
+    <logger name="jdbc.resultsettable" level="debug" appender-ref="console-infolog" />
+
+    <!-- Root Logger -->
+    <root level="info">
+        <appender-ref ref="console" />
+        <appender-ref ref="file" />
+    </root>
+</configuration>
