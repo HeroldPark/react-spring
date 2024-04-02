@@ -14,7 +14,7 @@
     </if>
 
     <!-- Common log file name -->
-    <property name="LOG_FILE_NAME" value="bbs.log" />
+    <property name="LOG_FILE_NAME" value="react-spring.log" />
 
     <property name="CONSOLE_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %magenta([%thread]) %highlight([%-3level]) %logger{5} - %msg %n" />
     <property name="ROLLING_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS}  %logger{5} - %msg %n" />

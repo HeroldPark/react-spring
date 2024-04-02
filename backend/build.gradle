@@ -33,7 +33,7 @@ dependencies {
     implementation 'org.codehaus.janino:janino:3.1.6' // Janino 라이브러리 추가
 
     compileOnly 'org.projectlombok:lombok:1.18.26'
-    runtimeOnly 'com.mysql:mysql-connector-j:8.0.32'
+    // runtimeOnly 'com.mysql:mysql-connector-j:8.0.32'
     runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
 
     runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.5'

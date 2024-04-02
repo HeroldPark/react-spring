@@ -10,14 +10,14 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 @EnableJpaAuditing //BaseTimeEntity
 @SpringBootApplication
-public class ReactSpringBlogApplication {
+public class ReactSpringApplication {
 
-    static Logger logger = (Logger) LoggerFactory.getLogger(ReactSpringBlogApplication.class);
+    static Logger logger = (Logger) LoggerFactory.getLogger(ReactSpringApplication.class);
 
     public static void main(String[] args) throws Exception {
-        SpringApplication.run(ReactSpringBlogApplication.class, args);
+        SpringApplication.run(ReactSpringApplication.class, args);
 
-        ReactSpringBlogApplication example = new ReactSpringBlogApplication();
+        ReactSpringApplication example = new ReactSpringApplication();
         example.Debug();
     }
 

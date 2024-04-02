@@ -12,9 +12,9 @@
         },
         {
             "type": "java",
-            "name": "ReactSpringBlogApplication",
+            "name": "ReactSpringApplication",
             "request": "launch",
-            "mainClass": "jhcode.blog.ReactSpringBlogApplication",
+            "mainClass": "jhcode.blog.ReactSpringApplication",
             "projectName": "backend"
         }
     ]
