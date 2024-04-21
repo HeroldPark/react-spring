@@ -31,10 +31,13 @@ import org.springframework.stereotype.Service;
 public class MemberService {
 
     private final PasswordEncoder encoder;
+
     private final MemberRepository memberRepository;
 
     private final AuthenticationManager authenticationManager;
+
     private final CustomUserDetailsService userDetailsService;
+
     private final JwtTokenUtil jwtTokenUtil;
 
     public HttpStatus checkIdDuplicate(String email) {

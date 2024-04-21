@@ -19,3 +19,7 @@
     - [ERROR] o.h.i.e.TableStructure - could not read a hi value - you need to populate the table: member_seq
     => 시퀀스 초기화
     ALTER SEQUENCE member_seq RESTART WITH 1;
+
+# 04. 2024-04-21
+    - test JPA
+    - Employee 관련 추가

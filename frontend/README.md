@@ -32,5 +32,19 @@ You may also see any lint errors in the console.
 [http://localhost:3000](http://localhost:3000)을 열어 브라우저에서 볼 수 있습니다.\
 코드를 변경하면 페이지가 다시 로드되며, 콘솔에서 오류를 확인할 수도 있습니다.
 
-## 프로젝트 회고
-..
+## Installation
+
+- install node.js v8.9.4
+- install create-react-app
+```sh
+npm install create-react-app react-spring --template typescript
+```
+- Clone this project
+```sh
+git clone git@github.com:HeroldPark/react-spring.git
+```
+- Start project
+```sh
+cd react-spring
+npm install & npm start
+```
