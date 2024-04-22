@@ -16,7 +16,8 @@ import java.util.List;
 @NoArgsConstructor
 public class Board extends BaseTimeEntity {
 
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     @Column(name = "BOARD_ID")
     private Long id;
 

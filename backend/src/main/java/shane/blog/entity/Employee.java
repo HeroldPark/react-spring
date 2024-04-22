@@ -2,25 +2,43 @@ package shane.blog.entity;
 
 import java.util.Objects;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+// import javax.persistence.Entity;
+// import javax.persistence.GeneratedValue;
+// import javax.persistence.Id;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import shane.blog.common.BaseTimeEntity;
 
 @Entity
 @Getter
 @Setter
-class Employee {
+@NoArgsConstructor
+public class Employee extends BaseTimeEntity {
 
-    private @Id @GeneratedValue Long id;
+    // private @Id @GeneratedValue Long id;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    // @GeneratedValue
+    // @Column(name = "EMPLOYEE_ID")
+    // @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "employee_seq")
+    // @SequenceGenerator(name = "employee_seq", sequenceName = "employee_seq", allocationSize = 1)
+    private Long id;
+    
     private String name;
     private String role;
 
-    Employee() {}
+    // Employee() {}
 
-    Employee(String name, String role) {
+    @Builder
+    public Employee(String name, String role) {
         this.name = name;
         this.role = role;
     }

@@ -13,9 +13,12 @@ import Update from "../member/MemberUpdate"
 import MemberUpdate from "../member/MemberUpdate";
 import CheckPwd from "../member/CheckPwd";
 
+import EmployeeList from "../employee/EmployeeList"
 
 function Router() {
 
+	console.log("[Router.js] render()");
+	
 	return (
 			<Routes>
 				<Route path="/" element={<Home />}></Route>
@@ -31,6 +34,8 @@ function Router() {
 				<Route path="/checkpwd" element={<CheckPwd />}></Route>
 				<Route path="/update" element={<MemberUpdate />}></Route>
 				<Route path="/logout" element={<Logout />}></Route>
+
+				<Route path="/employeelist" element={<EmployeeList />}></Route>
 			</Routes>
 	);
 }

@@ -6,6 +6,9 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import shane.blog.entity.Employee;
+import shane.blog.repository.EmployeeRepository;
+
 @Configuration
 class LoadDatabase {
 

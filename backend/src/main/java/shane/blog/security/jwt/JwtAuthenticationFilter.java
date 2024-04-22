@@ -20,7 +20,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 
 /**
- * JWT 토큰의 유효성을 검사하고, 인증
+ * JWT(JSON Web Token) 토큰의 유효성을 검사하고, 인증
  */
 @Component
 @RequiredArgsConstructor

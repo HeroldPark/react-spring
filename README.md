@@ -23,3 +23,11 @@
 # 04. 2024-04-21
     - test JPA
     - Employee 관련 추가
+    - LoadDatabase.java, Employee.java, EmployeeRepository.java, EmployeeController.java
+
+# 05. 2024-04-22
+    - https://covenant.tistory.com/279 참고
+    - id 'org.springframework.boot' version '3.1.4'
+    - javax.persistence.* => jakarta.persistence.* 수정해야 한다.
+    - public class Employee 으로 설정해야 한다.
+

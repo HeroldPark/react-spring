@@ -14,7 +14,7 @@
 
 
 -- react-spring 데이터베이스 구조 내보내기
-CREATE DATABASE IF NOT EXISTS `react-spring` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci */;
+CREATE DATABASE IF NOT EXISTS `react-spring` /*!40100 DEFAULT CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci */;
 USE `react-spring`;
 
 -- 테이블 react-spring.board 구조 내보내기
@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS `board` (
 DELETE FROM `board`;
 /*!40000 ALTER TABLE `board` DISABLE KEYS */;
 INSERT INTO `board` (`board_id`, `title`, `content`, `view_count`, `created_date`, `modified_date`, `member_id`, `create_date`) VALUES
-	(1, 'Hello react-spring world~~', 'start react-spring study...', 14, NULL, '2024/04/18 13:10:47', 1, '2024/04/02 11:21:05');
+	(1, 'Hello react-spring world~~', 'start react-spring study...', 7, NULL, '2024/04/02 11:26:31', 1, '2024/04/02 11:21:05');
 /*!40000 ALTER TABLE `board` ENABLE KEYS */;
 
 -- 테이블 react-spring.board_seq 구조 내보내기
@@ -44,11 +44,11 @@ CREATE TABLE IF NOT EXISTS `board_seq` (
   `next_val` bigint(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
--- 테이블 데이터 react-spring.board_seq:~0 rows (대략적) 내보내기
+-- 테이블 데이터 react-spring.board_seq:~1 rows (대략적) 내보내기
 DELETE FROM `board_seq`;
 /*!40000 ALTER TABLE `board_seq` DISABLE KEYS */;
 INSERT INTO `board_seq` (`next_val`) VALUES
-	(2);
+	(51);
 /*!40000 ALTER TABLE `board_seq` ENABLE KEYS */;
 
 -- 테이블 react-spring.comment 구조 내보내기
@@ -70,7 +70,7 @@ CREATE TABLE IF NOT EXISTS `comment` (
   CONSTRAINT `FKmrrrpi513ssu63i2783jyiv9m` FOREIGN KEY (`member_id`) REFERENCES `member` (`member_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
--- 테이블 데이터 react-spring.comment:~2 rows (대략적) 내보내기
+-- 테이블 데이터 react-spring.comment:~0 rows (대략적) 내보내기
 DELETE FROM `comment`;
 /*!40000 ALTER TABLE `comment` DISABLE KEYS */;
 INSERT INTO `comment` (`comment_id`, `content`, `created_date`, `modified_date`, `board_id`, `user_id`, `create_date`, `member_id`) VALUES
@@ -83,37 +83,12 @@ CREATE TABLE IF NOT EXISTS `comment_seq` (
   `next_val` bigint(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
--- 테이블 데이터 react-spring.comment_seq:~0 rows (대략적) 내보내기
+-- 테이블 데이터 react-spring.comment_seq:~1 rows (대략적) 내보내기
 DELETE FROM `comment_seq`;
 /*!40000 ALTER TABLE `comment_seq` DISABLE KEYS */;
 INSERT INTO `comment_seq` (`next_val`) VALUES
-	(4);
+	(101);
 /*!40000 ALTER TABLE `comment_seq` ENABLE KEYS */;
-
--- 테이블 react-spring.employee 구조 내보내기
-CREATE TABLE IF NOT EXISTS `employee` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(50) DEFAULT NULL,
-  `role` varchar(50) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='for JPA';
-
--- 테이블 데이터 react-spring.employee:~0 rows (대략적) 내보내기
-DELETE FROM `employee`;
-/*!40000 ALTER TABLE `employee` DISABLE KEYS */;
-/*!40000 ALTER TABLE `employee` ENABLE KEYS */;
-
--- 테이블 react-spring.employee_seq 구조 내보내기
-CREATE TABLE IF NOT EXISTS `employee_seq` (
-  `next_val` bigint(20) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
-
--- 테이블 데이터 react-spring.employee_seq:~0 rows (대략적) 내보내기
-DELETE FROM `employee_seq`;
-/*!40000 ALTER TABLE `employee_seq` DISABLE KEYS */;
-INSERT INTO `employee_seq` (`next_val`) VALUES
-	(1);
-/*!40000 ALTER TABLE `employee_seq` ENABLE KEYS */;
 
 -- 테이블 react-spring.file 구조 내보내기
 CREATE TABLE IF NOT EXISTS `file` (
@@ -140,7 +115,7 @@ CREATE TABLE IF NOT EXISTS `file_seq` (
   `next_val` bigint(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
--- 테이블 데이터 react-spring.file_seq:~0 rows (대략적) 내보내기
+-- 테이블 데이터 react-spring.file_seq:~1 rows (대략적) 내보내기
 DELETE FROM `file_seq`;
 /*!40000 ALTER TABLE `file_seq` DISABLE KEYS */;
 INSERT INTO `file_seq` (`next_val`) VALUES
@@ -161,7 +136,7 @@ CREATE TABLE IF NOT EXISTS `member` (
   PRIMARY KEY (`member_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
--- 테이블 데이터 react-spring.member:~0 rows (대략적) 내보내기
+-- 테이블 데이터 react-spring.member:~1 rows (대략적) 내보내기
 DELETE FROM `member`;
 /*!40000 ALTER TABLE `member` DISABLE KEYS */;
 INSERT INTO `member` (`member_id`, `email`, `username`, `password`, `role`, `created_date`, `modified_date`, `create_date`, `roles`) VALUES
@@ -173,11 +148,11 @@ CREATE TABLE IF NOT EXISTS `member_seq` (
   `next_val` bigint(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
--- 테이블 데이터 react-spring.member_seq:~0 rows (대략적) 내보내기
+-- 테이블 데이터 react-spring.member_seq:~1 rows (대략적) 내보내기
 DELETE FROM `member_seq`;
 /*!40000 ALTER TABLE `member_seq` DISABLE KEYS */;
 INSERT INTO `member_seq` (`next_val`) VALUES
-	(2);
+	(51);
 /*!40000 ALTER TABLE `member_seq` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
