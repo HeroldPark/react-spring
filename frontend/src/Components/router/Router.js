@@ -35,7 +35,7 @@ function Router() {
 				<Route path="/update" element={<MemberUpdate />}></Route>
 				<Route path="/logout" element={<Logout />}></Route>
 
-				<Route path="/employeelist" element={<EmployeeList />}></Route>
+				<Route path="/employees" element={<EmployeeList />}></Route>
 			</Routes>
 	);
 }

@@ -22,20 +22,14 @@ import shane.blog.common.BaseTimeEntity;
 @NoArgsConstructor
 public class Employee extends BaseTimeEntity {
 
-    // private @Id @GeneratedValue Long id;
-
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     // @GeneratedValue
-    // @Column(name = "EMPLOYEE_ID")
-    // @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "employee_seq")
-    // @SequenceGenerator(name = "employee_seq", sequenceName = "employee_seq", allocationSize = 1)
-    private Long id;
+    // @Column(name = "EMPLOYEE_ID")    // 'react-spring.employee_seq' is not a SEQUENCE 오류 발생
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long employee_id;
     
     private String name;
     private String role;
-
-    // Employee() {}
 
     @Builder
     public Employee(String name, String role) {
@@ -51,17 +45,17 @@ public class Employee extends BaseTimeEntity {
         if (!(o instanceof Employee))
             return false;
         Employee employee = (Employee) o;
-        return Objects.equals(this.id, employee.id) && Objects.equals(this.name, employee.name)
+        return Objects.equals(this.employee_id, employee.employee_id) && Objects.equals(this.name, employee.name)
                 && Objects.equals(this.role, employee.role);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.id, this.name, this.role);
+        return Objects.hash(this.employee_id, this.name, this.role);
     }
 
     @Override
     public String toString() {
-        return "Employee{" + "id=" + this.id + ", name='" + this.name + '\'' + ", role='" + this.role + '\'' + '}';
+        return "Employee{" + "id=" + this.employee_id + ", name='" + this.name + '\'' + ", role='" + this.role + '\'' + '}';
     }
 }

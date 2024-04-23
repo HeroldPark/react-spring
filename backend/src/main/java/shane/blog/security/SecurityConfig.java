@@ -1,6 +1,7 @@
 package shane.blog.security;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import shane.blog.security.jwt.JwtAuthenticationEntryPoint;
 import shane.blog.security.jwt.JwtAuthenticationFilter;
 
@@ -18,6 +19,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
+@Slf4j
 public class SecurityConfig {
 
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
@@ -32,6 +34,7 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        log.debug("SecurityConfig.filterChain() start");
         return http
                 .httpBasic(httpBasic -> httpBasic.disable())
                 .csrf(csrf -> csrf.disable())
@@ -40,6 +43,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize
                         -> authorize
                         .requestMatchers("/board/list",
+                                    "/employees",
                                          "/board/{boardId}",
                                          "/board/search",
                                          "/user/checkId",

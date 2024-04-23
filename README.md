@@ -31,3 +31,18 @@
     - javax.persistence.* => jakarta.persistence.* 수정해야 한다.
     - public class Employee 으로 설정해야 한다.
 
+# 06. 2024-04-23
+    - JPQL(java Persistence Query Language) : Fetch Join
+    - 
+
+    - frontend-backend 연동 : docs/frontend-backend.md 참조
+    - build.gradle에서 다음과 같이 해야 frontend - backend가 연결된다.
+        def frontendDir = "$projectDir/../frontend"
+    
+    - 연결 확인 : http://localhost:3000/employees
+    - App.js => main.js => Router.js => EmployeeList.js => SecurityConfig.java => EmployeeController.java
+
+    - test Junit : EmployeeRepositoryTest.java
+        => class에 마우스 우클릭 후 Debug Test in Current File
+
+

@@ -15,53 +15,46 @@ import shane.blog.entity.Employee;
 import shane.blog.repository.EmployeeRepository;
 
 @RestController
-class EmployeeController {
+public class EmployeeController {
 
     @Autowired
     private EmployeeRepository repository;
 
-    // EmployeeController(EmployeeRepository repository) {
-    //     this.repository = repository;
-    // }
-
     // Aggregate root
-    // tag::get-aggregate-root[]
     @GetMapping("/employees")
-    List<Employee> all() {
+    public List<Employee> all() {
         return repository.findAll();
     }
-    // end::get-aggregate-root[]
 
     @PostMapping("/employees")
-    Employee newEmployee(@RequestBody Employee newEmployee) {
+    public Object newEmployee(@RequestBody Employee newEmployee) {
         return repository.save(newEmployee);
     }
 
     // Single item
-
     @GetMapping("/employees/{id}")
-    Employee one(@PathVariable Long id) {
+    public Object one(@PathVariable Long id) {
 
         return repository.findById(id).orElse(null);
     }
 
     @PutMapping("/employees/{id}")
-    Employee replaceEmployee(@RequestBody Employee newEmployee, @PathVariable Long id) {
+    public Employee replaceEmployee(@RequestBody Employee newEmployee, @PathVariable Long id) {
 
-        return repository.findById(id)
+        return (Employee) repository.findById(id)
                 .map(employee -> {
-                    employee.setName(newEmployee.getName());
-                    employee.setRole(newEmployee.getRole());
+                    ((Employee) employee).setName(newEmployee.getName());
+                    ((Employee) employee).setRole(newEmployee.getRole());
                     return repository.save(employee);
                 })
                 .orElseGet(() -> {
-                    newEmployee.setId(id);
+                    newEmployee.setEmployee_id(id);
                     return repository.save(newEmployee);
                 });
     }
 
     @DeleteMapping("/employees/{id}")
-    void deleteEmployee(@PathVariable Long id) {
+    public void deleteEmployee(@PathVariable Long id) {
         repository.deleteById(id);
     }
 }

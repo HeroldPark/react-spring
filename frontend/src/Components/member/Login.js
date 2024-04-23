@@ -13,8 +13,8 @@ function Login() {
 
 	const navigate = useNavigate();
 
-	const [id, setId] = useState("");
-	const [pwd, setPwd] = useState("");
+	const [id, setId] = useState("admin@deltax.ai");
+	const [pwd, setPwd] = useState("1");
 
 	const changeId = (event) => {
 		setId(event.target.value);
