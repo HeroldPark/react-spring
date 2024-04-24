@@ -22,6 +22,7 @@ import shane.blog.common.BaseTimeEntity;
 @NoArgsConstructor
 public class Employee extends BaseTimeEntity {
 
+    // 이런 방법으로 설정하면 DB에서 employee_seq table이 필요치 않다.(가장 좋은 방법)
     @Id
     // @GeneratedValue
     // @Column(name = "EMPLOYEE_ID")    // 'react-spring.employee_seq' is not a SEQUENCE 오류 발생

@@ -16,6 +16,8 @@ import java.util.List;
 @NoArgsConstructor
 public class Board extends BaseTimeEntity {
 
+    // 이런 방법으로 ID를 생성하면 DB에서 board_seq table을 생성해야 한다.
+    // 비추천
     @Id
     @GeneratedValue
     @Column(name = "BOARD_ID")

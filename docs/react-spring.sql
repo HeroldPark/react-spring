@@ -98,9 +98,9 @@ CREATE TABLE IF NOT EXISTS `employee` (
   `create_date` varchar(255) DEFAULT NULL,
   `modified_date` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`employee_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='for JPA';
+) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='for JPA';
 
--- 테이블 데이터 react-spring.employee:~6 rows (대략적) 내보내기
+-- 테이블 데이터 react-spring.employee:~10 rows (대략적) 내보내기
 DELETE FROM `employee`;
 /*!40000 ALTER TABLE `employee` DISABLE KEYS */;
 INSERT INTO `employee` (`employee_id`, `name`, `role`, `create_date`, `modified_date`) VALUES
@@ -113,20 +113,10 @@ INSERT INTO `employee` (`employee_id`, `name`, `role`, `create_date`, `modified_
 	(36, 'Bilbo 첫 번째', 'burglar', '2024/04/23 15:05:51', '2024/04/23 15:05:51'),
 	(37, 'Frodo 두 번째', 'thief', '2024/04/23 15:05:51', '2024/04/23 15:05:51'),
 	(38, 'admin', 'administator', '2024/04/23 16:06:20', '2024/04/23 16:06:20'),
-	(39, 'admin', 'administator', '2024/04/23 16:09:38', '2024/04/23 16:09:38');
+	(39, 'admin', 'administator', '2024/04/23 16:09:38', '2024/04/23 16:09:38'),
+	(40, 'Bilbo 첫 번째', 'burglar', '2024/04/24 08:30:58', '2024/04/24 08:30:58'),
+	(41, 'Frodo 두 번째', 'thief', '2024/04/24 08:30:58', '2024/04/24 08:30:58');
 /*!40000 ALTER TABLE `employee` ENABLE KEYS */;
-
--- 테이블 react-spring.employee_seq 구조 내보내기
-CREATE TABLE IF NOT EXISTS `employee_seq` (
-  `next_val` bigint(20) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
-
--- 테이블 데이터 react-spring.employee_seq:~0 rows (대략적) 내보내기
-DELETE FROM `employee_seq`;
-/*!40000 ALTER TABLE `employee_seq` DISABLE KEYS */;
-INSERT INTO `employee_seq` (`next_val`) VALUES
-	(1);
-/*!40000 ALTER TABLE `employee_seq` ENABLE KEYS */;
 
 -- 테이블 react-spring.file 구조 내보내기
 CREATE TABLE IF NOT EXISTS `file` (

@@ -21,6 +21,7 @@ import java.io.IOException;
 
 /**
  * JWT(JSON Web Token) 토큰의 유효성을 검사하고, 인증
+ * 현재는 인증이 유효하지 않더라도 오류 없이 통과되는 것 같다.
  */
 @Component
 @RequiredArgsConstructor
@@ -62,7 +63,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 log.info("Unable to get JWT Token !!");
                 e.getStackTrace();
             }
-
         } else {
             log.info("JWT does not begin with Bearer !!");
         }
