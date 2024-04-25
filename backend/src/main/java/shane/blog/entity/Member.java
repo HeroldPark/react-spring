@@ -21,11 +21,13 @@ import java.util.List;
 public class Member extends BaseTimeEntity implements UserDetails {
 
     @Id
-    @GeneratedValue
-    @Column(name = "MEMBER_ID")
-    // @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequence_generator")
-    // @SequenceGenerator(name = "sequence_generator", sequenceName = "member_seq", allocationSize = 1)
-    private Long id;
+    // @GeneratedValue
+    // @Column(name = "MEMBER_ID")
+    // // @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequence_generator")
+    // // @SequenceGenerator(name = "sequence_generator", sequenceName = "member_seq", allocationSize = 1)
+    // private Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long member_id;
 
     // 이메일로 로그인함
     @Column(nullable = false)

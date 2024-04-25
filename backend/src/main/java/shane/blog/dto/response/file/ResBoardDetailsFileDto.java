@@ -29,7 +29,7 @@ public class ResBoardDetailsFileDto {
 
     public static ResBoardDetailsFileDto fromEntity(FileEntity file) {
         return ResBoardDetailsFileDto.builder()
-                .fileId(file.getId())
+                .fileId(file.getFile_id())
                 .originFileName(file.getOriginFileName())
                 .fileType(file.getFileType())
                 .build();

@@ -2,7 +2,11 @@ package shane.blog.repository;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
 import shane.blog.entity.Employee;
 
 //  · JpaRepository는 PagingAndSortingRepository, QueryByExampleExecutor 인터페이스를 상속받고 있음
@@ -46,4 +50,16 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
     // ID 값으로 해당 엔티티 하나 조회
     @Deprecated
     Employee getOne(Long id);
+
+    // 모든 직원 검색
+    @Query(value = "SELECT e FROM Employee e")
+    Page<Employee> findAllWithEmployees(Pageable pageable);
+
+    // 성명 검색
+    @Query(value = "SELECT e FROM Employee e WHERE e.name LIKE %:name%")
+    Page<Employee> findAllNameContaining(String name, Pageable pageable);
+
+    // 권한 검색
+    @Query(value = "SELECT e FROM Employee e WHERE e.role LIKE %:role%")
+    Page<Employee> findAllRoleContaining(String role, Pageable pageable);
 }

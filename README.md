@@ -3,7 +3,7 @@
 # 01. 2024-04-01
     - https://github.com/jhcode33/react-spring-blog-backend
     - https://github.com/jhcode33/react-spring-blog-frontend
-    - 아인커뮤니케이션(http://www.anyro.com/) static.zip 복사
+    - 아인커뮤니케이션(http://www.anyro.com/) static.zip 복사 : Warning 라이선스
 
     PS C:\Users\DeltaX_20\Documents\Workspace\react-spring> git remote -v
     origin  git@github.com:HeroldPark/react-spring.git (fetch)
@@ -62,9 +62,15 @@
     - jQuery 설치
         npm install jquery jquery-ui-dist
         npm install bootstrap --save
-        npm sass bootstrap --save
+        npm install sass --save
 
-    - 왼쪽 메유(아인) static/css, js, images 적용
+    - 왼쪽 메뉴(아인) static/css, js, images 적용
     - 왼쪽 메뉴 : Nav.js
     - 오른쪽 내용 : Main.js
+
+# 08. 2024-04-25
+    - 헤드 로고 추가
+    - 왼쪽, 헤드 메뉴 정리
+    - entity에서 GeneratedValue 수정 : DB 테이블에서 *_seq 로 등록된 테이블 모두 삭제(예: board_seq)
+    - 테스트로 employee(직원) 관련 메뉴 등록
 

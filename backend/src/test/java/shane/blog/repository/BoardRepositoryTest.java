@@ -39,7 +39,7 @@ public class BoardRepositoryTest {
         // org.springframework.dao.InvalidDataAccessResourceUsageException: could not extract ResultSet [(conn=1018) 'react-spring.board_seq' is not a SEQUENCE] [n/a]; SQL [n/a]
         // 이 오류는 Board.java에서 ID를 생성하는 방법에 문제가 있음을 의미한다.
         boardRepository.save(Board.builder()
-                .id(id)
+                .board_id(id)
                 .title(title)
                 .content(content)
                 .viewCount(viewCount)

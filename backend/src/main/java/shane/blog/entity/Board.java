@@ -19,9 +19,11 @@ public class Board extends BaseTimeEntity {
     // 이런 방법으로 ID를 생성하면 DB에서 board_seq table을 생성해야 한다.
     // 비추천
     @Id
-    @GeneratedValue
-    @Column(name = "BOARD_ID")
-    private Long id;
+    // @GeneratedValue
+    // @Column(name = "BOARD_ID")
+    // private Long id; // 'react-spring.board_seq' is not a SEQUENCE 오류 발생
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long board_id;
 
     @Column(nullable = false)
     private String title;
@@ -44,8 +46,8 @@ public class Board extends BaseTimeEntity {
     public List<FileEntity> files = new ArrayList<>();
 
     @Builder
-    public Board(Long id, String title, String content, int viewCount, Member member) {
-        this.id = id;
+    public Board(Long board_id, String title, String content, int viewCount, Member member) {
+        this.board_id = board_id;
         this.title = title;
         this.content = content;
         this.viewCount = viewCount;

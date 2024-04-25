@@ -33,7 +33,7 @@ public class ResBoardWriteDto {
 
     public static ResBoardWriteDto fromEntity(Board board, String writerName) {
         return ResBoardWriteDto.builder()
-                .boardId(board.getId())
+                .boardId(board.getBoard_id())
                 .title(board.getTitle())
                 .content(board.getContent())
                 .writerName(writerName)

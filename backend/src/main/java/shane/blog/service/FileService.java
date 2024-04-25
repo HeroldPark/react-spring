@@ -51,7 +51,7 @@ public class FileService {
 
             // create save File name : ex) POST_boardID_randomID.확장자
             String filePath =
-                    "POST_" + board.getId() + "_" + randomId.concat(fileName.substring(fileName.indexOf(".")));
+                    "POST_" + board.getBoard_id() + "_" + randomId.concat(fileName.substring(fileName.indexOf(".")));
 
             // File.separator : OS에 따른 구분자
             String fileResourcePath = FOLDER_PATH + File.separator + filePath;

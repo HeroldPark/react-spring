@@ -5,8 +5,10 @@
     "java.debug.settings.onBuildFailureProceed": true,
     "cSpell.words": [
         "administator",
+        "bbslist",
         "employeelist",
         "lcontent",
+        "Navi",
         "rcontent",
         "viewcount"
     ]
