@@ -11,9 +11,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import shane.blog.entity.Employee;
-import shane.blog.repository.EmployeeRepository;
-
 @RestController
 class EmployeeController {
 
