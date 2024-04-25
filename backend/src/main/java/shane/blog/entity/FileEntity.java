@@ -12,9 +12,11 @@ import shane.blog.common.BaseTimeEntity;
 @NoArgsConstructor
 public class FileEntity extends BaseTimeEntity {
 
-    @Id @GeneratedValue
-    @Column(name = "FILE_ID")
-    private Long id;
+    @Id
+    // @Column(name = "FILE_ID")
+    // private Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long file_id;
 
     @Column(name = "ORIGIN_FILE_NAME")
     private String originFileName;
@@ -30,8 +32,8 @@ public class FileEntity extends BaseTimeEntity {
     public Board board;
 
     @Builder
-    public FileEntity(Long id, String originFileName, String filePath, String fileType) {
-        this.id = id;
+    public FileEntity(Long file_id, String originFileName, String filePath, String fileType) {
+        this.file_id = file_id;
         this.originFileName = originFileName;
         this.filePath = filePath;
         this.fileType = fileType;

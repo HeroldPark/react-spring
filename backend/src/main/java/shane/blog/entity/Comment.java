@@ -12,9 +12,11 @@ import shane.blog.common.BaseTimeEntity;
 public class Comment extends BaseTimeEntity {
 
     @Id
-    @GeneratedValue
-    @Column(name = "COMMENT_ID")
-    private Long id;
+    // @GeneratedValue
+    // @Column(name = "COMMENT_ID")
+    // private Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long comment_id;
 
     private String content;
 
@@ -27,8 +29,8 @@ public class Comment extends BaseTimeEntity {
     public Board board;
 
     @Builder
-    public Comment(Long id, String content, Member member, Board board) {
-        this.id = id;
+    public Comment(Long comment_id, String content, Member member, Board board) {
+        this.comment_id = comment_id;
         this.content = content;
         this.member = member;
         this.board = board;

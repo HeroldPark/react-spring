@@ -9,17 +9,18 @@ import org.springframework.context.annotation.Configuration;
 import shane.blog.entity.Employee;
 import shane.blog.repository.EmployeeRepository;
 
-@Configuration
-class LoadDatabase {
+// @Configuration
+// class LoadDatabase {
 
-    private static final Logger log = LoggerFactory.getLogger(LoadDatabase.class);
+//     private static final Logger log = LoggerFactory.getLogger(LoadDatabase.class);
 
-    @Bean
-    CommandLineRunner initDatabase(EmployeeRepository repository) {
+//     // 재시작 할때마다 추가되어 일단 주석 처리한다.
+//     @Bean
+//     CommandLineRunner initDatabase(EmployeeRepository repository) {
 
-        return args -> {
-            log.info("Preloading " + repository.save(new Employee("Bilbo Baggins", "burglar")));
-            log.info("Preloading " + repository.save(new Employee("Frodo Baggins", "thief")));
-        };
-    }
-}
+//         return args -> {
+//             log.info("Preloading " + repository.save(new Employee("Bilbo 첫 번째", "burglar")));
+//             log.info("Preloading " + repository.save(new Employee("Frodo 두 번째", "thief")));
+//         };
+//     }
+// }

@@ -11,9 +11,11 @@ function HttpHeadersProvider({ children }) {
 	const value = {headers, setHeaders};
 
 	return (
-		<HttpHeadersContext.Provider value = {value}>
-			{children}
-		</HttpHeadersContext.Provider>
+		<div id="adm_wrap">
+			<HttpHeadersContext.Provider value = {value}>
+				{children}
+			</HttpHeadersContext.Provider>
+		</div>
 	);
 
 }

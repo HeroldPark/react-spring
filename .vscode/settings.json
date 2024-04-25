@@ -2,5 +2,14 @@
     "java.configuration.updateBuildConfiguration": "automatic",
     "java.compile.nullAnalysis.mode": "automatic",
     "cmake.configureOnOpen": false,
-    "java.debug.settings.onBuildFailureProceed": true
+    "java.debug.settings.onBuildFailureProceed": true,
+    "cSpell.words": [
+        "administator",
+        "bbslist",
+        "employeelist",
+        "lcontent",
+        "Navi",
+        "rcontent",
+        "viewcount"
+    ]
 }

@@ -20,23 +20,23 @@ function Router() {
 	console.log("[Router.js] render()");
 	
 	return (
-			<Routes>
-				<Route path="/" element={<Home />}></Route>
+		<Routes>
+			<Route path="/" element={<Home />}></Route>
 
-				<Route path="/bbslist" element={<BbsList />}></Route>
-				<Route path="/bbswrite" element={<BbsWrite />}></Route>
-				<Route path="/bbsdetail/:boardId" element={<BbsDetail />}></Route>
-				<Route path="/bbsupdate" element={<BbsUpdate />}></Route>
-				<Route path="/bbsanswer/:parentSeq" element={<BbsAnswer />}></Route>
+			<Route path="/bbslist" element={<BbsList />}></Route>
+			<Route path="/bbswrite" element={<BbsWrite />}></Route>
+			<Route path="/bbsdetail/:boardId" element={<BbsDetail />}></Route>
+			<Route path="/bbsupdate" element={<BbsUpdate />}></Route>
+			<Route path="/bbsanswer/:parentSeq" element={<BbsAnswer />}></Route>
 
-				<Route path="/login" element={<Login />}></Route>
-				<Route path="/join" element={<Join />}></Route>
-				<Route path="/checkpwd" element={<CheckPwd />}></Route>
-				<Route path="/update" element={<MemberUpdate />}></Route>
-				<Route path="/logout" element={<Logout />}></Route>
+			<Route path="/login" element={<Login />}></Route>
+			<Route path="/join" element={<Join />}></Route>
+			<Route path="/checkpwd" element={<CheckPwd />}></Route>
+			<Route path="/update" element={<MemberUpdate />}></Route>
+			<Route path="/logout" element={<Logout />}></Route>
 
-				<Route path="/employeelist" element={<EmployeeList />}></Route>
-			</Routes>
+			<Route path="/employees" element={<EmployeeList />}></Route>
+		</Routes>
 	);
 }
 

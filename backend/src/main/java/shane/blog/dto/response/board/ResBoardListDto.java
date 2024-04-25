@@ -39,7 +39,7 @@ public class ResBoardListDto {
     // Entity -> DTO
     public static ResBoardListDto fromEntity(Board board) {
         return ResBoardListDto.builder()
-                .boardId(board.getId())
+                .boardId(board.getBoard_id())
                 .title(board.getTitle())
                 .content(board.getContent())
                 .viewCount(board.getViewCount())

@@ -31,7 +31,7 @@ public class ResFileUploadDto {
 
     public static ResFileUploadDto fromEntity(FileEntity file) {
         return ResFileUploadDto.builder()
-                .fileId(file.getId())
+                .fileId(file.getFile_id())
                 .originFileName(file.getOriginFileName())
                 .filePath(file.getFilePath())
                 .fileType(file.getFileType())

@@ -1,4 +1,4 @@
-package shane.blog.board;
+package shane.blog.repository;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

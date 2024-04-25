@@ -29,10 +29,10 @@ function EmployeeList() {
       console.log("[EmployeeList.js] useEffect() success :D");
       console.log(response.data);
 
-      setEmployeeList(response.data);
-      // setPageSize(response.data.pageSize);
-      // setTotalPages(response.data.totalPages);
-      // setTotalCnt(response.data.totalElements);
+      setEmployeeList(response.data.content);
+      setPageSize(response.data.pageSize);
+      setTotalPages(response.data.totalPages);
+      setTotalCnt(response.data.totalElements);
     } catch (error) {
       console.log("[EmployeeList.js] useEffect() error :<");
       console.log(error);
@@ -42,12 +42,11 @@ function EmployeeList() {
   // 게시글 검색
   const search = async () => {
     try {
-      const response = await axios.get("http://localhost:8989/board/search", {
+      const response = await axios.get("http://localhost:8989/employee/search", {
         params: {
           page: page - 1,
-          title: choiceVal === "title" ? searchVal : "",
-          content: choiceVal === "content" ? searchVal : "",
-          writerName: choiceVal === "writer" ? searchVal : "",
+          name: choiceVal === "name" ? searchVal : "",
+          role: choiceVal === "role" ? searchVal : "",
         },
       });
 
@@ -90,9 +89,8 @@ function EmployeeList() {
                 onChange={changeChoice}
               >
                 <option>검색 옵션 선택</option>
-                <option value="title">제목</option>
-                <option value="content">내용</option>
-                <option value="writer">작성자</option>
+                <option value="name">성명</option>
+                <option value="role">권한</option>
               </select>
             </td>
             <td>
@@ -121,15 +119,17 @@ function EmployeeList() {
       <table className="table table-hover">
         <thead>
           <tr>
-            <th className="col-1">번호</th>
-            <th className="col-3">작성자</th>
-            <th className="col-2">권한</th>
+            <th style={{textAlign:"center"}} className="col-1">번호</th>
+            <th style={{textAlign:"center"}} className="col-2">성명</th>
+            <th style={{textAlign:"center"}} className="col-2">권한</th>
+            <th style={{textAlign:"center"}} className="col-2">생성일시</th>
+            <th style={{textAlign:"center"}} className="col-2">수정일시</th>
           </tr>
         </thead>
 
         <tbody>
-          {employeeList.map(function (employee, idx, role) {
-            return <TableRow obj={employee} key={idx} role={role} />;
+          {Array.isArray(employeeList) && employeeList.map(function (employees, idx) {
+            return <TableRow obj={employees} key={idx} cnt={idx + 1} />;
           })}
         </tbody>
       </table>
@@ -149,11 +149,6 @@ function EmployeeList() {
         <Link className="btn btn-outline-secondary" to="/employeewrite">
           <i className="fas fa-pen"></i> &nbsp; 글쓰기
         </Link>
-
-        {/* Test JPA */}
-        <Link className="btn btn-outline-secondary" to="/employees">
-          <i className="fas fa-pen"></i> &nbsp; JPA CRUD
-        </Link>
       </div>
     </div>
   );
@@ -165,14 +160,15 @@ function TableRow(props) {
 
   return (
     <tr>
-      <th>{props.cnt}</th>
-      <td>
-        <Link to={{ pathname: `/employeedetail/${employee.boardId}` }}>
-          <span className="underline employee-title">{employee.title}</span>
+      <th style={{textAlign:"center"}} >{props.cnt}</th>
+      <td style={{textAlign:"center"}} >
+        <Link to={{ pathname: `/employeedetail/${employee.employeeId}` }}>
+          <span className="underline employee-name">{employee.name}</span>
         </Link>
       </td>
-      <td>{employee.writerName}</td>
-      <td style={{ textAlign: 'center' }}>{employee.viewCount}</td>
+      <td style={{textAlign:"center"}} >{employee.role}</td>
+      <td style={{ textAlign: 'center' }}>{employee.createdDate}</td>
+      <td style={{ textAlign: 'center' }}>{employee.modifiedDate}</td>
     </tr>
   );
 }

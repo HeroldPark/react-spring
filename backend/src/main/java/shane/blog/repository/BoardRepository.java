@@ -4,10 +4,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-
 import shane.blog.entity.Board;
-
 import java.util.Optional;
+
+//  · JpaRepository는 PagingAndSortingRepository, QueryByExampleExecutor 인터페이스를 상속받고 있음
+//  · PagingAndSortingRepository는 CrudRepository 인터페이스를 상속받고 있음
+//  · CrudRepository 인터페이스에는 기본적인 CRUD 메소드 제공
+//   → save(), findById(), existsById(), count(), deleteById(), delete(), deleteAll()
+//  · QueryByExampleExecutor 인터페이스에는 더 다양한 CRUD 메소드 제공
+//   → findOne(), findAll(), count(), exists()
 
 public interface BoardRepository extends JpaRepository<Board, Long> {
 

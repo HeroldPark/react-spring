@@ -150,11 +150,6 @@ function BbsList() {
         <Link className="btn btn-outline-secondary" to="/bbswrite">
           <i className="fas fa-pen"></i> &nbsp; 글쓰기
         </Link>
-
-        {/* Test JPA */}
-        <Link className="btn btn-outline-secondary" to="/employees">
-          <i className="fas fa-pen"></i> &nbsp; JPA CRUD
-        </Link>
       </div>
     </div>
   );

@@ -1,0 +1,9 @@
+# Created by https://www.toptal.com/developers/gitignore/api/java,gradle,intellij
+# Edit at https://www.toptal.com/developers/gitignore?templates=java,gradle,intellij
+
+frontend/build
+frontend/node_modules
+
+backend/.gradle
+backend/build
+
