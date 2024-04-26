@@ -11,6 +11,8 @@ import shane.blog.dto.response.board.ResBoardWriteDto;
 import shane.blog.entity.Member;
 import shane.blog.service.BoardService;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -25,6 +27,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @Slf4j
 public class BoardController {
+    static Logger logger = (Logger) LoggerFactory.getLogger(BoardController.class);
 
     private final BoardService boardService;
 
@@ -33,6 +36,9 @@ public class BoardController {
     public ResponseEntity<Page<ResBoardListDto>> boardList(
             @PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         Page<ResBoardListDto> listDTO = boardService.getAllBoards(pageable);
+
+        logger.debug("boardList: " + listDTO.toString());
+
         return ResponseEntity.status(HttpStatus.OK).body(listDTO);
     }
 

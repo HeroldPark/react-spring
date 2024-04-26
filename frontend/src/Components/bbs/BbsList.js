@@ -22,8 +22,8 @@ function BbsList() {
   // 게시글 전체 조회
   const getBbsList = async (page) => {
     try {
-		const response = await axios.get("http://localhost:8989/board/list", {
-			params: {"page": page - 1},
+		  const response = await axios.get("http://localhost:8989/board/list", {
+			  params: {"page": page - 1},
 		  });
 
       console.log("[BbsList.js] useEffect() success :D");

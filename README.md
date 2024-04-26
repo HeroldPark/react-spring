@@ -74,3 +74,17 @@
     - entity에서 GeneratedValue 수정 : DB 테이블에서 *_seq 로 등록된 테이블 모두 삭제(예: board_seq)
     - 테스트로 employee(직원) 관련 메뉴 등록
 
+# 09. 2024-04-26
+    vsCode Installed Packages(Ctrl + Shift-X => INSTALLED)
+    - Debugger for Java, Decompiler, Decompiler Java, Dev Containers, Django, Docker, Eclipse Keymap, Extension Pack for Java, Extension Pack for Java + Spring
+    - Extension Pack for Java + Spring, Git Graph, Git History, GitHub Copilot, GitHub Copilot, GitLens, Gradle Extension Pack, Gradle Java, Gradle Language Support
+    - IntelliCode, IntelliCode API Usage Examples, IntelliCode Completions, IntelliCode Insiders, IntelliJ IDEA Key Bindings, Java IDE, Java IDE Pack, Java Language Support,
+    - Java prettier formatter, Java Properties, Java Snippets, Java Tests, Jinja, JSON Tools, Junit Testfile Generator, Kubernetes, Kubernetes Support, Language Support for Java(TM) by Red Hat
+    - learn-yaml, Live Preview, Lombok Annotations Support, Material Icon Theme, Maven for Java, MicroProfile Starter, MybatisX, npm Intellisense, Output Colorizer, PowerShell, Prettier
+    - Project Manager for Java, Pylance, Python, Python Debugger, Python Environment Manager, Python Extension Pack, Python Indent, Reactjs code snippets, Red Hat Commons, Remote - SSH
+    - Remote - SSH: Editing Configuration Files, Remote - Tunnels, Remote Development, Remote Explorer, REST Client, shell-format, Spring Boot Dashboard, Spring Boot Gradle Extension Pack
+    - Spring Boot Gradle Extension Pack, Spring Boot Tools, Spring Initializr Java Support, SpringBoot Extension Pack, Sublime Text Keymap and Settings Importer, Task Explorer
+    - Test Runner for Java, Todo Tree, Tools for MicroProfile, WSL, XML, YAML, ESLint, markdownlint, XML Tools, Notepad++ keymap
+
+    - JPA에서 Query 출력 안되는 장애 발생. : Spring boot 버젼 문제인가?
+    - User 관련 추가

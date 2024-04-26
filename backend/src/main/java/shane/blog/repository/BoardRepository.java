@@ -14,6 +14,7 @@ import java.util.Optional;
 //  · QueryByExampleExecutor 인터페이스에는 더 다양한 CRUD 메소드 제공
 //   → findOne(), findAll(), count(), exists()
 
+
 public interface BoardRepository extends JpaRepository<Board, Long> {
 
     // 게시글 상세 조회, @BatchSize : Comments와 Files는 필요할 때 in 절로 가져옴

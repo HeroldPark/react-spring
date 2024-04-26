@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
 import shane.blog.entity.Employee;
 
@@ -22,12 +23,13 @@ import shane.blog.entity.Employee;
 // }
 
 // 이 인터페이스를 상속받는 인터페이스가 레포지토리로 인식되지 않도록 설정한다.
-// @NoRepositoryBean    
+// @NoRepositoryBean
+@Repository
 public interface EmployeeRepository extends JpaRepository<Employee, Long> {
-    // 조건없이 테이블의 전체 레코드 조회
-    // 실제 서비스에서는 잘 사용되지 않음
-    @Override
-    List<Employee> findAll();
+    // // 조건없이 테이블의 전체 레코드 조회
+    // // 실제 서비스에서는 잘 사용되지 않음
+    // @Override
+    // public List<Employee> findAll();
 
     // ID(Long) 값을 리스트 형식으로 받아 레코드 조회
     @Override

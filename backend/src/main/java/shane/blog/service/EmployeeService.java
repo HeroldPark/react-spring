@@ -8,21 +8,30 @@ import shane.blog.entity.Employee;
 import shane.blog.repository.EmployeeRepository;
 import shane.blog.repository.MemberRepository;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
+// @RequiredArgsConstructor
 @Transactional
 public class EmployeeService {
 
-    private final EmployeeRepository employeeRepository;
+    @Autowired
+    private EmployeeRepository employeeRepository;
     // private final MemberRepository memberRepository;
+
+    // public List<Employee> findAll() {
+    //     List<Employee> employees = new ArrayList<>();
+    //     employeeRepository.findAll().forEach(e -> employees.add(e));
+    //     return employees;
+    // }
 
     // 페이징 리스트
     public Page<ResEmployeeListDto> getAllEmployees(Pageable pageable) {
