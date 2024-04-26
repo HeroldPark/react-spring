@@ -24,8 +24,7 @@ public class UserJpaRestController {
     UserService userService;
 
     // 모든 회원 조회
-    // @GetMapping(produces = { MediaType.APPLICATION_JSON_VALUE })
-    @GetMapping
+    @GetMapping(produces = { MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<List<User>> getAllusers() {
         List<User> user = userService.findAll();
 

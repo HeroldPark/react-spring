@@ -87,4 +87,4 @@
     - Test Runner for Java, Todo Tree, Tools for MicroProfile, WSL, XML, YAML, ESLint, markdownlint, XML Tools, Notepad++ keymap
 
     - JPA에서 Query 출력 안되는 장애 발생. : Spring boot 버젼 문제인가?
-    - User 관련 추가
+    - User 관련 추가 : UserJpaRestController.java, User.java, UserRepository.java, UserService.java
