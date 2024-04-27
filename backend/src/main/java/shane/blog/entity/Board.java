@@ -1,7 +1,10 @@
 package shane.blog.entity;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import shane.blog.common.BaseTimeEntity;
@@ -11,8 +14,8 @@ import org.hibernate.annotations.BatchSize;
 import java.util.ArrayList;
 import java.util.List;
 
+@Data
 @Entity
-@Getter
 @NoArgsConstructor
 public class Board extends BaseTimeEntity {
 

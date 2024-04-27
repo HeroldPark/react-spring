@@ -2,6 +2,8 @@ package shane.blog.controller;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,6 +25,7 @@ import shane.blog.service.EmployeeService;
 import org.springframework.data.domain.Sort;
 @RestController
 public class EmployeeController {
+    static Logger logger = (Logger) LoggerFactory.getLogger(EmployeeController.class);
 
     @Autowired
     private EmployeeRepository repository;
@@ -30,16 +33,20 @@ public class EmployeeController {
     @Autowired
     private EmployeeService employeeService;
 
-    // Aggregate root
+    // // Aggregate root
     // @GetMapping("/employees")
     // public List<Employee> all() {
     //     return repository.findAll();
+    //     // return employeeService.findAll();
     // }
 
     @GetMapping("/employees")
     public ResponseEntity<Page<ResEmployeeListDto>> employeeList(
             @PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         Page<ResEmployeeListDto> listDTO = employeeService.getAllEmployees(pageable);
+        
+        logger.debug("employeeList: " + listDTO.getContent().get(0).getName());
+
         return ResponseEntity.status(HttpStatus.OK).body(listDTO);
     }
 

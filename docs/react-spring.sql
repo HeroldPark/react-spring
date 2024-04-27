@@ -37,7 +37,7 @@ DELETE FROM `board`;
 /*!40000 ALTER TABLE `board` DISABLE KEYS */;
 INSERT INTO `board` (`board_id`, `title`, `content`, `view_count`, `created_date`, `modified_date`, `member_id`, `create_date`) VALUES
 	(1, 'Hello react-spring world~~', 'start react-spring study...', 20, NULL, '2024/04/25 08:47:34', 1, '2024/04/02 11:21:05'),
-	(2, 'test', 'contents', 6, NULL, '2024/04/25 16:39:41', 1, '2024/04/25 16:31:29');
+	(2, 'test', 'contents', 7, NULL, '2024/04/26 09:09:28', 1, '2024/04/25 16:31:29');
 /*!40000 ALTER TABLE `board` ENABLE KEYS */;
 
 -- 테이블 react-spring.comment 구조 내보내기
@@ -136,6 +136,22 @@ DELETE FROM `member`;
 INSERT INTO `member` (`member_id`, `email`, `username`, `password`, `role`, `created_date`, `modified_date`, `create_date`, `roles`) VALUES
 	(1, 'admin@deltax.ai', 'admin', '$2a$10$HTWwKtPoEo2dfnw7rXMJh.m9Iwn2COOcHquv7TMwKC9BufUMBcCW2', NULL, NULL, '2024/04/02 11:19:39', '2024/04/02 11:19:39', 'USER');
 /*!40000 ALTER TABLE `member` ENABLE KEYS */;
+
+-- 테이블 react-spring.user 구조 내보내기
+CREATE TABLE IF NOT EXISTS `user` (
+  `MBR_NO` int(11) NOT NULL AUTO_INCREMENT,
+  `ID` varchar(255) DEFAULT NULL,
+  `NAME` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`MBR_NO`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- 테이블 데이터 react-spring.user:~0 rows (대략적) 내보내기
+DELETE FROM `user`;
+/*!40000 ALTER TABLE `user` DISABLE KEYS */;
+INSERT INTO `user` (`MBR_NO`, `ID`, `NAME`) VALUES
+	(1, 'shane park 1', 'shanepark1'),
+	(2, 'shane park 2', 'shanepark2');
+/*!40000 ALTER TABLE `user` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IFNULL(@OLD_FOREIGN_KEY_CHECKS, 1) */;
