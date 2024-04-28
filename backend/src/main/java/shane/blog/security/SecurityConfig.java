@@ -1,10 +1,5 @@
 package shane.blog.security;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import shane.blog.security.jwt.JwtAuthenticationEntryPoint;
-// import shane.blog.security.jwt.JwtAuthenticationFilter;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -16,6 +11,11 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfigurationSource;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import shane.blog.security.jwt.JwtAuthenticationEntryPoint;
+import shane.blog.security.jwt.JwtAuthenticationFilter;
+
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -23,7 +23,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 public class SecurityConfig {
 
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
-    // private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final CorsConfigurationSource corsConfigurationSource;
 
     @Bean
@@ -44,13 +44,13 @@ public class SecurityConfig {
                         -> authorize
                         .requestMatchers("/board/list",
                                     "/employees",                   // 추가(for test)
-                                         "/board/{boardId}",
-                                         "/board/search",
-                                         "/user/checkId",
-                                         "/user/register",
-                                         "/user/login",
-                                         "/board/{boardId}/comment/list/**",
-                                         "/board/{boardId}/file/download/**").permitAll()
+                                    "/board/{boardId}",
+                                    "/board/search",
+                                    "/user/checkId",
+                                    "/user/register",
+                                    "/user/login",
+                                    "/board/{boardId}/comment/list/**",
+                                    "/board/{boardId}/file/download/**").permitAll()
 
                         .requestMatchers("/user/**").hasRole("USER")
                         .requestMatchers("/board/**").hasRole("USER")
@@ -65,7 +65,7 @@ public class SecurityConfig {
                 
                 // UsernamePasswordAuthenticationFilter 앞에 jwtAuthenticationFilter를 추가하면 양식 기반 인증 전에 JWT 인증이 처리됩니다. 
                 // 이는 일반적으로 JWT와 양식 기반 인증을 모두 지원하고 JWT 인증의 우선순위를 지정하려는 애플리케이션에서 수행됩니다.
-                // .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 }

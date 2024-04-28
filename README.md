@@ -88,3 +88,13 @@
 
     - JPA에서 Query 출력 안되는 장애 발생. : Spring boot 버젼 문제인가?
     - User 관련 추가 : UserJpaRestController.java, User.java, UserRepository.java, UserService.java
+
+# 10. 2024-04-27
+    - Could not resolve org.springframework.boot:spring-boot-gradle-plugin:3.1.4.
+    => in vsCode CTL+ SHIFT+P > Java : clean java langage server workspace
+
+    - Unresolved dependency: org.bgee.log4jdbc-log4j2 log4jdbc-log4j2-jdbc4.1
+    => implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16'
+
+    - build.gradle에서 버젼 수정 : Query 과정 console에 출력된다.
+    - id 'org.springframework.boot' version '3.1.11'
