@@ -59,4 +59,5 @@ public class Employee extends BaseTimeEntity {
     public String toString() {
         return "Employee{" + "id=" + this.employee_id + ", name='" + this.name + '\'' + ", role='" + this.role + '\'' + '}';
     }
+
 }

@@ -3,13 +3,16 @@ package shane.blog.repository;
 import java.util.List;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import shane.blog.entity.Board;
 import shane.blog.entity.Member;
+import static org.assertj.core.api.Assertions.assertThat;
 
+@DisplayName("Board Repository 테스트")
 @SpringBootTest
 public class BoardRepositoryTest {
 
@@ -29,15 +32,18 @@ public class BoardRepositoryTest {
         String title = "테스트 게시글";
         String content = "테스트 본문";
         int viewCount = 0;
-        Member member = Member.builder()
-                .username("admin")
-                // .password("1234")
-                .email("admin@deltax.ai")
-                // .roles(Role.ADMIN)
-                .build();
 
-        // org.springframework.dao.InvalidDataAccessResourceUsageException: could not extract ResultSet [(conn=1018) 'react-spring.board_seq' is not a SEQUENCE] [n/a]; SQL [n/a]
-        // 이 오류는 Board.java에서 ID를 생성하는 방법에 문제가 있음을 의미한다.
+        // Member member = Member.builder()
+        //     .username("guest")
+        //     // .password("1234")
+        //     .email("guest@deltax.ai")
+        //     // .roles(Role.ADMIN)
+        //     .build();
+
+        Member member = new Member();
+        member.setMember_id(1L);
+
+        // given
         boardRepository.save(Board.builder()
                 .board_id(id)
                 .title(title)
@@ -53,5 +59,12 @@ public class BoardRepositoryTest {
         Board board = boardList.get(1);
         Assertions.assertEquals(title, board.getTitle());
         Assertions.assertEquals(content, board.getContent());
+
+        // when : AssertJ 사용
+        // Board findBoard = boardList.get(0);
+        assertThat(board.getTitle()).isEqualTo(title);
+
+        // 성공 메시지 출력
+        System.out.println("테스트 성공!"); // DEBUG CONSOLE에 출력
     }
 }

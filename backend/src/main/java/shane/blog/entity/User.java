@@ -16,7 +16,7 @@ public class User {
     private Long mbrNo;
 
     private String id;
-
+    
     private String name;
 
     @Builder

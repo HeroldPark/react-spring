@@ -98,3 +98,16 @@
 
     - build.gradle에서 버젼 수정 : Query 과정 console에 출력된다.
     - id 'org.springframework.boot' version '3.1.11'
+
+# 11. 2024-04-29
+    - cd backend
+    - ./gradlew build
+    - junit test에서 오류 발생.
+    org.springframework.dao.InvalidDataAccessApiUsageException: 
+    org.hibernate.TransientPropertyValueException: 
+        object references an unsaved transient instance - save the transient instance before flushing : shane.blog.entity.Board.member -> shane.blog.entity.Member
+    => Board.member를 CASCADE로 선언
+
+    - Java HotSpot(TM) 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+    =>  // 클래스를 로드할 때 공유 클래스 캐시를 사용하지 않도록 설정
+        System.setProperty("java.lang.shareclasses", "off");

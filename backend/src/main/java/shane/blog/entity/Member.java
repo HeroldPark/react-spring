@@ -2,7 +2,7 @@ package shane.blog.entity;
 
 import jakarta.persistence.*;
 import lombok.Builder;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 import shane.blog.common.BaseTimeEntity;
 import shane.blog.common.Role;
@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-@Getter
+@Data
 @Entity
 @NoArgsConstructor
 public class Member extends BaseTimeEntity implements UserDetails {

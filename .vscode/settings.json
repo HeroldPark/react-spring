@@ -5,11 +5,13 @@
     "java.debug.settings.onBuildFailureProceed": true,
     "cSpell.words": [
         "administator",
+        "assertj",
         "bbslist",
         "employeelist",
         "lcontent",
         "Navi",
         "rcontent",
+        "shareclasses",
         "viewcount"
     ]
 }
