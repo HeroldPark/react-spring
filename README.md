@@ -116,4 +116,7 @@
 
     - Parsing error: The keyword 'import' is reserved eslint
     => typescript 기반으로 개발을 하는데 javascript으로 된 설정 파일에서 에러를 뱉는다.
+    - npm install babel-eslint --save-dev
     => /frontend/.eslintrc.js 추가, 수정
+
+

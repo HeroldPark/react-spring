@@ -1,39 +1,31 @@
-// .eslintrc.js
+// {
+//     "globals": {
+//       "$": true
+//     },
+//     "parser": "babel-eslint"
+// }
+
 module.exports = {
-  // 현재 eslintrc 파일을 기준으로 ESLint 규칙을 적용
-  root: true,
-  // 추가적인 규칙들을 적용
   env: {
+    es2021: true,
     node: true,
+    jest: true,
   },
+  extends: ["plugin:@typescript-eslint/recommended", "standard", "prettier"],
+  parser: "@typescript-eslint/parser",
   parserOptions: {
-    parser: "babel-eslint",
+    ecmaVersion: 12,
+    sourceType: "module",
   },
-  extends: [
-    "eslint:recommended",
-    "plugin:vue/essential",
-    "prettier",
-    "plugin:prettier/recommended",
-  ],
-  // 코드 정리 플러그인 추가
-  plugins: ["prettier"],
-  // 사용자 편의 규칙 추가
+  plugins: ["@typescript-eslint"],
   rules: {
-    "prettier/prettier": [
-      "error",
-      // 아래 규칙들은 개인 선호에 따라 prettier 문법 적용
-      // https://prettier.io/docs/en/options.html
-      {
-        singleQuote: true,
-        semi: true,
-        useTabs: true,
-        tabWidth: 2,
-        trailingComma: "all",
-        printWidth: 80,
-        bracketSpacing: true,
-        arrowParens: "avoid",
-      },
+    "no-new": "off",
+    camelcase: "off",
+    "@typescript-eslint/no-non-null-assertion": "off",
+    "@typescript-eslint/no-unused-vars": [
+      "warn",
+      { argsIgnorePattern: "^_.*" },
     ],
-    "no-console": process.env.NODE_ENV === "production" ? "error" : "off",
+    "no-eq-null": "error",
   },
 };
