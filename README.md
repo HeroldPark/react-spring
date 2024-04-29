@@ -113,3 +113,7 @@
         java.sql.SQLSyntaxErrorException: (conn=2845) Cannot do an operation on a closed statement
 
     - EmployeeRepositoryTest.java 테스트 완료
+
+    - Parsing error: The keyword 'import' is reserved eslint
+    => typescript 기반으로 개발을 하는데 javascript으로 된 설정 파일에서 에러를 뱉는다.
+    => /frontend/.eslintrc.js 추가, 수정
