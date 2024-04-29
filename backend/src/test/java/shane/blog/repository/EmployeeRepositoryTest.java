@@ -12,7 +12,7 @@ import shane.blog.entity.Employee;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
-public class EmployeeRepositoryTest {
+public class EmployeeRepositoryTest {   // class에 마우스 우클릭 후 debug test in current file 선택
 
     @Autowired
     private EmployeeRepository employeeRepository;

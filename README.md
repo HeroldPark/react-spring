@@ -109,5 +109,7 @@
     => Board.member를 CASCADE로 선언
 
     - Java HotSpot(TM) 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
-    =>  // 클래스를 로드할 때 공유 클래스 캐시를 사용하지 않도록 설정
-        System.setProperty("java.lang.shareclasses", "off");
+    - 2024-04-29 14:38:54.753 [main] [ERROR] j.sqltiming - 1. PreparedStatement.getMaxRows() 
+        java.sql.SQLSyntaxErrorException: (conn=2845) Cannot do an operation on a closed statement
+
+    - EmployeeRepositoryTest.java 테스트 완료
