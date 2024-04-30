@@ -2,15 +2,17 @@ package shane.blog.domain.user;
 
 import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
+import org.springframework.stereotype.Repository;
 
 @Mapper
+@Repository
 public interface UserMapper {
 
     /**
      * 회원 정보 저장 (회원가입)
      * @param params - 회원 정보
      */
-    int save(User params);
+    public int save(User params);
 
     /**
      * 회원 정보 수정
@@ -36,6 +38,6 @@ public interface UserMapper {
      * @param empty
      * @return 회원 리스트
      */
-    List<User> find(User params);
+    public List<User> find(User params);
 
 }

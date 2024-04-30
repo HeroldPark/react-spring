@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import shane.blog.common.BaseTimeEntity;
 
 import org.hibernate.annotations.BatchSize;
@@ -14,7 +15,9 @@ import org.hibernate.annotations.BatchSize;
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
+
+@Getter
+@Setter
 @Entity
 @NoArgsConstructor
 public class Board extends BaseTimeEntity {

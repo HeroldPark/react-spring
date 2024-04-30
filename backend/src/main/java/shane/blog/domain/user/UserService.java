@@ -1,16 +1,26 @@
 package shane.blog.domain.user;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import lombok.RequiredArgsConstructor;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
-    @Autowired
-    private UserMapper userMapper;
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    public List<User> find(@IgnoreIfNull User user) {
+    @Autowired
+    private final UserMapper userMapper;
+
+    public List<User> find(User user) {
+        logger.debug("find start");
+
         List<User> users = new ArrayList<>();
         users = userMapper.find(user);
         return users;
@@ -20,11 +30,13 @@ public class UserService {
         userMapper.delete(id);
     }
 
+    @Transactional
     public int save(User user) {
         int result = userMapper.save(user);
         return result;
     }
 
+    @Transactional
     public void update(User user) {
         int result = userMapper.count(user);
 

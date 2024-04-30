@@ -126,4 +126,10 @@
         Cannot resolve reference to bean 'sqlSessionTemplate' while setting bean property 'sqlSessionTemplate'
 
     - Factory method 'sqlSessionFactory' threw exception with message: Property 'configuration' and 'configLocation' can not specified with together
+    => implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.2.0'
+    => 안맞는 버젼이 있다.
 
+    - package loading 중 발생
+    Browserslist: caniuse-lite is outdated. Please run:
+    npx update-browserslist-db@latest
+    Why you should do it regularly: https://github.com/browserslist/update-db#readme

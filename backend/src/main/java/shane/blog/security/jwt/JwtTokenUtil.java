@@ -3,6 +3,7 @@ package shane.blog.security.jwt;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -19,7 +20,12 @@ public class JwtTokenUtil implements Serializable {
     private static final long serialVersionUID = -2550185165626007488L;
 
     @Value("${jwt.tokenExpirationTime}") private Integer tokenExpirationTime;
+
+    // 시크릿 문자열
     @Value("${jwt.secret}") private String secret;
+
+    // // SecretKey 생성
+    // SecretKey secretKey = HmacKeyGenerator.generateKey(secret);
 
     // extract username from jwt token
     public String getUsernameFromToken(String token) {
@@ -38,8 +44,12 @@ public class JwtTokenUtil implements Serializable {
     }
 
     // extract any information from token with secret key
+    @SuppressWarnings("deprecation")
     private Claims getAllClaimsFromToken(String token) {
         return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
+
+        // // HMAC SHA-256(2024-04-30 수정 by shanepark)
+        // return Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token).getBody();
     }
 
     // check token expired
@@ -59,10 +69,20 @@ public class JwtTokenUtil implements Serializable {
     //2. Sign the JWT using the HS512 algorithm and secret key.
     //3. According to JWS Compact Serialization(https://tools.ietf.org/html/draft-ietf-jose-json-web-signature-41#section-3.1)
     //   compaction of the JWT to a URL-safe string
+    @SuppressWarnings("deprecation")
     private String doGenerateToken(Map<String, Object> claims, String subject) {
         return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + tokenExpirationTime * 1000))
                 .signWith(SignatureAlgorithm.HS512, secret).compact();
+
+        // // 2024-04-30 수정 by shanepark
+        // return Jwts.builder()
+        //     .setClaims(claims)
+        //     .setSubject(subject)
+        //     .setIssuedAt(new Date(System.currentTimeMillis()))
+        //     .setExpiration(new Date(System.currentTimeMillis() + tokenExpirationTime * 1000))
+        //     .signWith(secretKey)
+        //     .compact();
     }
 
     //validate token
