@@ -44,6 +44,7 @@ public class SecurityConfig {
                         -> authorize
                         .requestMatchers("/board/list",
                                     "/employees",                   // 추가(for test)
+                                    // "/user/**",                        // 추가(for user)
                                     "/board/{boardId}",
                                     "/board/search",
                                     "/user/checkId",

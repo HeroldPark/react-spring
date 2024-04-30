@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="shane.blog.domain.user.UserMapper">
+
+    <!-- t_user 테이블 전체 컬럼 -->
+    <sql id="userColumns">
+          id
+        , user_id
+        , name
+        , role
+    </sql>
+
+
+    <!-- 회원 정보 저장 (회원가입) -->
+    <insert id="save" parameterType="user" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO t_user (
+            <include refid="userColumns" />
+        ) VALUES (
+              #{id}
+            , #{userId}
+            , #{name}
+            , #{role}
+        )
+    </insert>
+
+    <!-- 회원 정보 수정 -->
+    <update id="update" parameterType="user">
+        UPDATE t_user
+        SET
+            user_id = #{userId}
+            <if test="name != null and !name.equals('')">
+                , name = #{name}
+            </if>
+            <if test="role != null and !role.equals('')">
+                , role = #{role}
+            </if>
+        WHERE
+            id = #{id}
+    </update>
+
+    <!-- 회원 상세정보 조회 -->
+    <select id="find" parameterType="user" resultType="user">
+        SELECT /* id="find" 2024-04-30 by shanepark */
+            <include refid="userColumns" />
+        FROM
+            t_user
+        WHERE true
+            <if test="userId != null and !userId.equals('')">
+                AND user_id = #{userId}
+            </if>
+    </select>
+
+    <!-- 회원 정보 삭제 (회원 탈퇴) -->
+    <delete id="delete" parameterType="user">
+        DETETE FROM t_user
+        WHERE   user_id = #{userId}
+    </delete>
+
+    <!-- 회원 수 카운팅 -->
+    <select id="count" parameterType="user" resultType="int">
+        SELECT
+            COUNT(*)
+        FROM
+            t_user
+        WHERE   true
+            <if test="userId != null and !userId.equals('')">
+                AND user_id = #{userId}
+            </if>
+            <if test="name != null and !name.equals('')">
+                AND name = #{name}
+            </if>
+            <if test="role != null and !role.equals('')">
+                AND role = #{role}
+            </if>
+    </select>
+
+</mapper>

@@ -119,4 +119,11 @@
     - npm install babel-eslint --save-dev
     => /frontend/.eslintrc.js 추가, 수정
 
+# 12. 2024-04-30
+    - Error creating bean with name 'userController': Unsatisfied dependency expressed through field 'userService': Error creating bean with name 'userService': 
+        Unsatisfied dependency expressed through field 'userMapper': Error creating bean with name 'userMapper' defined in file 
+        [C:\Users\DeltaX_20\Documents\Workspace\react-spring\backend\build\classes\java\main\shane\blog\domain\user\UserMapper.class]: 
+        Cannot resolve reference to bean 'sqlSessionTemplate' while setting bean property 'sqlSessionTemplate'
+
+    - Factory method 'sqlSessionFactory' threw exception with message: Property 'configuration' and 'configLocation' can not specified with together
 

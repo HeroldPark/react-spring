@@ -25,13 +25,13 @@ public class EmployeeRepositoryTest {   // class에 마우스 우클릭 후 debu
 
     @Test
     public void findAll() {
-        // given
+
         // Long id = 2L;
         String name = "admin";
         String role = "administator";
 
-        // 여기서 저장하는 employee_id는 auto_increment로 자동 생성되므로 가장 큰 employee_id가 된다.
         // given
+        // 여기서 저장하는 employee_id는 auto_increment로 자동 생성되므로 가장 큰 employee_id가 된다.
         employeeRepository.save(Employee.builder()
                 .name(name)
                 .role(role)
@@ -43,6 +43,7 @@ public class EmployeeRepositoryTest {   // class에 마우스 우클릭 후 debu
         //     System.out.println("employee_id=" + employee.getEmployee_id())
         // );
 
+        // then
         // 가장 큰 employee_id를 가진 Employee 객체를 찾음
         Optional<Employee> employeeWithMaxId = employeeList.stream()
             .max(Comparator.comparingLong(Employee::getEmployee_id));
