@@ -1,10 +1,3 @@
-// {
-//     "globals": {
-//       "$": true
-//     },
-//     "parser": "babel-eslint"
-// }
-
 module.exports = {
   env: {
     es2021: true,
@@ -24,8 +17,11 @@ module.exports = {
     "@typescript-eslint/no-non-null-assertion": "off",
     "@typescript-eslint/no-unused-vars": [
       "warn",
-      { argsIgnorePattern: "^_.*" },
+      { argsIgnorePattern: "^_.*", varsIgnorePattern: "^\\$" }, // $ 변수 무시 패턴 추가
     ],
     "no-eq-null": "error",
+  },
+  globals: {
+    "$": true
   },
 };

@@ -3,10 +3,13 @@ package shane.blog.domain;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import shane.blog.domain.user.User;
+import shane.blog.domain.user.UserMapper;
 import shane.blog.domain.user.UserService;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -17,12 +20,13 @@ import java.util.Optional;
 @DisplayName("User Domain 테스트")
 @SpringBootTest
 public class UserTest {
+    static Logger logger = (Logger) LoggerFactory.getLogger(UserTest.class);
 
     @Autowired
     private UserService userService;
 
-    // @Autowired
-    // private UserMapper userMapper;
+    @Autowired
+    private UserMapper userMapper;
     
     @Test
     void test() {
@@ -38,12 +42,16 @@ public class UserTest {
                 .role(role)
                 .build());
 
+        logger.debug("save success: " + userId + ", " + name + ", " + role);
+
         //when
         User user = new User();
         user.setUserId(userId);
         user.setName(name);
         user.setRole(role);
         List<User> list = userService.find(user);
+
+        list.forEach((e) -> logger.debug("find success: " + e.getUserId() + ", " + e.getName() + ", " + e.getRole()));
 
         //then
         // 가장 큰 user_id를 가진 User 객체를 찾음
@@ -65,6 +73,7 @@ public class UserTest {
 
         // 성공 메시지 출력
         System.out.println("테스트 성공!"); // DEBUG CONSOLE에 출력
+        logger.debug("test success!");
     }
 
 }

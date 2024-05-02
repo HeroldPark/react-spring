@@ -7,7 +7,7 @@ import { HttpHeadersContext } from "../context/HttpHeadersProvider";
 function BbsAnswer() {
 
 	const { auth, setAuth } = useContext(AuthContext)
-	const { headers, setHeaders } = useContext(HttpHeadersContext);
+	const { headers, setHeaders } = useContext(HttpHeadersContext);	
 
 	const navigate = useNavigate();
 
@@ -31,7 +31,7 @@ function BbsAnswer() {
 	const createBbsAnswer = async () => {
 
 		const req = {
-			id: localStorage.getItem("id"),
+			id: localStorage.getItem("id"),	
 			title: title,
 			content: content
 		}

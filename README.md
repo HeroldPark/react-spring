@@ -133,3 +133,21 @@
     Browserslist: caniuse-lite is outdated. Please run:
     npx update-browserslist-db@latest
     Why you should do it regularly: https://github.com/browserslist/update-db#readme
+
+# 13. 2024-05-02
+    Parameter 0 of constructor in shane.blog.domain.user.UserService required a bean of type 'shane.blog.domain.user.UserMapper' that could not be found.
+
+    The injection point has the following annotations:
+        - @org.springframework.beans.factory.annotation.Autowired(required=true)
+    => UserService.java
+    - private final 로 설정하면 안된다(?)
+
+    @RequiredArgsConstructor
+    public class UserService {
+        private UserMapper userMapper;
+    }
+
+    -
+    npm install eslint-plugin-babel-eslint --save-dev
+
+    npm install jquery

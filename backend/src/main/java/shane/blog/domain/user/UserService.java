@@ -13,10 +13,15 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class UserService {
-    private final Logger logger = LoggerFactory.getLogger(getClass());
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    @Autowired
-    private final UserMapper userMapper;
+    // @Autowired
+    private UserMapper userMapper;
+
+    // @Autowired
+    public UserService(UserMapper userMapper) {
+        this.userMapper = userMapper;
+    }
 
     public List<User> find(User user) {
         logger.debug("find start");

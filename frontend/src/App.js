@@ -1,8 +1,7 @@
 //
 // Code for the main page of the website
-// 
-/* global $ */
-import './static/js/jquery-3.6.0.min.js';
+//
+
 import { BrowserRouter } from "react-router-dom";
 
 import Header from "./Components/app/Header"

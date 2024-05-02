@@ -1,3 +1,5 @@
+/* eslint-disable no-undef */
+/* eslint-disable no-unused-vars */
 /**
  * 문자열의 마지막(끝) 문자의 종성 포함 여부 확인
  * @param value - Target String

@@ -38,7 +38,7 @@ function BbsDetail() {
       console.log("[BbsDetail.js] deleteBbs() success :D");
       console.log(response.data);
 
-      if (response.status == 200) {
+      if (response.status === 200) {
         alert("게시글을 성공적으로 삭제했습니다 :D");
         navigate("/bbslist");
       }
@@ -82,7 +82,7 @@ function BbsDetail() {
 
 				{
 					/* 자신이 작성한 게시글인 경우에만 수정, 삭제 가능 */
-					(localStorage.getItem("id") == bbs.writerName) ?
+					(localStorage.getItem("id") === bbs.writerName) ?
 						<>
 							<Link className="btn btn-outline-secondary"  to="/bbsupdate" state={{ bbs: updateBbs }}><i className="fas fa-edit"></i> 수정</Link> &nbsp;
 							<button className="btn btn-outline-danger"  onClick={deleteBbs}><i className="fas fa-trash-alt"></i> 삭제</button>

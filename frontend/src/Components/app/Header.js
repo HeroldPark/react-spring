@@ -6,7 +6,7 @@ import logo from '../../static/images/logo192.png';
 
 function Header() {
 
-  const { auth, setAuth } = useContext(AuthContext);
+  const { auth, setAuth } = useContext(AuthContext);  // eslint-disable-line no-unused-vars
 
   return (
     <header>
