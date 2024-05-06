@@ -7,7 +7,6 @@ import shane.blog.dto.response.employee.ResEmployeeListDto;
 import shane.blog.entity.Employee;
 import shane.blog.repository.EmployeeRepository;
 import shane.blog.repository.MemberRepository;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -19,12 +18,12 @@ import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 @Service
-// @RequiredArgsConstructor
+@RequiredArgsConstructor
 @Transactional
 public class EmployeeService {
 
-    @Autowired
-    private EmployeeRepository employeeRepository;
+    // @Autowired
+    private final EmployeeRepository employeeRepository;
     // private final MemberRepository memberRepository;
 
     // public List<Employee> findAll() {

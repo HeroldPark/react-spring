@@ -8,9 +8,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import shane.blog.domain.user.User;
-import shane.blog.domain.user.UserMapper;
-import shane.blog.domain.user.UserService;
+import shane.blog.user.User;
+import shane.blog.user.UserMapper;
+import shane.blog.user.UserService;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Comparator;

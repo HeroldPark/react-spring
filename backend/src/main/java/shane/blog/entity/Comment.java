@@ -5,9 +5,11 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import shane.blog.common.BaseTimeEntity;
+import jakarta.persistence.Table;
 
 @Entity
 @Getter
+@Table(name = "tb_comment")
 @NoArgsConstructor
 public class Comment extends BaseTimeEntity {
 

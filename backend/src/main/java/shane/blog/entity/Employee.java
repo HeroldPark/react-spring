@@ -1,11 +1,6 @@
 package shane.blog.entity;
 
 import java.util.Objects;
-
-// import javax.persistence.Entity;
-// import javax.persistence.GeneratedValue;
-// import javax.persistence.Id;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -14,11 +9,13 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import jakarta.persistence.Table;
 import shane.blog.common.BaseTimeEntity;
 
 @Entity
 @Getter
 @Setter
+@Table(name = "tb_employee")
 @NoArgsConstructor
 public class Employee extends BaseTimeEntity {
 

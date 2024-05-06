@@ -1,4 +1,4 @@
-package shane.blog.domain.user;
+package shane.blog.user;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,19 +16,22 @@ import java.util.List;
 public class UserService {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    // @Autowired
-    private UserMapper userMapper;
+    @Autowired
+    private final UserMapper userMapper;
 
-    // @Autowired
-    public UserService(UserMapper userMapper) {
-        this.userMapper = userMapper;
-    }
+    // // @Autowired
+    // public UserService(UserMapper userMapper) {
+    // this.userMapper = userMapper;
+    // }
 
     public List<User> find(User user) {
         logger.debug("find start");
 
         List<User> users = new ArrayList<>();
-        users = userMapper.find(user);
+        if (userMapper == null)
+            logger.debug("userMapper is null");
+        else
+            users = userMapper.find(user);
         return users;
     }
 

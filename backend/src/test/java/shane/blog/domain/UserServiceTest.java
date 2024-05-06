@@ -6,9 +6,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import shane.blog.domain.user.User;
-import shane.blog.domain.user.UserMapper;
-import shane.blog.domain.user.UserService;
+
+import shane.blog.user.User;
+import shane.blog.user.UserMapper;
+import shane.blog.user.UserService;
 
 @ExtendWith(MockitoExtension.class)
 public class UserServiceTest {

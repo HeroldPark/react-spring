@@ -151,3 +151,9 @@
     npm install eslint-plugin-babel-eslint --save-dev
 
     npm install jquery
+
+# 14. 2024-05-03
+    - DB 테이블을 tb_*로 수정함.
+    - Jpa에서는 테이블 명을 tb_*로 수정하더라도 Entity Name으로 입력하기 때문에 Repository에서 DB 이름은 뵨경하지 않아도 된다.
+    - Parameter 0 of constructor in shane.blog.user.UserService required a bean of type 'shane.blog.user.UserMapper' that could not be found.
+    - 여전히 Mybatis UserMapper에 대해서 UserService에서 의존성 주입을 하지 못한다.(?)

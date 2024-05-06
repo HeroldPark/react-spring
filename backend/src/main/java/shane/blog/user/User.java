@@ -1,4 +1,4 @@
-package shane.blog.domain.user;
+package shane.blog.user;
 
 import lombok.*;
 
