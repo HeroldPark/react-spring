@@ -1,11 +1,18 @@
-package shane.blog.domain.user;
+package shane.blog.user;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import shane.blog.dto.response.employee.ResEmployeeListDto;
+
 import java.util.List;
 
 @RestController
@@ -17,14 +24,25 @@ public class UserController {
     UserService userService;
 
     // 모든 회원 조회
-    @GetMapping(value = "/user")
-    public ResponseEntity<List<User>> list() {
-        User user = new User();
-        List<User> users = userService.find(user);
+    // @GetMapping(value = "/user")
+    // public ResponseEntity<List<User>> list() {
+    //     User user = new User();
+    //     List<User> users = userService.find(user);
 
-        logger.debug("getUsers: " + users);
+    //     logger.debug("getUsers: " + users);
 
-        return new ResponseEntity<List<User>>(users, HttpStatus.OK);
+    //     return new ResponseEntity<List<User>>(users, HttpStatus.OK);
+    // }
+
+    // 모든 회원 조회 (페이징)
+    @GetMapping("/user")
+    public ResponseEntity<Page<User>> userList(
+            @PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+        Page<User> list = userService.getAllUsers(pageable);
+        
+        logger.debug("userList: " + list.getContent().get(0).getName());
+
+        return ResponseEntity.status(HttpStatus.OK).body(list);
     }
 
     // 회원번호로 한명의 회원 조회

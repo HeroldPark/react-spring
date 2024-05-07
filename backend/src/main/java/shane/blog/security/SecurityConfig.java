@@ -44,7 +44,7 @@ public class SecurityConfig {
                         -> authorize
                         .requestMatchers("/board/list",
                                     "/employees",                   // 추가(for test)
-                                    "/user/**",                     // 추가(for user)
+                                    "/member/**",                     // 추가(for member)
                                     "/board/{boardId}",
                                     "/board/search",
                                     "/user/checkId",
@@ -54,6 +54,7 @@ public class SecurityConfig {
                                     "/board/{boardId}/file/download/**").permitAll()
 
                         .requestMatchers("/user/**").hasRole("USER")
+                        .requestMatchers("/member/**").hasRole("USER")  // 추가(for member)
                         .requestMatchers("/board/**").hasRole("USER")
                         .requestMatchers("/board/{boardId}/comment/**").hasRole("USER")
                         .requestMatchers("/board/{boardId}/file/**").hasRole("USER"))

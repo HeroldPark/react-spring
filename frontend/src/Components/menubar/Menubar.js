@@ -18,7 +18,7 @@ function Menubar() {
 					<a href="#" className={isOpen ? 'on' : ''} onClick={toggleSubMenu}> <span>게시판 관리</span></a>
 					<ul>
 						<li><a href="/bbslist" className={isOpen ? 'on' : ''}>게시판</a></li>
-						<li><a href="/employees" className={isOpen ? 'on' : ''}>샘플</a></li>
+						<li><a href="/employees" className={isOpen ? 'on' : ''}>직원리스트</a></li>
 						<li><a href="#" onClick={() => alert('준비 중입니다.')}>갤러리형</a></li>
 						<li><a href="#" onClick={() => alert('준비 중입니다.')}>카렌다형</a></li>
 					</ul>
@@ -26,7 +26,7 @@ function Menubar() {
 				<li className={`has_sub ${isOpen ? 'open' : ''}`}>
 					<a href="#" className={isOpen ? 'on' : ''} onClick={toggleSubMenu}> <span>웹서버 관리</span></a>
 					<ul>
-						<li><a href="#" onClick={() => alert('준비 중입니다.')}>사용자</a></li>
+						<li><a href="/member" className={isOpen ? 'on' : ''}>사용자리스트</a></li>
 						<li><a href="#" onClick={() => alert('준비 중입니다.')}>코드</a></li>
 						<li><a href="#" onClick={() => alert('준비 중입니다.')}>이력</a></li>
 					</ul>

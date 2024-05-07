@@ -3,12 +3,14 @@ package shane.blog.entity;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
+import jakarta.persistence.Table;
 import lombok.NoArgsConstructor;
 import shane.blog.common.BaseTimeEntity;
+import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "FILE")
 @Getter
+@Table(name = "tb_file")
 @NoArgsConstructor
 public class FileEntity extends BaseTimeEntity {
 

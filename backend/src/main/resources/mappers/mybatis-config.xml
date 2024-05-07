@@ -24,7 +24,8 @@
 
     <typeAliases>
 
-        <typeAlias type="shane.blog.domain.user.User" alias="user"/>
+        <typeAlias type="shane.blog.domain.member.MemberRequest" alias="memberReq"/>
+        <typeAlias type="shane.blog.domain.member.MemberResponse" alias="memberRes"/>
 
     </typeAliases>
 

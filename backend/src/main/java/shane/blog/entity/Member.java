@@ -12,7 +12,7 @@ import shane.blog.common.Role;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
+import jakarta.persistence.Table;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -20,14 +20,13 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
+@Table(name = "tb_member")
 @NoArgsConstructor
 public class Member extends BaseTimeEntity implements UserDetails {
 
     @Id
     // @GeneratedValue
     // @Column(name = "MEMBER_ID")
-    // // @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequence_generator")
-    // // @SequenceGenerator(name = "sequence_generator", sequenceName = "member_seq", allocationSize = 1)
     // private Long id;
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long member_id;
@@ -101,5 +100,9 @@ public class Member extends BaseTimeEntity implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public String getEmail() {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

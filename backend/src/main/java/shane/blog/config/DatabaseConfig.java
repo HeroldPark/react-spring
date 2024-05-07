@@ -1,7 +1,6 @@
 package shane.blog.config;
 
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
+import javax.sql.DataSource;
 
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
@@ -12,10 +11,9 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 
-import javax.sql.DataSource;
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 
 @Configuration
 @PropertySource("classpath:/application.properties")
@@ -39,17 +37,11 @@ public class DatabaseConfig {
     public SqlSessionFactory sqlSessionFactory() throws Exception {
         SqlSessionFactoryBean factoryBean = new SqlSessionFactoryBean();
         factoryBean.setDataSource(dataSource());
-
-        // factoryBean.setMapperLocations(context.getResources("classpath:/mybatis/mappers/*Mapper.xml"));
-        // // factoryBean.setConfiguration(mybatisConfig());
-
-        // 수정된 부분: Mapper XML 파일을 로드하는 방법 변경
-        PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
-        Resource[] resources = resolver.getResources("classpath:/mybatis/mappers/*Mapper.xml");
-        factoryBean.setMapperLocations(resources);
+        factoryBean.setMapperLocations(context.getResources("classpath:/mappers/mybatis/*Mapper.xml"));
+        // factoryBean.setConfiguration(mybatisConfig());
 
         // 추가: MyBatis 설정 파일을 대체하기 위한 설정
-        // factoryBean.setConfigLocation(context.getResource("classpath:/mybatis/mybatis-config.xml"));
+        factoryBean.setConfigLocation(context.getResource("classpath:/mappers/mybatis-config.xml"));
 
         return factoryBean.getObject();
     }

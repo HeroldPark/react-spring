@@ -14,6 +14,7 @@ import MemberUpdate from "../member/MemberUpdate";
 import CheckPwd from "../member/CheckPwd";
 
 import EmployeeList from "../employee/EmployeeList"
+import MemberList from "../member/MemberList"
 
 function Router() {
 
@@ -36,6 +37,7 @@ function Router() {
 			<Route path="/logout" element={<Logout />}></Route>
 
 			<Route path="/employees" element={<EmployeeList />}></Route>
+			<Route path="/member" element={<MemberList />}></Route>
 		</Routes>
 	);
 }

@@ -7,11 +7,16 @@
         "administator",
         "assertj",
         "bbslist",
+        "classpath",
         "employeelist",
         "lcontent",
+        "memberdetail",
+        "memberlist",
+        "mybatis",
         "Navi",
         "rcontent",
         "shareclasses",
+        "userwrite",
         "viewcount"
     ]
 }

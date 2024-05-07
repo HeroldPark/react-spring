@@ -151,3 +151,46 @@
     npm install eslint-plugin-babel-eslint --save-dev
 
     npm install jquery
+
+# 14. 2024-05-03
+    - DB 테이블을 tb_*로 수정함.
+    - Jpa에서는 테이블 명을 tb_*로 수정하더라도 Entity Name으로 입력하기 때문에 Repository에서 DB 이름은 뵨경하지 않아도 된다.
+    - Parameter 0 of constructor in shane.blog.user.UserService required a bean of type 'shane.blog.user.UserMapper' that could not be found.
+    - 여전히 Mybatis UserMapper에 대해서 UserService에서 의존성 주입을 하지 못한다.(?)
+
+# 15. 2024-05-07
+    - Spring boot : 3.1.11
+    - mybatis-spring-boot-starter:3.0.1(반드시 3.x로 해 주어야 한다.)
+
+    - application.properties에서 datasource는 아래처럼 두 자지 중 선택하여 사용하면 된다.(나는 첫번쨰 것 사용)
+        spring.datasource.hikari.driver-class-name
+        spring.datasource.driver-class-name
+
+    - application.properties에서 mybatis 설정은 아래처럼 주석처리 하면된다.
+        # mybatis.config-location=classpath:/mybatis/mybatis-config.xml
+        # mybatis.mapper-locations:classpath:/mybatis/mappers/*.xml
+    
+    - DatabaseConfig.java에서
+        @Bean
+        public SqlSessionFactory sqlSessionFactory() throws Exception {
+            SqlSessionFactoryBean factoryBean = new SqlSessionFactoryBean();
+            factoryBean.setDataSource(dataSource());
+            factoryBean.setMapperLocations(context.getResources("classpath:/mappers/mybatis/*Mapper.xml"));
+            // factoryBean.setConfiguration(mybatisConfig());
+
+            // 추가: MyBatis 설정 파일을 대체하기 위한 설정
+            factoryBean.setConfigLocation(context.getResource("classpath:/mappers/mybatis-config.xml"));
+
+            return factoryBean.getObject();
+        }
+    => 이렇게 했더니 mybatis를 사용하는 UserService에서 UserMapper를 의존성 주입이 정상적으로 수행됨.
+    => 지금까지 Mapper 주입이 안되었던 가장 큰 문제는 mybatis 버젼이었다.
+
+    - /src/main/java/shane/blog : JPA java source
+    - /src/main/java/shane/blog/domain : Mybatis source
+    - JPA 소스와 중복되는 이름은 *Api*를 추가함.(예: MemberApiController.java)
+    - mabatis와 연동되는 DB table은 tbl_*로 명명한다.
+    - 중복 파일 제거(common/BaseTimeEntity.java, ...)
+
+    - mybatis와 연동되는 spring boot backend source는 /src/main/java/shane/blog/domain 아래로 모두 가져감.
+    - react-spring에 되어 있는 방식에 따라 paging 처리 진행 중.(domain/member)에서 처리 중

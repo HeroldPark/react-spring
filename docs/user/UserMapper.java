@@ -1,7 +1,12 @@
-package shane.blog.domain.user;
+package shane.blog.user;
 
 import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
+import shane.blog.entity.Employee;
 
 @Mapper
 public interface UserMapper {
@@ -37,5 +42,14 @@ public interface UserMapper {
      * @return 회원 리스트
      */
     public List<User> find(User params);
+
+    /**
+     * 회원정보 목록 조회 (페이징)
+     * @param empty
+     * @return 회원 리스트
+     */
+    // Page<User> findAllWithUsers(Pageable pageable);
+    Page<User> findAllWithUsers(@Param("userId") Long userId, @Param("pageable") Pageable pageable);
+    // Page<User> findAllWithUsers(@Param("pageable") Pageable pageable);
 
 }
