@@ -28,9 +28,9 @@ public class BoardRepositoryTest {
     @Test
     public void findAll() {
         // given
-        Long id = 2L;
-        String title = "테스트 게시글";
-        String content = "테스트 본문";
+        Long id = 3L;
+        String title = "테스트 게시글 제목 3";
+        String content = "테스트 본문 3";
         int viewCount = 0;
 
         // Member member = Member.builder()
@@ -56,7 +56,7 @@ public class BoardRepositoryTest {
         List<Board> boardList = boardRepository.findAll();
 
         // then
-        Board board = boardList.get(1);
+        Board board = boardList.get(3);
         Assertions.assertEquals(title, board.getTitle());
         Assertions.assertEquals(content, board.getContent());
 

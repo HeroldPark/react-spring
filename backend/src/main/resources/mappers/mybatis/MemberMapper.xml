@@ -18,7 +18,7 @@
 
 
     <!-- 회원 정보 저장 (회원가입) -->
-    <insert id="save" parameterType="shane.blog.domain.member.MemberRequest" useGeneratedKeys="true" keyProperty="id">
+    <insert id="save" parameterType="memberReq" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO tbl_member (
             <include refid="memberColumns" />
         ) VALUES (
@@ -36,7 +36,7 @@
 
 
     <!-- 회원 상세정보 조회 -->
-    <select id="findByLoginId" parameterType="string" resultType="shane.blog.domain.member.MemberResponse">
+    <select id="findByLoginId" parameterType="string" resultType="memberRes">
         SELECT
             <include refid="memberColumns" />
         FROM
@@ -48,7 +48,7 @@
 
 
     <!-- 회원 정보 수정 -->
-    <update id="update" parameterType="shane.blog.domain.member.MemberRequest">
+    <update id="update" parameterType="memberReq">
         UPDATE tbl_member
         SET
               modified_date = NOW()
@@ -85,18 +85,21 @@
 
     <!-- 회원 수 카운팅 -->
     <select id="count" parameterType="string" resultType="int">
-        SELECT  /* id="findList" 2024-05-07 by shanepark */
+        SELECT  /* id="count" 2024-05-07 by shanepark */
             COUNT(*)
         FROM
             tbl_member
     </select>
 
     <!-- 회원정보 조회 -->
-    <select id="findList" parameterType="string" resultType="memberRes">
+    <select id="findList" parameterType="searchDto" resultType="memberRes">
         SELECT  /* id="findList" 2024-05-07 by shanepark */
             <include refid="memberColumns" />
         FROM
             tbl_member
+        WHERE true
+        ORDER BY id DESC
+        LIMIT #{pagination.limitStart}, #{recordSize}
     </select>
 
 </mapper>

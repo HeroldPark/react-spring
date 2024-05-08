@@ -1,8 +1,6 @@
 package shane.blog.domain.member;
 
 import org.apache.ibatis.annotations.Mapper;
-import org.springframework.data.domain.Page;
-
 import java.util.List;
 import shane.blog.domain.common.dto.SearchDto;
 
@@ -53,6 +51,6 @@ public interface MemberMapper {
      * @param empty
      * @return 회원 리스트
      */
-    Page<MemberResponse> findList(SearchDto params);
+    List<MemberResponse> findList(SearchDto params);
 
 }

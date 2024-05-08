@@ -77,12 +77,12 @@ public class MemberApiController {
 
     // 사용자 리스트 조회
     @RequestMapping(value = "/member/list", method = { RequestMethod.GET, RequestMethod.POST })
-    public ResponseEntity<Page<MemberResponse>> memberList(@ModelAttribute("params") final SearchDto params) {
+    public ResponseEntity<PagingResponse<MemberResponse>> memberList(@ModelAttribute("params") final SearchDto params) {
 
         logger.debug("/list 시작. \t {}", new Date());
 
         // 1. 회원 정보 조회
-        Page<MemberResponse> response = memberService.findList(params);
+        PagingResponse<MemberResponse> response = memberService.findList(params);
         logger.debug("/list 종료. \t {}", response);
 
         // 2. 조회 결과 리턴

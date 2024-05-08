@@ -2,8 +2,10 @@ package shane.blog.domain.common.paging;
 
 import shane.blog.domain.common.dto.SearchDto;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 public class Pagination {
 
     private int totalRecordCount;     // 전체 데이터 수
@@ -13,6 +15,7 @@ public class Pagination {
     private int limitStart;           // LIMIT 시작 위치
     private boolean existPrevPage;    // 이전 페이지 존재 여부
     private boolean existNextPage;    // 다음 페이지 존재 여부
+    private int pageSize;             // 페이지 사이즈
 
     public Pagination(int totalRecordCount, SearchDto params) {
         if (totalRecordCount > 0) {

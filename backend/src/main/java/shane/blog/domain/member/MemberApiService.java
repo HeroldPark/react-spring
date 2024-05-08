@@ -4,12 +4,6 @@ import lombok.RequiredArgsConstructor;
 import shane.blog.domain.common.dto.SearchDto;
 import shane.blog.domain.common.paging.Pagination;
 import shane.blog.domain.common.paging.PagingResponse;
-import shane.blog.dto.response.employee.ResEmployeeListDto;
-
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
-import java.util.stream.Collectors;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.Collections;
@@ -104,24 +98,21 @@ public class MemberApiService {
      * @param empty
      * @return 회원 리스트
      */
-    public Page<MemberResponse> findList(SearchDto params) {
-        // // 조건에 해당하는 데이터가 없는 경우, 응답 데이터에 비어있는 리스트와 null을 담아 반환
-        // int count = memberMapper.count(params);
-        // if (count < 1) {
-        //     return new Page<>(Collections.emptyList(), null);
-        // }
+    public PagingResponse<MemberResponse> findList(SearchDto params) {
+        // 조건에 해당하는 데이터가 없는 경우, 응답 데이터에 비어있는 리스트와 null을 담아 반환
+        int count = memberMapper.count(params);
+        if (count < 1) {
+            return new PagingResponse<>(Collections.emptyList(), null);
+        }
 
-        // // Pagination 객체를 생성해서 페이지 정보 계산 후 SearchDto 타입의 객체인 params에 계산된 페이지 정보 저장
-        // Pagination pagination = new Pagination(count, params);
-        // params.setPagination(pagination);
+        // Pagination 객체를 생성해서 페이지 정보 계산 후 SearchDto 타입의 객체인 params에 계산된 페이지 정보 저장
+        Pagination pagination = new Pagination(count, params);
+        params.setPagination(pagination);
+        pagination.setPageSize(params.getPageSize());
 
         // 계산된 페이지 정보의 일부(limitStart, recordSize)를 기준으로 리스트 데이터 조회 후 응답 데이터 반환
-        Page<MemberResponse> members = memberMapper.findList(params);
-        List<MemberResponse> list = members.getContent().stream()
-                .map(MemberResponse::fromEntity)
-                .collect(Collectors.toList());
-        
-        return new PageImpl<>(list, (Pageable)params, members.getTotalElements());
+        List<MemberResponse> list = memberMapper.findList(params);
+        return new PagingResponse<>(list, pagination);
     }
 
 }

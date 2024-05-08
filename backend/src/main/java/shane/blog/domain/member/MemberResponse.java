@@ -1,12 +1,12 @@
 package shane.blog.domain.member;
 
-import lombok.Builder;
 import lombok.Getter;
-import shane.blog.entity.Employee;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
+@Setter
+@NoArgsConstructor
 public class MemberResponse {
 
     private Long id;                       // 회원 번호 (PK)
@@ -21,19 +21,6 @@ public class MemberResponse {
 
     public void clearPassword() {
         this.password = "";
-    }
-
-    // Entity -> DTO
-    public static MemberResponse fromEntity(MemberRequest member) {
-        return MemberResponse.builder()
-                .loginId(member.getLoginId())
-                .name(member.getName())
-                .gender(member.getGender())
-                .gender(member.getGender())
-                .birthday(member.getBirthday())
-                .createdDate(member.getCreatedDate())
-                .modifiedDate(member.getModifiedDate())
-                .build();
     }
 
 }

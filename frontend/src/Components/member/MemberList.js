@@ -24,16 +24,16 @@ function MemberList() {
   const getMemberList = async (page) => {
     try {
 		  const response = await axios.get("http://localhost:8989/member/list", {
-			  params: {"page": page - 1},
+			  params: {"page": page},
 		  });
 
       console.log("[MemberList.js] useEffect() success :D");
-      console.log(response.data.list);
+      console.log(response.data);
 
       setMemberList(response.data.list);
-      setPageSize(response.data.pageSize);
-      setTotalPages(response.data.totalPages);
-      setTotalCnt(response.data.totalElements);
+      setPageSize(response.data.pagination.pageSize);
+      setTotalPages(response.data.pagination.totalPageCount);
+      setTotalCnt(response.data.pagination.totalRecordCount);
     } catch (error) {
       console.log("[MemberList.js] useEffect() error :<");
       console.log(error);
@@ -45,7 +45,7 @@ function MemberList() {
     try {
       const response = await axios.get("http://localhost:8989/member/search", {
         params: {
-          page: page - 1,
+          page: page,
           name: choiceVal === "name" ? searchVal : "",
           role: choiceVal === "role" ? searchVal : "",
         },
@@ -121,9 +121,9 @@ function MemberList() {
         <thead>
           <tr>
             <th style={{textAlign:"center"}} className="col-1">번호</th>
-            <th style={{textAlign:"center"}} className="col-2">아이디</th>
-            <th style={{textAlign:"center"}} className="col-2">성명</th>
-            <th style={{textAlign:"center"}} className="col-2">성별</th>
+            <th style={{textAlign:"center"}} className="col-1">아이디</th>
+            <th style={{textAlign:"center"}} className="col-1">성명</th>
+            <th style={{textAlign:"center"}} className="col-1">성별</th>
             <th style={{textAlign:"center"}} className="col-2">생년월일</th>
             <th style={{textAlign:"center"}} className="col-2">생성일시</th>
             <th style={{textAlign:"center"}} className="col-2">수정일시</th>
