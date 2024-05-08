@@ -194,3 +194,7 @@
 
     - mybatis와 연동되는 spring boot backend source는 /src/main/java/shane/blog/domain 아래로 모두 가져감.
     - react-spring에 되어 있는 방식에 따라 paging 처리 진행 중.(domain/member)에서 처리 중
+
+# 16. 2024-05-08
+    - shane/blog/domain/member part를 MyBatis 조회하여 React 화면으로 출력.
+    - MemberControllerTest.java에 대한 junit test할때 오류 발생한다.(?)
