@@ -153,7 +153,7 @@ CREATE TABLE IF NOT EXISTS `tb_employee` (
   `employee_id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL,
   `role` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL,
-  `create_date` varchar(255) DEFAULT NULL,
+  `created_date` varchar(255) DEFAULT NULL,
   `modified_date` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`employee_id`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='for JPA';
@@ -161,7 +161,7 @@ CREATE TABLE IF NOT EXISTS `tb_employee` (
 -- 테이블 데이터 react-spring.tb_employee:~11 rows (대략적) 내보내기
 DELETE FROM `tb_employee`;
 /*!40000 ALTER TABLE `tb_employee` DISABLE KEYS */;
-INSERT INTO `tb_employee` (`employee_id`, `name`, `role`, `create_date`, `modified_date`) VALUES
+INSERT INTO `tb_employee` (`employee_id`, `name`, `role`, `created_date`, `modified_date`) VALUES
 	(30, 'Bilbo Baggins', 'burglar', '2024/04/23 11:10:59', '2024/04/23 11:10:59'),
 	(31, 'Frodo Baggins', 'thief', '2024/04/23 11:10:59', '2024/04/23 11:10:59'),
 	(32, 'Bilbo 첫 번째', 'burglar', '2024/04/23 14:40:09', '2024/04/23 14:40:09'),
