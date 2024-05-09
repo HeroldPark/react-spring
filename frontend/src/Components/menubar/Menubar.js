@@ -26,8 +26,8 @@ function Menubar() {
 				<li className={`has_sub ${isOpen ? 'open' : ''}`}>
 					<a href="#" className={isOpen ? 'on' : ''} onClick={toggleSubMenu}> <span>웹서버 관리(MyBatis)</span></a>
 					<ul>
+						<li><a href="/post" className={isOpen ? 'on' : ''}>게시판</a></li>
 						<li><a href="/member" className={isOpen ? 'on' : ''}>사용자리스트</a></li>
-						<li><a href="#" onClick={() => alert('준비 중입니다.')}>코드</a></li>
 						<li><a href="#" onClick={() => alert('준비 중입니다.')}>이력</a></li>
 					</ul>
 				</li>

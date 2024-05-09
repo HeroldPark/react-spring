@@ -27,6 +27,8 @@
         <typeAlias type="shane.blog.domain.member.MemberRequest" alias="memberReq"/>
         <typeAlias type="shane.blog.domain.member.MemberResponse" alias="memberRes"/>
         <typeAlias type="shane.blog.domain.common.dto.SearchDto" alias="searchDto"/>
+        <typeAlias type="shane.blog.domain.post.PostRequest" alias="postReq"/>
+        <typeAlias type="shane.blog.domain.post.PostResponse" alias="postRes"/>
 
     </typeAliases>
 

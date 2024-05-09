@@ -1,10 +1,28 @@
-INSERT INTO `react-spring.employee` (`employee_id`, `name`, `role`, `create_date`, `modified_date`) VALUES
-	(2, 'Bilbo First', 'burglar', '2024/04/22 10:14:16', '2024/04/22 10:14:16'),
-	(3, 'Frodo Second', 'thief', '2024/04/22 10:14:16', '2024/04/22 10:14:16'),
-	(4, 'Bilbo Third', 'burglar', '2024/04/22 10:50:03', '2024/04/22 10:50:03'),
-	(5, 'Frodo Fourth', 'thief', '2024/04/22 10:50:03', '2024/04/22 10:50:03'),
-	(6, 'Bilbo Fifth', 'burglar', '2024/04/22 13:08:21', '2024/04/22 13:08:21'),
-	(7, 'Frodo Sixth', 'thief', '2024/04/22 13:08:21', '2024/04/22 13:08:21'),
-	(8, 'Bilbo Seventh', 'burglar', '2024/04/23 07:57:43', '2024/04/23 07:57:43'),
-	(9, 'Frodo Eighth', 'thief', '2024/04/23 07:57:43', '2024/04/23 07:57:43'),
-	(10, 'Frodo Ninth', 'thief', '2024/04/23 10:56:19', '2024/04/23 10:56:19');
+-- INSERT INTO `react-spring.employee` (`employee_id`, `name`, `role`, `create_date`, `modified_date`) VALUES
+-- 	(2, 'Bilbo First', 'burglar', '2024/04/22 10:14:16', '2024/04/22 10:14:16'),
+-- 	(3, 'Frodo Second', 'thief', '2024/04/22 10:14:16', '2024/04/22 10:14:16'),
+-- 	(4, 'Bilbo Third', 'burglar', '2024/04/22 10:50:03', '2024/04/22 10:50:03'),
+-- 	(5, 'Frodo Fourth', 'thief', '2024/04/22 10:50:03', '2024/04/22 10:50:03'),
+-- 	(6, 'Bilbo Fifth', 'burglar', '2024/04/22 13:08:21', '2024/04/22 13:08:21'),
+-- 	(7, 'Frodo Sixth', 'thief', '2024/04/22 13:08:21', '2024/04/22 13:08:21'),
+-- 	(8, 'Bilbo Seventh', 'burglar', '2024/04/23 07:57:43', '2024/04/23 07:57:43'),
+-- 	(9, 'Frodo Eighth', 'thief', '2024/04/23 07:57:43', '2024/04/23 07:57:43'),
+-- 	(10, 'Frodo Ninth', 'thief', '2024/04/23 10:56:19', '2024/04/23 10:56:19');
+
+--
+--    Copyright 2015-2022 the original author or authors.
+--
+--    Licensed under the Apache License, Version 2.0 (the "License");
+--    you may not use this file except in compliance with the License.
+--    You may obtain a copy of the License at
+--
+--       https://www.apache.org/licenses/LICENSE-2.0
+--
+--    Unless required by applicable law or agreed to in writing, software
+--    distributed under the License is distributed on an "AS IS" BASIS,
+--    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+--    See the License for the specific language governing permissions and
+--    limitations under the License.
+--
+
+-- insert into city (name, state, country) values ('San Francisco', 'CA', 'US');

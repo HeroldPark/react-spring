@@ -198,3 +198,13 @@
 # 16. 2024-05-08
     - shane/blog/domain/member part를 MyBatis 조회하여 React 화면으로 출력.
     - MemberControllerTest.java에 대한 junit test할때 오류 발생한다.(?)
+
+# 17. 2024-05-09
+    - mybatis Board(domain/post) 항목 test
+    - MemberControllerTest.java에 대한 junit test할때 오류 발생 원인은 Mock 객체를 주입하는 방식 때문이었다.
+    - Mock 대신 Autowired를 사용하면 된다.
+    - MyBatis Test DEBUG 할때 SQL 출력 안되는 문제(?)
+
+    - build.gradle에서 오류 발생.
+    "message": "Could not run phased build action using connection to Gradle distribution 'https://services.gradle.org/distributions/gradle-8.2.1-bin.zip'
+    => Gradle 8.2.1 적용해도 마찬가지(gradle -v)

@@ -3,7 +3,7 @@
 
 <mapper namespace="shane.blog.domain.post.PostMapper">
 
-    <!-- tb_post 테이블 전체 컬럼 -->
+    <!-- tbl_post 테이블 전체 컬럼 -->
     <sql id="postColumns">
           id
         , title
@@ -50,37 +50,46 @@
 
 
     <!-- 게시글 저장 -->
-    <insert id="save" parameterType="shane.blog.domain.post.PostRequest" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO tb_post (
+    <insert id="save" parameterType="postReq" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO tbl_post (
             <include refid="postColumns" />
         ) VALUES (
               #{id}
             , #{title}
             , #{content}
             , #{writer}
-            , 0
+            , #{viewCnt}
             , #{noticeYn}
-            , 0
-            , NOW()
-            , NULL
+            , #{deleteYn}
+            <choose>
+                <when test="createdDate != null and createdDate != ''">
+                    , #{createdDate}
+                </when>
+                <otherwise>
+                    , NOW()
+                </otherwise>
+            </choose>
+            <if test="modifiedDate != null and modifiedDate != ''">
+                , #{modifiedDate}
+            </if>
         )
     </insert>
 
 
     <!-- 게시글 상세정보 조회 -->
-    <select id="findById" parameterType="long" resultType="shane.blog.domain.post.PostResponse">
+    <select id="findById" parameterType="long" resultType="postRes">
         SELECT
             <include refid="postColumns" />
         FROM
-            tb_post
+            tbl_post
         WHERE
             id = #{value}
     </select>
 
 
     <!-- 게시글 수정 -->
-    <update id="update" parameterType="shane.blog.domain.post.PostRequest">
-        UPDATE tb_post
+    <update id="update" parameterType="postReq">
+        UPDATE tbl_post
         SET
               modified_date = NOW()
             , title = #{title}
@@ -94,7 +103,7 @@
 
     <!-- 게시글 삭제 -->
     <delete id="deleteById" parameterType="long">
-        UPDATE tb_post
+        UPDATE tbl_post
         SET
             delete_yn = 1
         WHERE
@@ -102,30 +111,27 @@
     </delete>
 
 
-    <!-- 게시글 리스트 조회 -->
-    <select id="findAll" parameterType="shane.blog.domain.common.dto.SearchDto" resultType="shane.blog.domain.post.PostResponse">
-        SELECT
-            <include refid="postColumns" />
-        FROM
-            tb_post
-        WHERE
-            delete_yn = 0
-            <include refid="search" />
-        ORDER BY
-            id DESC
-        LIMIT #{pagination.limitStart}, #{recordSize}
-    </select>
-
-
     <!-- 게시글 수 카운팅 -->
-    <select id="count" parameterType="shane.blog.domain.common.dto.SearchDto" resultType="int">
+    <select id="count" parameterType="searchDto" resultType="int">
         SELECT
             COUNT(*)
         FROM
-            tb_post
+            tbl_post
         WHERE
             delete_yn = 0
             <include refid="search" />
+    </select>
+
+    <!-- 게시글 리스트 조회 -->
+    <select id="findList" parameterType="searchDto" resultType="postRes">
+        SELECT  /* id="findList" 2024-05-09 by shanepark */
+            <include refid="postColumns" />
+        FROM
+            tbl_post
+        WHERE true
+            <include refid="search" />
+        ORDER BY id DESC
+        LIMIT #{pagination.limitStart}, #{recordSize}
     </select>
 
 </mapper>

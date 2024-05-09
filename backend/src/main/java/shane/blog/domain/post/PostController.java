@@ -6,12 +6,18 @@ import shane.blog.domain.common.file.FileUtils;
 import shane.blog.domain.common.paging.PagingResponse;
 import shane.blog.domain.file.FileRequest;
 import shane.blog.domain.file.FileResponse;
+import shane.blog.domain.member.MemberResponse;
 import shane.blog.domain.file.FileApiService;
 import lombok.RequiredArgsConstructor;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +25,8 @@ import java.util.Map;
 @Controller
 @RequiredArgsConstructor
 public class PostController {
+
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     private final PostService postService;
     private final FileApiService fileService;
@@ -45,7 +53,7 @@ public class PostController {
 
     // 게시글 작성 페이지
     @GetMapping("/post/write.do")
-    public String openPostWrite(@RequestParam(value = "id", required = false) final Long id, Model model) {
+    public String postWrite(@RequestParam(value = "id", required = false) final Long id, Model model) {
         if (id != null) {
             PostResponse post = postService.findPostById(id);
             model.addAttribute("post", post);
@@ -55,17 +63,29 @@ public class PostController {
 
 
     // 게시글 리스트 페이지
-    @GetMapping("/post/list.do")
-    public String openPostList(@ModelAttribute("params") final SearchDto params, Model model) {
-        PagingResponse<PostResponse> response = postService.findAllPost(params);
-        model.addAttribute("response", response);
-        return "post/list";
+    // @GetMapping("/post/list")
+    // public String postList(@ModelAttribute("params") final SearchDto params, Model model) {
+    //     PagingResponse<PostResponse> response = postService.findAllPost(params);
+    //     model.addAttribute("response", response);
+    //     return "post/list";
+    // }
+    @RequestMapping(value = "/post/list", method = { RequestMethod.GET, RequestMethod.POST })
+    public ResponseEntity<PagingResponse<PostResponse>> postList(@ModelAttribute("params") final SearchDto params) {
+
+        logger.debug("/list 시작. \t {}", new Date());
+
+        // 1. 회원 정보 조회
+        PagingResponse<PostResponse> response = postService.findList(params);
+        logger.debug("/list 종료. \t {}", response);
+
+        // 2. 조회 결과 리턴
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
 
     // 게시글 상세 페이지
     @GetMapping("/post/view.do")
-    public String openPostView(@RequestParam final Long id, Model model) {
+    public String postView(@RequestParam final Long id, Model model) {
         PostResponse post = postService.findPostById(id);
         model.addAttribute("post", post);
         return "post/view";
