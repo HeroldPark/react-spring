@@ -1,4 +1,4 @@
-package shane.blog.domain;
+package shane.blog.domain.member;
 
 import org.springframework.boot.test.context.SpringBootTest;
 

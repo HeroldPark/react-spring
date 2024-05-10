@@ -1,3 +1,4 @@
+package shane.blog.domain.user;
 // package shane.blog.domain;
 
 // import static org.mockito.Mockito.*;

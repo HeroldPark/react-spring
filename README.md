@@ -208,3 +208,8 @@
     - build.gradle에서 오류 발생.
     "message": "Could not run phased build action using connection to Gradle distribution 'https://services.gradle.org/distributions/gradle-8.2.1-bin.zip'
     => Gradle 8.2.1 적용해도 마찬가지(gradle -v)
+    => github에서 다운로드
+
+# 18. 2024-05-10
+    - MyBatis Test DEBUG 할때 SQL 출력 안되는 문제 해결됨
+    => 아마도 또다른 프로세서가 실행되고 있어서 안되었던 것으로 판단됨

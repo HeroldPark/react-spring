@@ -1,6 +1,7 @@
 package shane.blog.domain.common.paging;
 
 import lombok.Getter;
+import shane.blog.domain.member.MemberResponse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,4 +17,13 @@ public class PagingResponse<T> {
         this.pagination = pagination;
     }
 
+    // test 에서 사용 : 페이지별 멤버 응답 리스트 가져가기
+    // @SuppressWarnings("unchecked")
+    // public List<MemberResponse> getData() {
+    //     return (List<MemberResponse>) list;
+    // }
+
+    public List<T> getData() {
+        return (List<T>) list;
+    }
 }
