@@ -50,7 +50,7 @@ public class PostServiceTest {
 
         // given
         PostRequest postReq = new PostRequest();
-        postReq.setId(2L);
+        postReq.setId(0L);
         postReq.setTitle("Test Title");
         postReq.setContent("Test Content");
         postReq.setWriter("tester");

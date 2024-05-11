@@ -24,9 +24,6 @@ public class JwtTokenUtil implements Serializable {
     // 시크릿 문자열
     @Value("${jwt.secret}") private String secret;
 
-    // // SecretKey 생성
-    // SecretKey secretKey = HmacKeyGenerator.generateKey(secret);
-
     // extract username from jwt token
     public String getUsernameFromToken(String token) {
         return getClaimFromToken(token, Claims::getSubject);
@@ -47,9 +44,6 @@ public class JwtTokenUtil implements Serializable {
     @SuppressWarnings("deprecation")
     private Claims getAllClaimsFromToken(String token) {
         return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
-
-        // // HMAC SHA-256(2024-04-30 수정 by shanepark)
-        // return Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token).getBody();
     }
 
     // check token expired
@@ -71,18 +65,13 @@ public class JwtTokenUtil implements Serializable {
     //   compaction of the JWT to a URL-safe string
     @SuppressWarnings("deprecation")
     private String doGenerateToken(Map<String, Object> claims, String subject) {
-        return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
+        return Jwts.builder()
+                .setClaims(claims)
+                .setSubject(subject)
+                .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + tokenExpirationTime * 1000))
-                .signWith(SignatureAlgorithm.HS512, secret).compact();
-
-        // // 2024-04-30 수정 by shanepark
-        // return Jwts.builder()
-        //     .setClaims(claims)
-        //     .setSubject(subject)
-        //     .setIssuedAt(new Date(System.currentTimeMillis()))
-        //     .setExpiration(new Date(System.currentTimeMillis() + tokenExpirationTime * 1000))
-        //     .signWith(secretKey)
-        //     .compact();
+                .signWith(SignatureAlgorithm.HS512, secret)
+                .compact();
     }
 
     //validate token

@@ -22,6 +22,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 @RestController
 @RequestMapping("/board")
 @RequiredArgsConstructor
@@ -34,7 +36,12 @@ public class BoardController {
     // 페이징 목록
     @GetMapping("/list")
     public ResponseEntity<Page<ResBoardListDto>> boardList(
-            @PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+            @PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
+            @RequestHeader("Authorization") String authorizationHeader) {
+
+        // JWT 인증 토큰 확인을 위해서 추가
+        // System.out.println("Authorization Header: " + authorizationHeader);
+
         Page<ResBoardListDto> listDTO = boardService.getAllBoards(pageable);
 
         logger.debug("boardList: " + listDTO.toString());

@@ -43,11 +43,10 @@ function Login() {
 				localStorage.setItem("id", resp.data.email);
 
 				setAuth(resp.data.email); // 사용자 인증 정보(아이디 저장)
-				setHeaders({"Authorization": `Bearer ${resp.data.toekn}`}); // 헤더 Authorization 필드 저장
+				setHeaders({"Authorization": `Bearer ${resp.data.token}`}); // 헤더 Authorization 필드 저장
 
 				navigate("/bbslist");
-			
-
+				
 		}).catch((err) => {
 			console.log("[Login.js] login() error :<");
 			console.log(err);

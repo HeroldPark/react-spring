@@ -36,12 +36,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Value("${jwt.prefix}") private String TOKEN_PREFIX;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-            throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) {
         Thread currentThread = Thread.currentThread();
         log.info("현재 실행 중인 스레드: " + currentThread.getName());
 
         // get token
+        // client에서 header에 담아 보낸 토큰을 가져온다.
+        // 토큰은 "Bearer "로 시작한다.(Bearer 뒤에 공백이 있음에 주의!)
+        // 예) BbsList.js에서 /board/list로 보낸다.
         String header = request.getHeader(HEADER_STRING);
         String username = null;
         String authToken = null;
@@ -89,6 +91,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         } else {
             log.info("Username is null or context is not null !!");
         }
-        filterChain.doFilter(request, response);
+
+        try {
+            filterChain.doFilter(request, response);
+        } catch (IOException e) {
+            log.debug("IOException:  if an I/O error occurs during the processing of the request");
+            e.printStackTrace();
+        } catch (ServletException e) {
+            log.debug("ServletException:  if the processing fails for any other reason");
+            e.printStackTrace();
+        }
+
     }
 }

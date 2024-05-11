@@ -208,8 +208,16 @@
     - build.gradle에서 오류 발생.
     "message": "Could not run phased build action using connection to Gradle distribution 'https://services.gradle.org/distributions/gradle-8.2.1-bin.zip'
     => Gradle 8.2.1 적용해도 마찬가지(gradle -v)
-    => github에서 다운로드
+    => backup github에서 다운로드 후 복구
 
 # 18. 2024-05-10
     - MyBatis Test DEBUG 할때 SQL 출력 안되는 문제 해결됨
     => 아마도 또다른 프로세서가 실행되고 있어서 안되었던 것으로 판단됨
+
+# 19. 2024-05-11
+    - JWT 관련 수정 : BbsList.js에서 const axiosInstance 설정 부분이다.
+    - Login.js에서 서버로부터 받은 정보를 localStorage에 저장한다.
+    - localStorage에 저장된 JWT 정보를 Header에 설정하여 서버로 보내면 서버에서는 이 정보를 보고 client에 대한 JWT 인증(Authentication)을 수행한다.
+    - 로그인을 하지 않은 상태에서 메뉴를 통해 데이터를 조회하면 인증 오류가 발생한다.
+    - 인증은 JwtAuthenticationFilter.java에서 수행된다.(현재 인증에 오류가 발생하더라도 조회 결과는 출력된다.)
+    - 그렇다면 권한 인증(Authorization)은 어떻게 수행되지?
