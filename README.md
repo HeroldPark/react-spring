@@ -221,4 +221,9 @@
     - 로그인을 하지 않은 상태에서 메뉴를 통해 데이터를 조회하면 인증 오류가 발생한다.
     - 인증은 JwtAuthenticationFilter.java에서 수행된다.(현재 인증에 오류가 발생하더라도 조회 결과는 출력된다.)
     - 그렇다면 권한 인증(Authorization)은 어떻게 수행되지?
-    - 
+    
+    <JWT를 보내는 다른 방법 -  static 변수>
+    - BbsAnswer.js에서 
+    const createBbsAnswer = async () => {
+        await axios.post(`http://localhost:3000/bbs/${parentSeq}/answer`, req, {headers: headers})
+    }

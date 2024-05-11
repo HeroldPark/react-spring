@@ -34,9 +34,11 @@ function BbsList() {
 		  // const response = await axios.get("http://localhost:8989/board/list", {
 			//   params: {"page": page - 1},
 		  // }, config);
-      const response = await axiosInstance.get('/board/list', {
-        params: { page: page - 1 }
-      });
+
+      const params = {
+        page: page - 1
+      }
+      const response = await axiosInstance.get('/board/list', params);
 
       console.log("[BbsList.js] useEffect() success :D");
       console.log(response.data);

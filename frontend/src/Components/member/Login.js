@@ -5,6 +5,7 @@ import { useState, useContext } from "react";
 import { useNavigate } from "react-router";
 import { AuthContext } from "../context/AuthProvider";
 import { HttpHeadersContext } from "../context/HttpHeadersProvider";
+import { Link } from "react-router-dom";
 
 function Login() {
 
@@ -78,6 +79,16 @@ function Login() {
 			<div className="my-1 d-flex justify-content-center">
 				<button className="btn btn-outline-secondary" onClick={login}><i className="fas fa-sign-in-alt"></i> 로그인</button>
 			</div>
+
+			{/* Naver 소셜을 통한 로그인 */}
+			{/*
+			<Link href={`https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${CONFIG.API_KEYS.NAVER}&state=${STATESTRING}&redirect_uri=${CONFIG.DOMAIN}/auth/naver/callback`}>
+				<NaverButton {...rest}>
+					<Image src={naver} width={20} height={20} alt="kakao" />
+					<span className="ml-2 text-white">네이버로 로그인</span>
+				</NaverButton>
+			</Link>
+			*/}
 
 		</div>
 	);
