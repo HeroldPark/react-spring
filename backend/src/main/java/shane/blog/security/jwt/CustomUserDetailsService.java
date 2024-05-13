@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import shane.blog.common.exception.ResourceNotFoundException;
+import shane.blog.entity.Member;
 import shane.blog.repository.MemberRepository;
 
 /**

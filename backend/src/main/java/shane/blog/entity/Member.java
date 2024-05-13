@@ -102,7 +102,4 @@ public class Member extends BaseTimeEntity implements UserDetails {
         return true;
     }
 
-    public String getEmail() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
 }

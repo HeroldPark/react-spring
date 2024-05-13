@@ -15,6 +15,11 @@ import shane.blog.repository.MemberRepository;
 import shane.blog.security.jwt.CustomUserDetailsService;
 import shane.blog.security.jwt.JwtTokenUtil;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.management.relation.Role;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -58,13 +63,23 @@ public class MemberService {
         return MemberResponseDto.fromEntity(saveMember);
     }
 
-
     public MemberTokenDto login(MemberLoginDto loginDto) {
         authenticate(loginDto.getEmail(), loginDto.getPassword());
         UserDetails userDetails = userDetailsService.loadUserByUsername(loginDto.getEmail());
+        String email = loginDto.getEmail();
+        
+        // 사용자의 권한을 가져와 사용하기 위해서
+        Member member = new Member();
+        memberRepository.findAll().forEach(e -> {
+            if (e.getEmail().equals(email)) {
+                member.setEmail(e.getUsername());
+                member.setRoles(e.getRoles());
+            }
+        });
+
         checkEncodePassword(loginDto.getPassword(), userDetails.getPassword());
         String token = jwtTokenUtil.generateToken(userDetails);
-        return MemberTokenDto.fromEntity(userDetails, token);
+        return MemberTokenDto.fromEntity(userDetails, member.getRoles(), token);
     }
 
     public MemberResponseDto check(Member member, String password) {
@@ -95,6 +110,8 @@ public class MemberService {
             throw new MemberException("인증되지 않은 아이디입니다.", HttpStatus.BAD_REQUEST);
         } catch (BadCredentialsException e) {
             throw new MemberException("비밀번호가 일치하지 않습니다.", HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            throw new MemberException("인증되지 않은 아이디이거나 비밀번호가 일치하지 않습니다.", HttpStatus.BAD_REQUEST);
         }
     }
 

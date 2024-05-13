@@ -5,6 +5,7 @@ import { useState, useContext } from "react";
 import { useNavigate } from "react-router";
 import { AuthContext } from "../context/AuthProvider";
 import { HttpHeadersContext } from "../context/HttpHeadersProvider";
+import { Link } from "react-router-dom";
 
 function Login() {
 	console.log("[Login.js] Login() start");
@@ -47,12 +48,24 @@ function Login() {
 				setHeaders({"Authorization": `Bearer ${resp.data.token}`}); // 헤더 Authorization 필드 저장
 
 				navigate("/bbslist");
-			
+				
 		}).catch((err) => {
 			console.log("[Login.js] login() error :<");
 			console.log(err);
 
-			alert("⚠️ " + err.response.data);
+			if (err.response) {
+				// 서버로부터 응답이 도착한 경우
+				alert("⚠️ " + err.response.data);
+				// 오류 응답의 상태 코드와 메시지를 확인할 수 있음
+				console.log("Status:", err.response.status);
+				console.log("Message:", err.message);
+			} else if (err.request) {
+				// 서버로의 요청이 실패한 경우
+				console.log("Request error:", err.request);
+			} else {
+				// 요청을 설정하는 과정에서 예외가 발생한 경우
+				console.log("Error:", err.message);
+			}
 		});
 	}
 
@@ -79,6 +92,16 @@ function Login() {
 			<div className="my-1 d-flex justify-content-center">
 				<button className="btn btn-outline-secondary" onClick={login}><i className="fas fa-sign-in-alt"></i> 로그인</button>
 			</div>
+
+			{/* Naver 소셜을 통한 로그인 */}
+			{/*
+			<Link href={`https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${CONFIG.API_KEYS.NAVER}&state=${STATESTRING}&redirect_uri=${CONFIG.DOMAIN}/auth/naver/callback`}>
+				<NaverButton {...rest}>
+					<Image src={naver} width={20} height={20} alt="kakao" />
+					<span className="ml-2 text-white">네이버로 로그인</span>
+				</NaverButton>
+			</Link>
+			*/}
 
 		</div>
 	);

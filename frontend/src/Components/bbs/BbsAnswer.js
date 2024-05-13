@@ -7,7 +7,7 @@ import { HttpHeadersContext } from "../context/HttpHeadersProvider";
 function BbsAnswer() {
 
 	const { auth, setAuth } = useContext(AuthContext)
-	const { headers, setHeaders } = useContext(HttpHeadersContext);	
+	const { headers, setHeaders } = useContext(HttpHeadersContext);
 
 	const navigate = useNavigate();
 
@@ -47,8 +47,6 @@ function BbsAnswer() {
 		.catch((err) => {
 			console.log("[BbsAnswer.js] createBbsAnswer() error :<");
 			console.log(err);
-
-
 		});
 
 	}

@@ -1,8 +1,8 @@
 -- --------------------------------------------------------
 -- 호스트:                          127.0.0.1
--- 서버 버전:                        11.0.2-MariaDB - mariadb.org binary distribution
+-- 서버 버전:                        10.5.0-MariaDB - mariadb.org binary distribution
 -- 서버 OS:                        Win64
--- HeidiSQL 버전:                  11.3.0.6295
+-- HeidiSQL 버전:                  10.2.0.5599
 -- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -10,11 +10,10 @@
 /*!50503 SET NAMES utf8mb4 */;
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 
 -- react-spring 데이터베이스 구조 내보내기
-CREATE DATABASE IF NOT EXISTS `react-spring` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci */;
+CREATE DATABASE IF NOT EXISTS `react-spring` /*!40100 DEFAULT CHARACTER SET utf8 */;
 USE `react-spring`;
 
 -- 테이블 react-spring.tbl_comment 구조 내보내기
@@ -29,7 +28,7 @@ CREATE TABLE IF NOT EXISTS `tbl_comment` (
   PRIMARY KEY (`id`),
   KEY `fk_post_comment` (`post_id`),
   CONSTRAINT `fk_post_comment` FOREIGN KEY (`post_id`) REFERENCES `tbl_post` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=103 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='댓글';
+) ENGINE=InnoDB AUTO_INCREMENT=103 DEFAULT CHARSET=utf8mb4 COMMENT='댓글';
 
 -- 테이블 데이터 react-spring.tbl_comment:~0 rows (대략적) 내보내기
 DELETE FROM `tbl_comment`;
@@ -49,7 +48,7 @@ CREATE TABLE IF NOT EXISTS `tbl_file` (
   PRIMARY KEY (`id`),
   KEY `fk_post_file` (`post_id`),
   CONSTRAINT `fk_post_file` FOREIGN KEY (`post_id`) REFERENCES `tbl_post` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='파일';
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COMMENT='파일';
 
 -- 테이블 데이터 react-spring.tbl_file:~0 rows (대략적) 내보내기
 DELETE FROM `tbl_file`;
@@ -69,9 +68,9 @@ CREATE TABLE IF NOT EXISTS `tbl_member` (
   `modified_date` datetime DEFAULT NULL COMMENT '최종 수정일시',
   PRIMARY KEY (`id`),
   UNIQUE KEY `uix_member_login_id` (`login_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='회원';
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COMMENT='회원';
 
--- 테이블 데이터 react-spring.tbl_member:~1 rows (대략적) 내보내기
+-- 테이블 데이터 react-spring.tbl_member:~0 rows (대략적) 내보내기
 DELETE FROM `tbl_member`;
 /*!40000 ALTER TABLE `tbl_member` DISABLE KEYS */;
 INSERT INTO `tbl_member` (`id`, `login_id`, `password`, `name`, `gender`, `birthday`, `delete_yn`, `created_date`, `modified_date`) VALUES
@@ -90,7 +89,7 @@ CREATE TABLE IF NOT EXISTS `tbl_post` (
   `created_date` datetime NOT NULL DEFAULT current_timestamp() COMMENT '생성일시',
   `modified_date` datetime DEFAULT NULL COMMENT '최종 수정일시',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6018 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='게시글';
+) ENGINE=InnoDB AUTO_INCREMENT=6018 DEFAULT CHARSET=utf8mb4 COMMENT='게시글';
 
 -- 테이블 데이터 react-spring.tbl_post:~0 rows (대략적) 내보내기
 DELETE FROM `tbl_post`;
@@ -106,16 +105,16 @@ CREATE TABLE IF NOT EXISTS `tb_board` (
   `created_date` varchar(50) DEFAULT NULL,
   `modified_date` varchar(50) DEFAULT NULL,
   `member_id` bigint(20) NOT NULL,
-  `create_date` varchar(255) DEFAULT NULL,
+  `created_date` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`board_id`),
   KEY `FK_board_member` (`member_id`),
   CONSTRAINT `FK_board_member` FOREIGN KEY (`member_id`) REFERENCES `tb_member` (`member_id`) ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- 테이블 데이터 react-spring.tb_board:~2 rows (대략적) 내보내기
 DELETE FROM `tb_board`;
 /*!40000 ALTER TABLE `tb_board` DISABLE KEYS */;
-INSERT INTO `tb_board` (`board_id`, `title`, `content`, `view_count`, `created_date`, `modified_date`, `member_id`, `create_date`) VALUES
+INSERT INTO `tb_board` (`board_id`, `title`, `content`, `view_count`, `created_date`, `modified_date`, `member_id`, `created_date`) VALUES
 	(1, 'Hello react-spring world~~', 'start react-spring study...', 21, NULL, '2024/05/06 16:09:34', 1, '2024/04/02 11:21:05'),
 	(2, 'test', 'contents', 7, NULL, '2024/04/26 09:09:28', 1, '2024/04/25 16:31:29');
 /*!40000 ALTER TABLE `tb_board` ENABLE KEYS */;
@@ -128,7 +127,7 @@ CREATE TABLE IF NOT EXISTS `tb_comment` (
   `modified_date` varchar(50) NOT NULL DEFAULT '',
   `board_id` int(11) DEFAULT NULL,
   `user_id` bigint(20) DEFAULT NULL,
-  `create_date` varchar(255) DEFAULT NULL,
+  `created_date` varchar(255) DEFAULT NULL,
   `member_id` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`comment_id`),
   KEY `FK_comment_board` (`board_id`),
@@ -137,12 +136,12 @@ CREATE TABLE IF NOT EXISTS `tb_comment` (
   CONSTRAINT `FK_comment_board` FOREIGN KEY (`board_id`) REFERENCES `tb_board` (`board_id`) ON DELETE CASCADE ON UPDATE NO ACTION,
   CONSTRAINT `FK_comment_member` FOREIGN KEY (`user_id`) REFERENCES `tb_member` (`member_id`) ON DELETE CASCADE ON UPDATE NO ACTION,
   CONSTRAINT `FKmrrrpi513ssu63i2783jyiv9m` FOREIGN KEY (`member_id`) REFERENCES `tb_member` (`member_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 -- 테이블 데이터 react-spring.tb_comment:~3 rows (대략적) 내보내기
 DELETE FROM `tb_comment`;
 /*!40000 ALTER TABLE `tb_comment` DISABLE KEYS */;
-INSERT INTO `tb_comment` (`comment_id`, `content`, `created_date`, `modified_date`, `board_id`, `user_id`, `create_date`, `member_id`) VALUES
+INSERT INTO `tb_comment` (`comment_id`, `content`, `created_date`, `modified_date`, `board_id`, `user_id`, `created_date`, `member_id`) VALUES
 	(2, '', '', '2024/04/02 11:25:13', 1, NULL, '2024/04/02 11:25:13', 1),
 	(3, '댓글 테스트', '', '2024/04/02 11:26:06', 1, NULL, '2024/04/02 11:26:06', 1),
 	(4, 'Writing success', '', '2024/04/25 16:39:39', 2, NULL, '2024/04/25 16:39:39', 1);
@@ -151,12 +150,12 @@ INSERT INTO `tb_comment` (`comment_id`, `content`, `created_date`, `modified_dat
 -- 테이블 react-spring.tb_employee 구조 내보내기
 CREATE TABLE IF NOT EXISTS `tb_employee` (
   `employee_id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL,
-  `role` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL,
+  `name` varchar(50) CHARACTER SET utf8 DEFAULT NULL,
+  `role` varchar(50) CHARACTER SET utf8 DEFAULT NULL,
   `created_date` varchar(255) DEFAULT NULL,
   `modified_date` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`employee_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='for JPA';
+) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8mb4 COMMENT='for JPA';
 
 -- 테이블 데이터 react-spring.tb_employee:~11 rows (대략적) 내보내기
 DELETE FROM `tb_employee`;
@@ -183,12 +182,12 @@ CREATE TABLE IF NOT EXISTS `tb_file` (
   `created_date` varchar(50) DEFAULT NULL,
   `modified_date` varchar(50) DEFAULT NULL,
   `board_id` int(11) DEFAULT NULL,
-  `create_date` varchar(255) DEFAULT NULL,
+  `created_date` varchar(255) DEFAULT NULL,
   `file_type` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`file_id`),
   KEY `FK_file_board` (`board_id`),
   CONSTRAINT `FK_file_board` FOREIGN KEY (`board_id`) REFERENCES `tb_board` (`board_id`) ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- 테이블 데이터 react-spring.tb_file:~0 rows (대략적) 내보내기
 DELETE FROM `tb_file`;
@@ -204,15 +203,15 @@ CREATE TABLE IF NOT EXISTS `tb_member` (
   `role` varchar(50) DEFAULT NULL,
   `created_date` varchar(50) DEFAULT NULL,
   `modified_date` varchar(50) DEFAULT NULL,
-  `create_date` varchar(255) DEFAULT NULL,
+  `created_date` varchar(255) DEFAULT NULL,
   `roles` enum('ADMIN','USER') DEFAULT NULL,
   PRIMARY KEY (`member_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- 테이블 데이터 react-spring.tb_member:~0 rows (대략적) 내보내기
 DELETE FROM `tb_member`;
 /*!40000 ALTER TABLE `tb_member` DISABLE KEYS */;
-INSERT INTO `tb_member` (`member_id`, `email`, `username`, `password`, `role`, `created_date`, `modified_date`, `create_date`, `roles`) VALUES
+INSERT INTO `tb_member` (`member_id`, `email`, `username`, `password`, `role`, `created_date`, `modified_date`, `created_date`, `roles`) VALUES
 	(1, 'admin@deltax.ai', 'admin', '$2a$10$HTWwKtPoEo2dfnw7rXMJh.m9Iwn2COOcHquv7TMwKC9BufUMBcCW2', NULL, NULL, '2024/04/02 11:19:39', '2024/04/02 11:19:39', 'USER');
 /*!40000 ALTER TABLE `tb_member` ENABLE KEYS */;
 
@@ -223,7 +222,7 @@ CREATE TABLE IF NOT EXISTS `tb_user` (
   `NAME` varchar(255) DEFAULT NULL,
   `ROLE` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`USER_ID`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
 
 -- 테이블 데이터 react-spring.tb_user:~2 rows (대략적) 내보내기
 DELETE FROM `tb_user`;
@@ -234,6 +233,5 @@ INSERT INTO `tb_user` (`USER_ID`, `ID`, `NAME`, `ROLE`) VALUES
 /*!40000 ALTER TABLE `tb_user` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
-/*!40014 SET FOREIGN_KEY_CHECKS=IFNULL(@OLD_FOREIGN_KEY_CHECKS, 1) */;
+/*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40111 SET SQL_NOTES=IFNULL(@OLD_SQL_NOTES, 1) */;

@@ -1,6 +1,7 @@
 package shane.blog.controller;
 
 import lombok.RequiredArgsConstructor;
+import shane.blog.common.exception.MemberException;
 import shane.blog.dto.request.member.MemberLoginDto;
 import shane.blog.dto.request.member.MemberRegisterDto;
 import shane.blog.dto.request.member.MemberUpdateDto;

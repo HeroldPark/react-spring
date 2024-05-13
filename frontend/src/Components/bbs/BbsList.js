@@ -19,12 +19,30 @@ function BbsList() {
   const [totalPages, setTotalPages] = useState(0);
   const [totalCnt, setTotalCnt] = useState(0);
 
+  // 새로운 컨텍스트 생성
+  const AuthContext = React.createContext();
+
+  // 기본 설정을 포함한 axios 인스턴스 생성
+  const axiosInstance = axios.create({
+    baseURL: 'http://localhost:8989', // 기본 URL 설정
+    headers: {
+      'Content-Type': 'application/json', // 기본 요청 본문 타입 설정
+      'Authorization': `Bearer ${localStorage.getItem('bbs_access_token')}` // JWT 토큰 포함
+    }
+  });
+
   // 게시글 전체 조회
   const getBbsList = async (page) => {
     try {
-		  const response = await axios.get("http://localhost:8989/board/list", {
-			  params: {"page": page - 1},
-		  });
+		  // const response = await axios.get("http://localhost:8989/board/list", {
+			//   params: {"page": page - 1},
+		  // }, config);
+
+      // 사용자 인증 정보를 서버로 전달하는 방법(localStorage의 경우)
+      const params = {
+        page: page - 1
+      }
+      const response = await axiosInstance.get('/board/list', params);
 
       console.log("[BbsList.js] useEffect() success :D");
       console.log(response.data);

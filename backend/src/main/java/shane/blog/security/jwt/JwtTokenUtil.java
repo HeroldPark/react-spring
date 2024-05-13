@@ -19,13 +19,10 @@ public class JwtTokenUtil implements Serializable {
 
     private static final long serialVersionUID = -2550185165626007488L;
 
-    @Value("${jwt.tokenExpirationTime}") private Integer tokenExpirationTime;
+    @Value("${jwt.tokenExpirationTime}") private Long tokenExpirationTime;
 
     // 시크릿 문자열
     @Value("${jwt.secret}") private String secret;
-
-    // // SecretKey 생성
-    // SecretKey secretKey = HmacKeyGenerator.generateKey(secret);
 
     // extract username from jwt token
     public String getUsernameFromToken(String token) {
@@ -47,9 +44,6 @@ public class JwtTokenUtil implements Serializable {
     @SuppressWarnings("deprecation")
     private Claims getAllClaimsFromToken(String token) {
         return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
-
-        // // HMAC SHA-256(2024-04-30 수정 by shanepark)
-        // return Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token).getBody();
     }
 
     // check token expired
