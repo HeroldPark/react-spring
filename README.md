@@ -233,4 +233,11 @@
     - package.json : "build": "GENERATE_SOURCEMAP=false react-scripts build" 추가
     - .gitignore 수정
     - 로그인 오류 메시지 출력 수정(MemberService.java, Login.js)
-    - JWT Authorization : 
+    
+    - JWT Authorization : SecurityConfig.filterChain에서 admin.roles="ADMIN"인 경우
+        .requestMatchers("/employees").hasRole("ADMIN")
+    로 설정하면 controller의 "/employees"가 정상적으로 호출된다.
+    - JwtAuthenticationFilter.java에서 확인 가능
+        SecurityContextHolder.getContext().getAuthentication().getAuthorities().forEach(
+                auth -> log.info("auth: " + auth.getAuthority())
+        );

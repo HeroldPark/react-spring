@@ -67,7 +67,8 @@ public class SecurityConfig {
                         .requestMatchers("/board/**").hasRole("USER")
                         .requestMatchers("/board/{boardId}/comment/**").hasRole("USER")
                         .requestMatchers("/board/{boardId}/file/**").hasRole("USER")
-                        .requestMatchers("/**").authenticated())    // 나머지는 모두 인증, 인가 받아야 한다.
+                        .anyRequest().authenticated()      // 나머지는 모두 인증, 인가 받아야 한다.
+                    )
 
                 // 쿠키와 세션을 사용하지 않는다. 클라이언트의 상태를 유지할 필요가 있는 경우나 인증된 사용자의 상태를 관리해야 하는 경우에는 이 정책을 사용하지 않는다.
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

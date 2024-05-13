@@ -93,6 +93,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 // 권한 부여
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
 
+                // SecurityConfig.filterChain에 설정한 hasRole("USER")가 정상적으로 작동하는지 확인
+                // SecurityContextHolder.getContext().getAuthentication().getAuthorities()에 권한이 들어있는지 확인
+                // "/employees/" 이면 hasRole("ADMIN")는 ROLE_ADMIN로 설정해야 한다.
+                SecurityContextHolder.getContext().getAuthentication().getAuthorities().forEach(
+                        auth -> log.info("auth: " + auth.getAuthority())
+                );
             } else {
                 log.info("Invalid JWT Token !!");
             }

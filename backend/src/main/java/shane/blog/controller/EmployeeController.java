@@ -40,7 +40,7 @@ public class EmployeeController {
     //     // return employeeService.findAll();
     // }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    // @PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping("/employees")
     public ResponseEntity<Page<ResEmployeeListDto>> employeeList(
             @PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
