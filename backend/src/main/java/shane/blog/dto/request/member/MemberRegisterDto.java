@@ -20,13 +20,15 @@ public class MemberRegisterDto {
     private String password;
     private String passwordCheck;
     private String username;
+    private Role roles;
 
     @Builder
-    public MemberRegisterDto(String email, String password, String passwordCheck, String username) {
+    public MemberRegisterDto(String email, String password, String passwordCheck, String username, Role roles) {
         this.email = email;
         this.password = password;
         this.passwordCheck = passwordCheck;
         this.username = username;
+        this.roles = roles;
     }
 
     // DTO -> Entity
@@ -35,8 +37,7 @@ public class MemberRegisterDto {
                 .email(dto.getEmail())
                 .password(dto.getPassword())
                 .username(dto.getUsername())
-                .roles(Role.USER)
-                // .roles(Role.ADMIN)
+                .roles(dto.getRoles())  // .roles(Role.ADMIN)
                 .build();
     }
 }

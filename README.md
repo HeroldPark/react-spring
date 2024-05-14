@@ -234,10 +234,13 @@
     - .gitignore 수정
     - 로그인 오류 메시지 출력 수정(MemberService.java, Login.js)
     
-    - JWT Authorization : SecurityConfig.filterChain에서 admin.roles="ADMIN"인 경우
-        .requestMatchers("/employees").hasRole("ADMIN")
-    로 설정하면 controller의 "/employees"가 정상적으로 호출된다.
-    - JwtAuthenticationFilter.java에서 확인 가능
+    - JWT Authorization : tb_member.roles="USER"인 경우 filterChain에서 .requestMatchers("/employees").hasRole("USER")으로 설정하면 EmployeeController의 "/employees"가 정상적으로 호출된다.
+    - JwtAuthenticationFilter.java에서 출력되는 auth가 tb_member.roles와 동일하다.
         SecurityContextHolder.getContext().getAuthentication().getAuthorities().forEach(
                 auth -> log.info("auth: " + auth.getAuthority())
         );
+    - 로그인 하지 않은 상태에서는 auth=null 이므로 메뉴 결과 가 출력되지 않는다.
+    - client에서 호출하는 URL header에 JWT 인증 정보가 서버로 보내져야 Authority(인가, 권한)가 정상적으로 실행한다.
+
+# 21. 2024-05-14
+    - SNS 로그인 : 구글 OAuth2 를 이용한 로그인

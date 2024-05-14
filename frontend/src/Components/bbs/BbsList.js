@@ -60,7 +60,7 @@ function BbsList() {
   // 게시글 검색
   const search = async () => {
     try {
-      const response = await axios.get("http://localhost:8989/board/search", {
+      const response = await axiosInstance.get('/board/search', {
         params: {
           page: page - 1,
           title: choiceVal === "title" ? searchVal : "",

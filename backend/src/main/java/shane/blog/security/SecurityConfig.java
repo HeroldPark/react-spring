@@ -4,13 +4,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
-import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.web.cors.CorsConfigurationSource;
 
 import lombok.RequiredArgsConstructor;
@@ -20,7 +18,6 @@ import shane.blog.security.jwt.JwtAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
-// @EnableMethodSecurity	// 추가
 @RequiredArgsConstructor
 @Slf4j
 public class SecurityConfig {
@@ -36,17 +33,17 @@ public class SecurityConfig {
     }
 
     private final String[] allowedUrls = {
-          "/board/list"
+          "/user/checkId"
+        , "/user/register"
+        , "/user/login"
+        , "/board/list"
         , "/board/{boardId}"
         , "/board/search"
         , "/board/{boardId}/comment/list/**"
         , "/board/{boardId}/file/download/**"
-        , "/user/checkId"
-        , "/user/register"
-        , "/user/login"
         // , "/employees"  // 추가(JPA)
-        , "/post/**"    // 추가(Mybatis)
-        , "/member/**"  // 추가(Mybatis)
+        // , "/post/**"    // 추가(Mybatis)
+        // , "/member/**"  // 추가(Mybatis)
     };
 
     @Bean
@@ -61,12 +58,11 @@ public class SecurityConfig {
                         -> authorize
                         .requestMatchers(allowedUrls).permitAll()
 
-                        .requestMatchers("/employees").hasRole("ADMIN")
-                        .requestMatchers("/user/**").hasRole("USER")
-                        .requestMatchers("/post/**").hasRole("USER")  // 추가(for post)
-                        .requestMatchers("/board/**").hasRole("USER")
-                        .requestMatchers("/board/{boardId}/comment/**").hasRole("USER")
-                        .requestMatchers("/board/{boardId}/file/**").hasRole("USER")
+                        .requestMatchers("/employees").hasAnyRole("USER")  // 추가(JPA)
+                        .requestMatchers("/post/**").hasAnyRole("ADMIN", "USER")    // 추가(Mybatis)
+                        .requestMatchers("/member/**").hasRole("ADMIN")  // 추가(Mybatis)
+
+                        .requestMatchers("/board/**").hasAnyRole("ADMIN", "USER", "GUEST")
                         .anyRequest().authenticated()      // 나머지는 모두 인증, 인가 받아야 한다.
                     )
 

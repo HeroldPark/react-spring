@@ -59,7 +59,7 @@ function EmployeeList() {
   // 게시글 검색
   const search = async () => {
     try {
-      const response = await axios.get("http://localhost:8989/employee/search", {
+      const response = await axiosInstance.get('/employee/search', {
         params: {
           page: page - 1,
           name: choiceVal === "name" ? searchVal : "",

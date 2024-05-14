@@ -20,10 +20,19 @@ function PostList() {
   const [totalPages, setTotalPages] = useState(0);
   const [totalCnt, setTotalCnt] = useState(0);
 
+  // 기본 설정을 포함한 axios 인스턴스 생성
+  const axiosInstance = axios.create({
+    baseURL: 'http://localhost:8989', // 기본 URL 설정
+    headers: {
+      'Content-Type': 'application/json', // 기본 요청 본문 타입 설정
+      'Authorization': `Bearer ${localStorage.getItem('bbs_access_token')}` // JWT 토큰 포함
+    }
+  });
+
   // Post 전체 조회
   const getPostList = async (page) => {
     try {
-		  const response = await axios.get("http://localhost:8989/post/list", {
+		  const response = await axiosInstance.get('/post/list', {
 			  params: {"page": page},
 		  });
 
@@ -43,7 +52,7 @@ function PostList() {
   // 게시글 검색
   const search = async () => {
     try {
-      const response = await axios.get("http://localhost:8989/post/search", {
+      const response = await axiosInstance.get('/post/list', {
         params: {
           page: page,
           name: choiceVal === "name" ? searchVal : "",

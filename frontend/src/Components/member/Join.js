@@ -10,6 +10,7 @@ function Join() {
 	const [name, setName] = useState("");
 	const [pwd, setPwd] = useState("");
 	const [checkPwd, setCheckPwd] = useState("");
+	const [roles, setRoles] = useState("");
 
 	const navigate = useNavigate();
 
@@ -29,9 +30,19 @@ function Join() {
 		setCheckPwd(event.target.value);
 	}
 
+	const changeRoles = (event) => {
+		setRoles(event.target.value);
+	}
+
 	/* 아이디 중복 체크 */
 	const checkEmailDuplicate = async () => {
-
+		// email 유효성 검사
+		const emailRegExp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+		if (!emailRegExp.test(email)) {
+			alert("이메일 형식이 올바르지 않습니다.");
+			return;
+		}
+		
 		await axios.get("http://localhost:8989/user/checkId", { params: { email: email } })
 			.then((resp) => {
 				console.log("[Join.js] checkEmailDuplicate() success :D");
@@ -61,6 +72,7 @@ function Join() {
 			password: pwd,
 			passwordCheck: checkPwd,
 			username: name,
+			roles: roles,
 		}
 
 		await axios.post("http://localhost:8989/user/register", req)
@@ -87,7 +99,7 @@ function Join() {
 			<table className="table">
 				<tbody>
 					<tr>
-						<th className="col-2">이메일</th>
+						<th className="col-2">이메일<span class="es">필수 입력</span></th>
 						<td>
 							<input type="text" value={email} onChange={changeEmail} size="50px" /> &nbsp; &nbsp;
 							<button className="btn btn-outline-danger" onClick={checkEmailDuplicate}>
@@ -96,23 +108,34 @@ function Join() {
 					</tr>
 
 					<tr>
-						<th>이름</th>
+						<th>이름<span class="es">필수 입력</span></th>
 						<td>
 							<input type="text" value={name} onChange={changeName} size="50px" />
 						</td>
 					</tr>
 
 					<tr>
-						<th>비밀번호</th>
+						<th>비밀번호<span class="es">필수 입력</span></th>
 						<td>
 							<input type="password" value={pwd} onChange={changePwd} size="50px" />
 						</td>
 					</tr>
 
 					<tr>
-						<th>비밀번호 확인</th>
+						<th>비밀번호 확인<span class="es">필수 입력</span></th>
 						<td>
 							<input type="password" value={checkPwd} onChange={changeCheckPwd} size="50px" />
+						</td>
+					</tr>
+
+					<tr>
+						<th scope="row">권한<span class="es">필수 입력</span></th>
+						<td>
+							<select id="roles" name="roles" value={roles} onChange={changeRoles} size="50px" >
+								<option value="ADMIN">관리자</option>
+								<option value="USER">사용자</option>
+								<option value="GUEST">방문자</option>
+							</select>
 						</td>
 					</tr>
 				</tbody>

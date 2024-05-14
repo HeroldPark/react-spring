@@ -94,8 +94,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
 
                 // SecurityConfig.filterChain에 설정한 hasRole("USER")가 정상적으로 작동하는지 확인
-                // SecurityContextHolder.getContext().getAuthentication().getAuthorities()에 권한이 들어있는지 확인
-                // "/employees/" 이면 hasRole("ADMIN")는 ROLE_ADMIN로 설정해야 한다.
+                // member.getRoles()=="ROLE_USER"과 hasRole("USER")이 일치해야 controller의 써레드가 실행된다.
+                // 가령, "/employees/"가 hasRole("ADMIN")이면 hasRole("ADMIN")으로 설정해야 조회 가능하다.
                 SecurityContextHolder.getContext().getAuthentication().getAuthorities().forEach(
                         auth -> log.info("auth: " + auth.getAuthority())
                 );
