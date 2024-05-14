@@ -123,11 +123,10 @@ function Comment(props) {
 						<>
 							{/* 하단 영역 (댓글 내용) */}
 							<div className="my-3 d-flex justify-content-center">
-								<div className="col-10 comment">{content}</div>
+								<div className="col-10 comment" style={{ whiteSpace: 'pre-line' }}>{content}</div>
 							</div>
 						</>
 				}
-
 
 			</>
 		);

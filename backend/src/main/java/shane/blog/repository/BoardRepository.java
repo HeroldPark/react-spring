@@ -21,14 +21,15 @@ import shane.blog.entity.Board;
 public interface BoardRepository extends JpaRepository<Board, Long> {
 
     // 게시글 상세 조회, @BatchSize : Comments와 Files는 필요할 때 in 절로 가져옴
-    // @Query(value = "SELECT DISTINCT b FROM Board b JOIN FETCH b.member WHERE b.id = :boardID")
-    // Optional<Board> findByIdWithMemberAndCommentsAndFiles(Long boardID);
-    @Query(value = "SELECT DISTINCT b FROM Board b " +
-                    "JOIN FETCH b.member " +
-                    "LEFT JOIN FETCH b.comments " +
-                    "LEFT JOIN FETCH b.files " +
-                    "WHERE b.board_id = :boardID")
-    Optional<Board> findByIdWithMemberAndCommentsAndFiles(@Param("boardID") Long boardID);
+    @Query(value = "SELECT DISTINCT b FROM Board b JOIN FETCH b.member WHERE b.id = :boardID")
+    Optional<Board> findByIdWithMemberAndCommentsAndFiles(Long boardID);
+    
+    // @Query(value = "SELECT DISTINCT b FROM Board b " +
+    //                 "JOIN FETCH b.member " +
+    //                 "LEFT JOIN FETCH b.comments " +
+    //                 "LEFT JOIN FETCH b.files " +
+    //                 "WHERE b.board_id = :boardID")
+    // Optional<Board> findByIdWithMemberAndCommentsAndFiles(@Param("boardID") Long boardID);
 
     // 첫 페이징 화면("/")
     @Query(value = "SELECT DISTINCT b FROM Board b JOIN FETCH b.member")

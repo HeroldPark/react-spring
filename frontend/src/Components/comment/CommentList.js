@@ -60,15 +60,15 @@ function CommentList(props) {
 				prevPageText={"‹"}
 				nextPageText={"›"}
 				onChange={changePage} />
-			{
-				commentList.map(function (comment, idx) {
-					return (
-						<div className="my-5" key={idx}>
-							<Comment obj={comment} key={idx} page={page} getCommentList={getCommentListRef.current}/>
-						</div>
-					);
-				})
-			}
+				{
+					commentList.map(function (comment, idx) {
+						return (
+							<div className="my-5" key={idx}>
+								<Comment obj={comment} key={idx} page={page} getCommentList={getCommentListRef.current}/>
+							</div>
+						);
+					})
+				}
 
 		</>
 

@@ -80,57 +80,57 @@ function BbsDetail() {
 					<Link className="btn btn-outline-secondary" to={{pathname: `/bbsanswer/${bbs.boardId}` }} state={{ parentBbs: parentBbs }}>
 						<i className="fas fa-pen"></i> 답글쓰기</Link> &nbsp;
 
-				{
-					/* 자신이 작성한 게시글인 경우에만 수정, 삭제 가능 */
-					(localStorage.getItem("id") === bbs.writerName) ?
-						<>
-							<Link className="btn btn-outline-secondary"  to="/bbsupdate" state={{ bbs: updateBbs }}><i className="fas fa-edit"></i> 수정</Link> &nbsp;
-							<button className="btn btn-outline-danger"  onClick={deleteBbs}><i className="fas fa-trash-alt"></i> 삭제</button>
-						</>
-					:
-					null
-				}
+					{
+						/* 자신이 작성한 게시글인 경우에만 수정, 삭제 가능 */
+						(localStorage.getItem("id") === bbs.writerName) ?
+							<>
+								<Link className="btn btn-outline-secondary"  to="/bbsupdate" state={{ bbs: updateBbs }}><i className="fas fa-edit"></i> 수정</Link> &nbsp;
+								<button className="btn btn-outline-danger"  onClick={deleteBbs}><i className="fas fa-trash-alt"></i> 삭제</button>
+							</>
+						:
+						null
+					}
 
 				</div>
 
 				<table className="table table-striped">
-				<tbody>
-				<tr>
-					<th className="col-3">작성자</th>
-					<td>
-					<span>{bbs.writerName}</span>
-					</td>
-				</tr>
+					<tbody>
+						<tr>
+							<th className="col-3">작성자</th>
+							<td>
+							<span>{bbs.writerName}</span>
+							</td>
+						</tr>
 
-				<tr>
-					<th>제목</th>
-					<td>
-					<span>{bbs.title}</span>
-					</td>
-				</tr>
+						<tr>
+							<th>제목</th>
+							<td>
+							<span>{bbs.title}</span>
+							</td>
+						</tr>
 
-				<tr>
-					<th>작성일</th>
-					<td>
-					<span>{bbs.createdDate}</span>
-					</td>
-				</tr>
+						<tr>
+							<th>작성일</th>
+							<td>
+							<span>{bbs.createdDate}</span>
+							</td>
+						</tr>
 
-				<tr>
-					<th>조회수</th>
-					<td>
-					<span>{bbs.viewCount}</span>
-					</td>
-				</tr>
+						<tr>
+							<th>조회수</th>
+							<td>
+							<span>{bbs.viewCount}</span>
+							</td>
+						</tr>
 
-				<tr>
-					<th>내용</th>
-					<td></td>
-				</tr>
-				</tbody>
+						<tr>
+							<th>내용</th>
+							<td></td>
+						</tr>
+					</tbody>
 				</table>
 
-				<div className="content-box">{bbs.content}</div>
+				<div className="content-box" style={{ whiteSpace: 'pre-line' }}>{bbs.content}</div>
 				<div>
 					<FileDisplay files={bbs.files} boardId={boardId} />
 				</div>

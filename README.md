@@ -244,3 +244,9 @@
 
 # 21. 2024-05-14
     - SNS 로그인 : 구글 OAuth2 를 이용한 로그인
+    - PrincipalDetails.java, PrincipalDetailsService.java, IndexController.java 추가
+    - MemberRepository.findByUsername 추가
+
+    - config.auth : CustomOAuth2UserService.java, SecurityConfig.java
+        config.auth.dto : OAuthAttributes.java, SessionUser.java
+    - user/entries, user/enums, user/repositories

@@ -3,6 +3,7 @@ package shane.blog.security;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -41,9 +42,6 @@ public class SecurityConfig {
         , "/board/search"
         , "/board/{boardId}/comment/list/**"
         , "/board/{boardId}/file/download/**"
-        // , "/employees"  // 추가(JPA)
-        // , "/post/**"    // 추가(Mybatis)
-        // , "/member/**"  // 추가(Mybatis)
     };
 
     @Bean
@@ -53,6 +51,11 @@ public class SecurityConfig {
                 .httpBasic(httpBasic -> httpBasic.disable())
                 .csrf(csrf -> csrf.disable())
                 .cors(cors -> cors.configurationSource(corsConfigurationSource))
+
+                // OAuth2 로그인을 사용
+                .oauth2Login(Customizer.withDefaults())
+                // .userInfoEndpoint()
+                // .userService(customOAuth2UserService)
 
                 .authorizeHttpRequests(authorize
                         -> authorize
@@ -76,6 +79,7 @@ public class SecurityConfig {
                 // 이는 일반적으로 JWT와 양식 기반 인증을 모두 지원하고 JWT 인증의 우선순위를 지정하려는 애플리케이션에서 수행됩니다.
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 // .addFilterBefore(jwtAuthenticationFilter, BasicAuthenticationFilter .class)
+
                 .build();
     }
 }
