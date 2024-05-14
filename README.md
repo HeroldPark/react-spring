@@ -251,3 +251,4 @@
     - config.auth : CustomOAuth2UserService.java, SecurityConfig.java
         config.auth.dto : OAuthAttributes.java, SessionUser.java
     - user/entries, user/enums, user/repositories
+    => application.properties에서 oauth2 정보 삭제
