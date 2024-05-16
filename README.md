@@ -254,4 +254,26 @@
     => application.properties에서 oauth2 정보 삭제
 
 # 22. 2024-05-16
-    - 
+    - application.yml에서 Google OAuth2 정보 설정(github 로딩이 안되어 .gitignore에서 제외처리)
+    - BFG Repo-Cleaner 사용 : 다운로드한 bfg-1.13.0.jar 파일을 사용하여 민감한 정보를 제거
+    => java -jar path\to\bfg-1.13.0.jar --delete-files 'application.yml'
+    => git reflog expire --expire=now --all
+    => git gc --prune=now --aggressive
+    => git push origin master --force
+
+    - OAuth2 정보는 로컬에서 환경변수로 등록하여 사용.
+    - windows 환경 변수 설정:
+        GOOGLE_CLIENT_ID="your_client_id"
+        GOOGLE_CLIENT_SECRET="your_client_secret"
+    - 확인
+        PS C:\Users\DeltaX_20> echo $env:GOOGLE_CLIENT_ID
+        PS C:\Users\DeltaX_20> echo $env:GOOGLE_CLIENT_SECRET
+    
+    - Git CMD 창에서 설정(set)/확인(echo)
+        C:\Users\DeltaX_20>set GOOGLE_CLIENT_ID=XYZ-9ua5q9ub0llqmqo81ciitbu1fg73lgd4.apps.googleusercontent.com
+        C:\Users\DeltaX_20>echo %GOOGLE_CLIENT_ID%
+        XYZ-9ua5q9ub0llqmqo81ciitbu1fg73lgd4.apps.googleusercontent.com
+
+        C:\Users\DeltaX_20>set GOOGLE_CLIENT_SECRET=GOCSPX-wODcxGB7ta-XYZ
+        C:\Users\DeltaX_20>echo %GOOGLE_CLIENT_SECRET%
+        GOCSPX-wODcxGB7ta-XYZ

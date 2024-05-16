@@ -77,11 +77,15 @@ function Login() {
 			password: pwd
 		}
 
-		await axios.post("http://google.com/oauth2/authorization/google", req)
+		await axios.post("http://localhost:8989/user/code/google", req)
 		.then((resp) => {
 			console.log("[Login.js] googleLogin() success :D");
 			console.log(resp.data);
 
+				if(resp.data.token == null) {
+					alert("⚠️ 계정 정보가 없습니다. 다시 시도해주세요.");
+					return;
+				}
 				alert(resp.data.email + "님, 성공적으로 로그인 되었습니다 🔐");
 
 				// JWT 토큰 저장

@@ -11,7 +11,7 @@ import shane.blog.common.Role;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import jakarta.persistence.Table;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -43,6 +43,9 @@ public class Member extends BaseTimeEntity implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role roles;
 
+    @Column(nullable = false)
+    private String picture;
+
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     public List<Board> boards = new ArrayList<>();
 
@@ -51,11 +54,12 @@ public class Member extends BaseTimeEntity implements UserDetails {
 
     //== 생성자 Builder ==//
     @Builder
-    public Member(String email, String password, String username, Role roles) {
+    public Member(String email, String password, String username, Role roles, String picture) {
         this.email = email;
         this.password = password;
         this.username = username;
         this.roles = roles;
+        this.picture = picture;
     }
 
     //== update ==//
@@ -100,5 +104,4 @@ public class Member extends BaseTimeEntity implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
-
 }

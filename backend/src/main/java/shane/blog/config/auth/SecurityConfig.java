@@ -23,23 +23,15 @@
 //     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 //         http.csrf(csrf -> csrf.disable())
 //                 .headers(headers -> headers.frameOptions().disable())
-//                 .authorizeHttpRequests(requests -> {
-//                     try {
-//                         requests
-//                                 .requestMatchers("/", "/css/**", "/images/**", "/js/**", "/h2-console/**").permitAll()
-//                                 .requestMatchers("/api/v1/**").hasRole(Role.USER.name())
-//                                 .anyRequest().authenticated()
-//                                 .and()
-//                                 .logout()
-//                                 .logoutSuccessUrl("/")
-//                                 .and()
-//                                 .oauth2Login()
-//                                 .userInfoEndpoint()
-//                                 .userService(customOAuth2UserService);
-//                     } catch (Exception e) {
-//                         e.printStackTrace();
-//                     }
-//                 });
+//                 .authorizeHttpRequests(requests -> requests
+//                         .requestMatchers("/", "/css/**", "/images/**", "/js/**", "/h2-console/**").permitAll()
+//                         .requestMatchers("/api/v1/**").hasRole(Role.USER.name())
+//                         .anyRequest().authenticated())
+//                 .logout(logout -> logout
+//                         .logoutSuccessUrl("/"))
+//                 .oauth2Login(login -> login
+//                         .userInfoEndpoint()
+//                         .userService(customOAuth2UserService));
 		
 //         return http.build();
 //     }

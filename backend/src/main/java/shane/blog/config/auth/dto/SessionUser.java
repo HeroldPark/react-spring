@@ -1,19 +1,21 @@
 package shane.blog.config.auth.dto;
 
 import lombok.Getter;
-import shane.blog.user.entries.User;
-
+import shane.blog.common.Role;
+import shane.blog.entity.Member;
 import java.io.Serializable;
 
 @Getter
 public class SessionUser implements Serializable {
-    private String name;
+    private String username;
     private String email;
+    private Role roles;
     private String picture;
 	
-    public SessionUser(User user) {
-        this.name = user.getName();
-        this.email = user.getEmail();
-        this.picture = user.getPicture();
+    public SessionUser(Member member) {
+        this.username = member.getUsername();
+        this.email = member.getEmail();
+        this.roles = member.getRoles();
+        this.picture = member.getPicture();
     }
 }

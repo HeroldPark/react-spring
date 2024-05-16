@@ -29,7 +29,6 @@ public class SecurityConfig {
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final CorsConfigurationSource corsConfigurationSource;
 
-    @Autowired
     private final CustomOAuth2UserService customOAuth2UserService;
 
     @Bean
@@ -42,6 +41,7 @@ public class SecurityConfig {
           "/user/checkId"
         , "/user/register"
         , "/user/login"
+        , "/user/code/{registrationId}"
         , "/board/list"
         , "/board/{boardId}"
         , "/board/search"
@@ -49,6 +49,7 @@ public class SecurityConfig {
         , "/board/{boardId}/file/download/**"
     };
 
+    @SuppressWarnings("removal")
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         log.debug("SecurityConfig.filterChain() start");
@@ -57,10 +58,10 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .cors(cors -> cors.configurationSource(corsConfigurationSource))
 
-                // OAuth2 로그인을 사용
-                .oauth2Login(Customizer.withDefaults())
-                // .userInfoEndpoint()
-                // .userService(customOAuth2UserService)
+                // // OAuth2 로그인을 사용
+                .oauth2Login(login -> login
+                        .userInfoEndpoint()
+                        .userService(customOAuth2UserService))
 
                 .authorizeHttpRequests(authorize
                         -> authorize
