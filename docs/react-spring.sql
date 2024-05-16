@@ -134,10 +134,9 @@ CREATE TABLE IF NOT EXISTS `tb_board` (
   `title` varchar(2048) NOT NULL,
   `content` text DEFAULT NULL COMMENT '65535 chars까지 가능',
   `view_count` int(11) DEFAULT NULL,
+  `member_id` bigint(20) NOT NULL,
   `created_date` varchar(50) DEFAULT NULL,
   `modified_date` varchar(50) DEFAULT NULL,
-  `member_id` bigint(20) NOT NULL,
-  `create_date` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`board_id`),
   KEY `FK_board_member` (`member_id`),
   CONSTRAINT `FK_board_member` FOREIGN KEY (`member_id`) REFERENCES `tb_member` (`member_id`) ON DELETE CASCADE ON UPDATE NO ACTION
@@ -146,21 +145,20 @@ CREATE TABLE IF NOT EXISTS `tb_board` (
 -- 테이블 데이터 react-spring.tb_board:~2 rows (대략적) 내보내기
 DELETE FROM `tb_board`;
 /*!40000 ALTER TABLE `tb_board` DISABLE KEYS */;
-INSERT INTO `tb_board` (`board_id`, `title`, `content`, `view_count`, `created_date`, `modified_date`, `member_id`, `create_date`) VALUES
-	(1, 'Hello react-spring world~~', 'start react-spring study...\n\n1. Spring boot + React\n2. Spring boot 3.x.x 버젼 적용\n3. Practice React\n4. Optional JPA, MyBatis\n5. Left or Header Menu\n6. JWT Security\n7. 일반 로그인, Google OAuth2 로그인', 31, NULL, '2024/05/14 14:19:42', 1, '2024/04/02 11:21:05'),
-	(4, 'Development react-spring on the Spring boot framework', '게시판 관리    => JPA ORM 사용\n . 게시판        => Authentication, Authorization 불필요\n . 직원리스트  => USER 권한만 조회 가능\n . 갤러리형     => 준비 중\n . 카렌다형     => 준비 중\n\n웹서버 관리       => MyBatis 사용\n . 게시판           => "ADMIN", "USER" 권한 필요\n . 사용자리스트   => ADMIN 권한만 조회 가능', 32, '2024/05/08 11:22:10', '2024/05/14 14:16:42', 1, NULL);
+INSERT INTO `tb_board` (`board_id`, `title`, `content`, `view_count`, `member_id`, `created_date`, `modified_date`) VALUES
+	(1, 'Hello react-spring world~~', 'start react-spring study...\n\n1. Spring boot + React\n2. Spring boot 3.x.x 은 backend에서 처리함.(여기서 Thymeleaf는 사용하지 않는다)\n3. React는 frontend 아래 배치함.\n4. Optional JPA(Java Persistence API), MyBatis\n5. Left or Header Menu\n6. JWT(Josn Web Token) Security - Authority를 계정에 따라 GUEST, USER, ADMIN으로 설정하여 각각의 메뉴를 권한에 따라 사용 가능하게 함.\n7. 일반 로그인, Google OAuth2 로그인', 38, 1, NULL, '2024/05/16 08:44:06'),
+	(4, 'Development react-spring on the Spring boot framework', '게시판 관리    => JPA ORM 사용\n . 게시판        => Authentication, Authorization 불필요\n . 직원리스트  => USER 권한만 조회 가능\n . 갤러리형     => 준비 중\n . 카렌다형     => 준비 중\n\n웹서버 관리       => MyBatis 사용\n . 게시판           => "ADMIN", "USER" 권한 필요\n . 사용자리스트   => ADMIN 권한만 조회 가능', 39, 1, '2024/05/08 11:22:10', '2024/05/16 10:56:59');
 /*!40000 ALTER TABLE `tb_board` ENABLE KEYS */;
 
 -- 테이블 react-spring.tb_comment 구조 내보내기
 CREATE TABLE IF NOT EXISTS `tb_comment` (
   `comment_id` bigint(20) NOT NULL AUTO_INCREMENT,
   `content` varchar(2048) NOT NULL DEFAULT '',
-  `created_date` varchar(50) NOT NULL DEFAULT '',
-  `modified_date` varchar(50) NOT NULL DEFAULT '',
   `board_id` int(11) DEFAULT NULL,
   `user_id` bigint(20) DEFAULT NULL,
-  `create_date` varchar(255) DEFAULT NULL,
   `member_id` bigint(20) DEFAULT NULL,
+  `created_date` varchar(50) NOT NULL DEFAULT '',
+  `modified_date` varchar(50) NOT NULL DEFAULT '',
   PRIMARY KEY (`comment_id`),
   KEY `FK_comment_board` (`board_id`),
   KEY `FK_comment_member` (`user_id`),
@@ -173,11 +171,11 @@ CREATE TABLE IF NOT EXISTS `tb_comment` (
 -- 테이블 데이터 react-spring.tb_comment:~4 rows (대략적) 내보내기
 DELETE FROM `tb_comment`;
 /*!40000 ALTER TABLE `tb_comment` DISABLE KEYS */;
-INSERT INTO `tb_comment` (`comment_id`, `content`, `created_date`, `modified_date`, `board_id`, `user_id`, `create_date`, `member_id`) VALUES
-	(6, 'react-spring 게시판 기본은 github에서 Download 함(https://github.com/jhcode33).\nSpring boot : 3.1.11\nMyBatis : 3.0.3\nJava : 17', '2024/05/14 11:20:29', '2024/05/14 11:30:57', 4, NULL, NULL, 1),
-	(7, '왼쪽 메뉴는 아인커뮤니케이션의 static resources customizing 함.\n. Backend(Spring boot)\n. Frontend(React)', '2024/05/14 11:21:57', '2024/05/14 13:02:48', 4, NULL, NULL, 1),
-	(8, '상황에 따라 JPA(Java Persistence API)와 MyBatis를 적적하게 사용할 수 있도록 함.', '2024/05/14 11:24:15', '2024/05/14 11:24:15', 4, NULL, NULL, 1),
-	(9, 'JWT(Json Web Token)을 적용하여 Authentication(인증), Authorization(인가, 권한)을 사용할 수 있도록 함.', '2024/05/14 11:24:32', '2024/05/14 11:27:14', 4, NULL, NULL, 1);
+INSERT INTO `tb_comment` (`comment_id`, `content`, `board_id`, `user_id`, `member_id`, `created_date`, `modified_date`) VALUES
+	(6, 'react-spring 게시판 기본은 github에서 Download 함(https://github.com/jhcode33).\nSpring boot : 3.1.11\nMyBatis : 3.0.3\nJava : 17', 4, NULL, 1, '2024/05/14 11:20:29', '2024/05/14 11:30:57'),
+	(7, '왼쪽 메뉴는 아인커뮤니케이션의 static resources customizing 함.\n. Backend(Spring boot)\n. Frontend(React)', 4, NULL, 1, '2024/05/14 11:21:57', '2024/05/14 13:02:48'),
+	(8, '상황에 따라 JPA(Java Persistence API)와 MyBatis를 적적하게 사용할 수 있도록 함.', 4, NULL, 1, '2024/05/14 11:24:15', '2024/05/14 11:24:15'),
+	(9, 'JWT(Json Web Token)을 적용하여 Authentication(인증), Authorization(인가, 권한)을 사용할 수 있도록 함.\n로그인 하지 않으면 게시판(JPA) 보기만 가능함', 4, NULL, 1, '2024/05/14 11:24:32', '2024/05/16 08:43:33');
 /*!40000 ALTER TABLE `tb_comment` ENABLE KEYS */;
 
 -- 테이블 react-spring.tb_employee 구조 내보내기
@@ -212,11 +210,10 @@ CREATE TABLE IF NOT EXISTS `tb_file` (
   `file_id` bigint(20) NOT NULL,
   `origin_file_name` varchar(50) NOT NULL,
   `file_path` varchar(50) NOT NULL,
+  `board_id` int(11) DEFAULT NULL,
+  `file_type` varchar(255) DEFAULT NULL,
   `created_date` varchar(50) DEFAULT NULL,
   `modified_date` varchar(50) DEFAULT NULL,
-  `board_id` int(11) DEFAULT NULL,
-  `create_date` varchar(255) DEFAULT NULL,
-  `file_type` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`file_id`),
   KEY `FK_file_board` (`board_id`),
   CONSTRAINT `FK_file_board` FOREIGN KEY (`board_id`) REFERENCES `tb_board` (`board_id`) ON DELETE CASCADE ON UPDATE NO ACTION
@@ -233,19 +230,19 @@ CREATE TABLE IF NOT EXISTS `tb_member` (
   `email` varchar(50) NOT NULL,
   `username` varchar(50) NOT NULL,
   `password` varchar(256) NOT NULL,
+  `roles` enum('ADMIN','USER','GUEST') DEFAULT NULL,
+  `picture` varchar(512) DEFAULT NULL,
   `created_date` varchar(50) DEFAULT NULL,
   `modified_date` varchar(50) DEFAULT NULL,
-  `create_date` varchar(255) DEFAULT NULL,
-  `roles` enum('ADMIN','USER','GUEST') DEFAULT NULL,
   PRIMARY KEY (`member_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 -- 테이블 데이터 react-spring.tb_member:~2 rows (대략적) 내보내기
 DELETE FROM `tb_member`;
 /*!40000 ALTER TABLE `tb_member` DISABLE KEYS */;
-INSERT INTO `tb_member` (`member_id`, `email`, `username`, `password`, `created_date`, `modified_date`, `create_date`, `roles`) VALUES
-	(1, 'admin@deltax.ai', 'admin', '$2a$10$HTWwKtPoEo2dfnw7rXMJh.m9Iwn2COOcHquv7TMwKC9BufUMBcCW2', NULL, '2024/04/02 11:19:39', '2024/04/02 11:19:39', 'ADMIN'),
-	(3, 'user@deltax.ai', 'user', '$2a$10$f2APTXwqSTjmYn8oAcWw.ugYzdVHlvNyoywXrZZvr2ydajtbax3SK', '2024/05/14 08:57:20', '2024/05/14 08:57:20', NULL, 'USER');
+INSERT INTO `tb_member` (`member_id`, `email`, `username`, `password`, `roles`, `picture`, `created_date`, `modified_date`) VALUES
+	(1, 'admin@deltax.ai', 'admin', '$2a$10$HTWwKtPoEo2dfnw7rXMJh.m9Iwn2COOcHquv7TMwKC9BufUMBcCW2', 'ADMIN', NULL, NULL, '2024/04/02 11:19:39'),
+	(3, 'user@deltax.ai', 'user', '$2a$10$f2APTXwqSTjmYn8oAcWw.ugYzdVHlvNyoywXrZZvr2ydajtbax3SK', 'USER', NULL, '2024/05/14 08:57:20', '2024/05/14 08:57:20');
 /*!40000 ALTER TABLE `tb_member` ENABLE KEYS */;
 
 -- 테이블 react-spring.tb_user 구조 내보내기
