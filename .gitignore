@@ -11,6 +11,8 @@ backend/src/main/resources/static/static/js/main.*.js
 backend/src/main/resources/static/static/js/main.*.js.map
 backend/src/main/resources/static/static/js/main.*.js.LICENSE.txt
 
+backend/src/main/resources/application.yml
+
 frontend/build
 frontend/node_modules
 

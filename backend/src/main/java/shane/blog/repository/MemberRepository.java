@@ -10,7 +10,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     Optional<Member> findByEmail(String email);
 
-    // OAuth2 로그인을 위한 추가
-    Member findByUsername(String username);
+    // // OAuth2 로그인을 위한 추가
+    // Member findByUsername(String username);
 
 }
