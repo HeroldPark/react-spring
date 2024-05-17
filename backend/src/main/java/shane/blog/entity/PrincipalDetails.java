@@ -2,6 +2,7 @@
 
 // import org.springframework.security.core.GrantedAuthority;
 // import org.springframework.security.core.userdetails.UserDetails;
+// import org.springframework.security.oauth2.core.user.OAuth2User;
 
 // import jakarta.persistence.Entity;
 // import jakarta.persistence.Table;
@@ -12,13 +13,14 @@
 // import java.util.ArrayList;
 // import java.util.Collection;
 // import java.util.List;
+// import java.util.Map;
 
 // @Getter
 // @Setter
 // @Entity
 // @Table(name = "tb_member")
 // @NoArgsConstructor
-// public class PrincipalDetails extends BaseTimeEntity implements UserDetails {
+// public class PrincipalDetails implements UserDetails, OAuth2User {
     
 //     private Member member;
 
@@ -64,6 +66,16 @@
 //     @Override
 //     public boolean isEnabled() {
 //         return true;
+//     }
+
+//     @Override
+//     public String getName() {
+//         return null;
+//     }
+
+//     @Override
+//     public Map<String, Object> getAttributes() {
+//         throw new UnsupportedOperationException("Unimplemented method 'getAttributes'");
 //     }
 
 // }

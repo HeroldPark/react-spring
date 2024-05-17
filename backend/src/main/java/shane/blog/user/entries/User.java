@@ -4,7 +4,8 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import shane.blog.user.enums.Role;
+// import shane.blog.user.enums.Role;
+import shane.blog.common.Role;
 
 @Getter // Getter 생성
 @NoArgsConstructor // Default 생성자
@@ -44,7 +45,7 @@ public class User extends BaseTimeEntity { // BaseTimeEntity 상속
         return this;
     }
 	
-    public String getRoleKey() {
-        return this.role.getKey();
-    }
+    // public String getRoleKey() {
+    //     return this.role.getKey();
+    // }
 }

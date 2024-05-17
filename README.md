@@ -277,3 +277,15 @@
         C:\Users\DeltaX_20>set GOOGLE_CLIENT_SECRET=GOCSPX-wODcxGB7ta-XYZ
         C:\Users\DeltaX_20>echo %GOOGLE_CLIENT_SECRET%
         GOCSPX-wODcxGB7ta-XYZ
+
+# 23. 2024-05-17
+    - Google OAuth2를 사용하기 위헤서는 Google Cloud에 가입한 후 Google OAuth2.0 세팅을 해야 한다.
+    - 참고 : https://darrenlog.tistory.com/38
+
+    - 오류 메시지
+    Parameter 0 of method setFilterChains in org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration required a bean of type 'org.springframework.security.oauth2.client.registration.ClientRegistrationRepository' that could not be found.
+    => application.yml에서 들여쓰기 오류이다.(chatGPT에서는 전혀 다른 가이드를 제시한다.)
+
+    - google OAuth2 로그인 안된다.
+    - Login.js => SecurityConfig.java => LoginController.java 로 진행이 안된다.(?)
+    => GET http://localhost:8989/login?error 405 (Method Not Allowed)

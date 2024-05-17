@@ -146,8 +146,8 @@ CREATE TABLE IF NOT EXISTS `tb_board` (
 DELETE FROM `tb_board`;
 /*!40000 ALTER TABLE `tb_board` DISABLE KEYS */;
 INSERT INTO `tb_board` (`board_id`, `title`, `content`, `view_count`, `member_id`, `created_date`, `modified_date`) VALUES
-	(1, 'Hello react-spring world~~', 'start react-spring study...\n\n1. Spring boot + React\n2. Spring boot 3.x.x 은 backend에서 처리함.(여기서 Thymeleaf는 사용하지 않는다)\n3. React는 frontend 아래 배치함.\n4. Optional JPA(Java Persistence API), MyBatis\n5. Left or Header Menu\n6. JWT(Josn Web Token) Security - Authority를 계정에 따라 GUEST, USER, ADMIN으로 설정하여 각각의 메뉴를 권한에 따라 사용 가능하게 함.\n7. 일반 로그인, Google OAuth2 로그인', 38, 1, NULL, '2024/05/16 08:44:06'),
-	(4, 'Development react-spring on the Spring boot framework', '게시판 관리    => JPA ORM 사용\n . 게시판        => Authentication, Authorization 불필요\n . 직원리스트  => USER 권한만 조회 가능\n . 갤러리형     => 준비 중\n . 카렌다형     => 준비 중\n\n웹서버 관리       => MyBatis 사용\n . 게시판           => "ADMIN", "USER" 권한 필요\n . 사용자리스트   => ADMIN 권한만 조회 가능', 39, 1, '2024/05/08 11:22:10', '2024/05/16 10:56:59');
+	(1, 'Hello react-spring world~~', 'start react-spring study...\n\n1. Spring boot + React\n2. Spring boot 3.x.x 은 backend에서 처리함.(여기서 Thymeleaf는 사용하지 않는다)\n3. React는 frontend 아래 배치함.\n4. Optional JPA(Java Persistence API), MyBatis\n5. Left or Header Menu\n6. JWT(Josn Web Token) Security - Authority를 계정에 따라 GUEST, USER, ADMIN으로 설정하여 각각의 메뉴를 권한에 따라 사용 가능하게 함.\n7. 일반 로그인, Google OAuth2 로그인', 39, 1, NULL, '2024/05/17 07:44:58'),
+	(4, 'Development react-spring on the Spring boot framework', '게시판 관리    => JPA ORM 사용\n . 게시판        => Authentication, Authorization 불필요\n . 직원리스트  => USER 권한만 조회 가능\n . 갤러리형     => 준비 중\n . 카렌다형     => 준비 중\n\n웹서버 관리       => MyBatis 사용\n . 게시판           => "ADMIN", "USER" 권한 필요\n . 사용자리스트   => ADMIN 권한만 조회 가능', 40, 1, '2024/05/08 11:22:10', '2024/05/17 07:44:45');
 /*!40000 ALTER TABLE `tb_board` ENABLE KEYS */;
 
 -- 테이블 react-spring.tb_comment 구조 내보내기
@@ -270,11 +270,13 @@ CREATE TABLE IF NOT EXISTS `users` (
   `picture` varchar(1024) DEFAULT NULL,
   `role` enum('ADMIN','USER','GUEST') DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- 테이블 데이터 react-spring.users:~0 rows (대략적) 내보내기
 DELETE FROM `users`;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
+INSERT INTO `users` (`id`, `name`, `email`, `picture`, `role`) VALUES
+	(1, 'admin', 'admin@deltax.ai', 'admin picture', 'ADMIN');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

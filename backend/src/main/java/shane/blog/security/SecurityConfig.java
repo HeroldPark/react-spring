@@ -1,16 +1,19 @@
 package shane.blog.security;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.oauth2.client.registration.ClientRegistration;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
+import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
+import org.springframework.security.oauth2.core.oidc.IdTokenClaimNames;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.web.cors.CorsConfigurationSource;
 
 import lombok.RequiredArgsConstructor;
@@ -18,17 +21,19 @@ import lombok.extern.slf4j.Slf4j;
 import shane.blog.config.auth.CustomOAuth2UserService;
 import shane.blog.security.jwt.JwtAuthenticationEntryPoint;
 import shane.blog.security.jwt.JwtAuthenticationFilter;
+// import shane.blog.service.PrincipalOAuth2DetailsService;
 
+@Slf4j
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
-@Slf4j
 public class SecurityConfig {
 
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final CorsConfigurationSource corsConfigurationSource;
 
+    // private final PrincipalOAuth2DetailsService principalOAuth2DetailsService;
     private final CustomOAuth2UserService customOAuth2UserService;
 
     @Bean
@@ -41,12 +46,14 @@ public class SecurityConfig {
           "/user/checkId"
         , "/user/register"
         , "/user/login"
-        , "/user/code/{registrationId}"
+        // , "/login/oauth2/code/{registrationId}"
         , "/board/list"
         , "/board/{boardId}"
         , "/board/search"
         , "/board/{boardId}/comment/list/**"
         , "/board/{boardId}/file/download/**"
+        // , "/error/**" // 추가된 부분
+        , "/login/oauth2/code/{registrationId}" // 추가된 부분
     };
 
     @SuppressWarnings("removal")
@@ -58,21 +65,23 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .cors(cors -> cors.configurationSource(corsConfigurationSource))
 
-                // // OAuth2 로그인을 사용
-                .oauth2Login(login -> login
-                        .userInfoEndpoint()
+                // OAuth2 로그인을 사용
+                .oauth2Login(login -> login     // OAuth2 로그인을 이용한다.
+                        .userInfoEndpoint()     // 로그인된 유저의 정보를 가져온다.
                         .userService(customOAuth2UserService))
+                        // .userService(principalOAuth2DetailsService))  // 가져온 유저의 정보를 principalOAuth2DetailsService 객체가 처리한다.
 
                 .authorizeHttpRequests(authorize
                         -> authorize
-                        .requestMatchers(allowedUrls).permitAll()
+                        // .requestMatchers(allowedUrls).permitAll()
 
-                        .requestMatchers("/employees").hasAnyRole("USER")  // 추가(JPA)
-                        .requestMatchers("/post/**").hasAnyRole("ADMIN", "USER")    // 추가(Mybatis)
-                        .requestMatchers("/member/**").hasRole("ADMIN")  // 추가(Mybatis)
+                        // .requestMatchers("/employees").hasAnyRole("USER")  // 추가(JPA)
+                        // .requestMatchers("/post/**").hasAnyRole("ADMIN", "USER")    // 추가(Mybatis)
+                        // .requestMatchers("/member/**").hasRole("ADMIN")  // 추가(Mybatis)
 
-                        .requestMatchers("/board/**").hasAnyRole("ADMIN", "USER", "GUEST")
-                        .anyRequest().authenticated()      // 나머지는 모두 인증, 인가 받아야 한다.
+                        // .requestMatchers("/board/**").hasAnyRole("ADMIN", "USER", "GUEST")
+                        // .anyRequest().authenticated()      // 나머지는 모두 인증, 인가 받아야 한다.
+                        .anyRequest().permitAll()
                     )
 
                 // 쿠키와 세션을 사용하지 않는다. 클라이언트의 상태를 유지할 필요가 있는 경우나 인증된 사용자의 상태를 관리해야 하는 경우에는 이 정책을 사용하지 않는다.

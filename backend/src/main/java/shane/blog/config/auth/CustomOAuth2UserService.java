@@ -2,13 +2,11 @@ package shane.blog.config.auth;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import shane.blog.config.auth.dto.OAuthAttributes;
 import shane.blog.config.auth.dto.SessionUser;
 import shane.blog.entity.Member;
 import shane.blog.repository.MemberRepository;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
@@ -20,18 +18,17 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
-
-    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     private final MemberRepository userRepository;
     private final HttpSession httpSession;
 	
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
-        logger.debug("loadUser() 시작. \t {}", userRequest);
+        log.debug("loadUser() 시작. \t {}", userRequest);
 
         OAuth2UserService<OAuth2UserRequest, OAuth2User> delegate = new DefaultOAuth2UserService();
         OAuth2User oAuth2User = delegate.loadUser(userRequest);

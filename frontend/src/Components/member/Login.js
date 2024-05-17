@@ -48,7 +48,6 @@ function Login() {
 				setHeaders({"Authorization": `Bearer ${resp.data.token}`}); // 헤더 Authorization 필드 저장
 
 				navigate("/bbslist");
-				
 		})
 		.catch((err) => {
 			console.log("[Login.js] login() error :<");
@@ -71,37 +70,34 @@ function Login() {
 	}
 
 	const googleLogin = async () => {
-
 		const req = {
 			email: id,
 			password: pwd
-		}
-
-		await axios.post("http://localhost:8989/user/code/google", req)
-		.then((resp) => {
+		};
+	
+		try {
+			const resp = await axios.post("http://localhost:8989/login/oauth2/code/google", req);
 			console.log("[Login.js] googleLogin() success :D");
 			console.log(resp.data);
-
-				if(resp.data.token == null) {
-					alert("⚠️ 계정 정보가 없습니다. 다시 시도해주세요.");
-					return;
-				}
-				alert(resp.data.email + "님, 성공적으로 로그인 되었습니다 🔐");
-
-				// JWT 토큰 저장
-				localStorage.setItem("bbs_access_token", resp.data.token);
-				localStorage.setItem("id", resp.data.email);
-
-				setAuth(resp.data.email); // 사용자 인증 정보(아이디 저장)
-				setHeaders({"Authorization": `Bearer ${resp.data.token}`}); // 헤더 Authorization 필드 저장
-
-				navigate("/bbslist");
-				
-		})
-		.catch((err) => {
+	
+			if (resp.data.token == null) {
+				alert("⚠️ 계정 정보가 없습니다. 다시 시도해주세요.");
+				return;
+			}
+			alert(resp.data.email + "님, 성공적으로 로그인 되었습니다 🔐");
+	
+			// JWT 토큰 저장
+			localStorage.setItem("bbs_access_token", resp.data.token);
+			localStorage.setItem("id", resp.data.email);
+	
+			setAuth(resp.data.email); // 사용자 인증 정보(아이디 저장)
+			setHeaders({ "Authorization": `Bearer ${resp.data.token}` }); // 헤더 Authorization 필드 저장
+	
+			navigate("/bbslist");
+		} catch (err) {
 			console.log("[Login.js] googleLogin() error :<");
 			console.log(err);
-
+	
 			if (err.response) {
 				// 서버로부터 응답이 도착한 경우
 				alert("⚠️ " + err.response.data);
@@ -115,7 +111,7 @@ function Login() {
 				// 요청을 설정하는 과정에서 예외가 발생한 경우
 				console.log("Error:", err.message);
 			}
-		});
+		}
 	}
 
 	return (

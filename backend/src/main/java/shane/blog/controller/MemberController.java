@@ -34,7 +34,7 @@ public class MemberController {
 
     private final MemberService memberService;
     // private final CustomOAuth2UserService googleService;
-    private final LoginService  loginService;
+    // private final LoginService  loginService;
 
     @GetMapping("/checkId")
     public ResponseEntity<?> checkIdDuplicate(@RequestParam String email) {
@@ -54,21 +54,21 @@ public class MemberController {
         return ResponseEntity.status(HttpStatus.OK).header(loginDTO.getToken()).body(loginDTO);
     }
 
-    // SNS에서 승인된 리디렉션 URI 등록
-    // http://localhost:8989/user/code/google
-    @PostMapping("/code/{registrationId}")
-    public ResponseEntity<Void> googleLogin(@RequestBody MemberLoginDto memberLoginDTO, @RequestParam String code, @PathVariable String registrationId) {
-        log.debug("googleLogin() email={}", memberLoginDTO.getEmail());
-        log.debug("googleLogin() registrationId={}", registrationId);
+    // // GOOGLE 계정으로 로그인
+    // // http://localhost:8989/user/code/google
+    // @PostMapping("/code/{registrationId}")
+    // public ResponseEntity<Void> googleLogin(@RequestBody MemberLoginDto memberLoginDTO, @RequestParam String code, @PathVariable String registrationId) {
+    //     log.debug("googleLogin() email={}", memberLoginDTO.getEmail());
+    //     log.debug("googleLogin() registrationId={}", registrationId);
 
-        try {
-            loginService.socialLogin(code, registrationId);
-            return ResponseEntity.ok().build();
-        } catch (Exception e) {
-            log.error("Error during social login", e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-    }
+    //     try {
+    //         loginService.socialLogin(code, registrationId);
+    //         return ResponseEntity.ok().build();
+    //     } catch (Exception e) {
+    //         log.error("Error during social login", e);
+    //         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    //     }
+    // }
 
     @PostMapping("/checkPwd")
     public ResponseEntity<MemberResponseDto> check(
