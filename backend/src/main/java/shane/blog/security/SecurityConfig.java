@@ -2,6 +2,7 @@ package shane.blog.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -46,14 +47,15 @@ public class SecurityConfig {
           "/user/checkId"
         , "/user/register"
         , "/user/login"
-        // , "/login/oauth2/code/{registrationId}"
+        , "/login/oauth2/**"
+        , "/login/oauth2/code/**"
         , "/board/list"
         , "/board/{boardId}"
         , "/board/search"
         , "/board/{boardId}/comment/list/**"
         , "/board/{boardId}/file/download/**"
         // , "/error/**" // 추가된 부분
-        , "/login/oauth2/code/{registrationId}" // 추가된 부분
+        // , "/login/oauth2/code/google" // 추가된 부분
     };
 
     @SuppressWarnings("removal")
@@ -73,15 +75,16 @@ public class SecurityConfig {
 
                 .authorizeHttpRequests(authorize
                         -> authorize
-                        // .requestMatchers(allowedUrls).permitAll()
+                        .requestMatchers(allowedUrls).permitAll()
+                        // .requestMatchers("/login/getGoogleAuthUrl").permitAll() // 해당 경로에 대해 POST 요청을 허용
 
                         // .requestMatchers("/employees").hasAnyRole("USER")  // 추가(JPA)
                         // .requestMatchers("/post/**").hasAnyRole("ADMIN", "USER")    // 추가(Mybatis)
                         // .requestMatchers("/member/**").hasRole("ADMIN")  // 추가(Mybatis)
 
                         // .requestMatchers("/board/**").hasAnyRole("ADMIN", "USER", "GUEST")
-                        // .anyRequest().authenticated()      // 나머지는 모두 인증, 인가 받아야 한다.
-                        .anyRequest().permitAll()
+                        .anyRequest().authenticated()      // 나머지는 모두 인증, 인가 받아야 한다.
+                        // .anyRequest().permitAll()
                     )
 
                 // 쿠키와 세션을 사용하지 않는다. 클라이언트의 상태를 유지할 필요가 있는 경우나 인증된 사용자의 상태를 관리해야 하는 경우에는 이 정책을 사용하지 않는다.

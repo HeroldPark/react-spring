@@ -70,11 +70,59 @@ function Login() {
 		});
 	}
 
+	/*
 	const googleLogin = async () => {
 		const req = {
 			email: id,
 			password: pwd
 		};
+	
+		try {
+			const url = "http://localhost:8989/login/oauth2/google"; // "//"를 사용하지 않음
+			const resp = await axios.get(url, req, 
+				{ withCredentials: true }	// 쿠키와 같은 인증 정보를 공유할 수 있도록 설정
+			);
+			console.log("[Login.js] googleLogin() success :D");
+			console.log(resp.data);
+	
+			if (resp.data.token == null) {
+				alert("⚠️ 계정 정보가 없습니다. 다시 시도해주세요.");
+				return;
+			}
+			alert(resp.data.email + "님, 성공적으로 로그인 되었습니다 🔐");
+	
+			// JWT 토큰 저장
+			localStorage.setItem("bbs_access_token", resp.data.token);
+			localStorage.setItem("id", resp.data.email);
+	
+			setAuth(resp.data.email); // 사용자 인증 정보(아이디 저장)
+			setHeaders({ "Authorization": `Bearer ${resp.data.token}` }); // 헤더 Authorization 필드 저장
+	
+			navigate("/bbslist");
+		} catch (err) {
+			console.log("[Login.js] googleLogin() error :<");
+			console.log(err);
+	
+			if (err.response) {
+				// 서버로부터 응답이 도착한 경우
+				alert("⚠️ " + err.response.data);
+				// 오류 응답의 상태 코드와 메시지를 확인할 수 있음
+				console.log("Status:", err.response.status);
+				console.log("Message:", err.message);
+			} else if (err.request) {
+				// 서버로의 요청이 실패한 경우
+				console.log("Request error:", err.request);
+			} else {
+				// 요청을 설정하는 과정에서 예외가 발생한 경우
+				console.log("Error:", err.message);
+			}
+		}
+	}
+	*/
+
+	const googleLogin = async () => {
+		const id = document.getElementById("changeId").value; // 이메일 입력란
+		const pwd = document.getElementById("changePwd").value; // 비밀번호 입력란
 		
 		const form = document.createElement("form");
 		form.method = "POST";
@@ -96,40 +144,43 @@ function Login() {
 		document.body.appendChild(form); // 폼을 문서에 추가
 		form.submit(); // 폼 제출
 	}
+	
 
 	/*
 	* Create form to request access token from Google's OAuth 2.0 server.
 	*/
-	// function googleLogin() {
-	// 	// Google's OAuth 2.0 endpoint for requesting an access token
-	// 	var oauth2Endpoint = 'https://accounts.google.com/o/oauth2/auth';
+	/*
+	function googleLogin() {
+		// Google's OAuth 2.0 endpoint for requesting an access token
+		var oauth2Endpoint = 'https://accounts.google.com/o/oauth2/auth';
 	
-	// 	// Create <form> element to submit parameters to OAuth 2.0 endpoint.
-	// 	var form = document.createElement('form');
-	// 	form.setAttribute('method', 'GET'); // Send as a GET request.
-	// 	form.setAttribute('action', oauth2Endpoint);
+		// Create <form> element to submit parameters to OAuth 2.0 endpoint.
+		var form = document.createElement('form');
+		form.setAttribute('method', 'GET'); // Send as a GET request.
+		form.setAttribute('action', oauth2Endpoint);
 	
-	// 	// Parameters to pass to OAuth 2.0 endpoint.
-	// 	var params = {'client_id': '33063057275-5rtjgjlas7ia19fdrkfvrh4sm4gc92oi.apps.googleusercontent.com',
-	// 				'redirect_uri': 'http://localhost:8989/login/oauth2/code/google',
-	// 				'response_type': 'token',
-	// 				'scope': 'https://www.googleapis.com/auth/drive.metadata.readonly',
-	// 				'include_granted_scopes': 'true',
-	// 				'state': 'pass-through value'};
+		// Parameters to pass to OAuth 2.0 endpoint.
+		var params = {'client_id': '33063057275-5rtjgjlas7ia19fdrkfvrh4sm4gc92oi.apps.googleusercontent.com',
+					'redirect_uri': 'http://localhost:8989/login/oauth2/code/google',
+					'response_type': 'token',
+					'scope': 'https://www.googleapis.com/auth/drive.metadata.readonly',
+					'include_granted_scopes': 'true',
+					'state': 'pass-through value'};
 	
-	// 	// Add form parameters as hidden input values.
-	// 	for (var p in params) {
-	// 		var input = document.createElement('input');
-	// 		input.setAttribute('type', 'hidden');
-	// 		input.setAttribute('name', p);
-	// 		input.setAttribute('value', params[p]);
-	// 		form.appendChild(input);
-	// 	}
+		// Add form parameters as hidden input values.
+		for (var p in params) {
+			var input = document.createElement('input');
+			input.setAttribute('type', 'hidden');
+			input.setAttribute('name', p);
+			input.setAttribute('value', params[p]);
+			form.appendChild(input);
+		}
 	
-	// 	// Add form to page and submit it to open the OAuth 2.0 endpoint.
-	// 	document.body.appendChild(form);
-	// 	form.submit();
-	// }
+		// Add form to page and submit it to open the OAuth 2.0 endpoint.
+		document.body.appendChild(form);
+		form.submit();
+	}
+	*/
 
 	return (
 		<div>

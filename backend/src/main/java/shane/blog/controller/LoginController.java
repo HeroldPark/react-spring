@@ -22,10 +22,10 @@ public class LoginController {
         this.loginService = loginService;
     }
 
-    @PostMapping("/code/{registrationId}")
-    public void googleLogin(@RequestParam String code, @PathVariable String registrationId) {
-        loginService.socialLogin(code, registrationId);
-    }
+    // @PostMapping("/code/{registrationId}")
+    // public void googleLogin(@RequestParam String code, @PathVariable String registrationId) {
+    //     loginService.socialLogin(code, registrationId);
+    // }
 
     // @GetMapping(value = "/code/{registrationId}")
     // public String googleLogin(@RequestParam String code, @PathVariable String registrationId) {

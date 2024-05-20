@@ -1,0 +1,18 @@
+# # Google OAuth2 설정
+# # 참고 : https://darrenlog.tistory.com/38
+# # 설정 확인 방법 : https://accounts.google.com/o/oauth2/auth?client_id=CLIENT_ID&redirect_uri=REDIRECT_URI&response_type=code&scope=https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile
+# # CLIENT_ID=33063057275-5rtjgjlas7ia19fdrkfvrh4sm4gc92oi.apps.googleusercontent.com
+# # REDIRECT_URI=http://localhost:8989/login/oauth2/code/google
+# # client-secret=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
+# # scope=profile, email
+spring:
+  security:
+   oauth2:
+     client:
+       registration:
+         google:
+           client-id: 33063057275-5rtjgjlas7ia19fdrkfvrh4sm4gc92oi.apps.googleusercontent.com
+           client-secret: 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
+           scope:
+             - email
+             - profile
