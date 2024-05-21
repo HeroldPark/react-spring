@@ -7,6 +7,8 @@ import shane.blog.config.auth.dto.OAuthAttributes;
 import shane.blog.config.auth.dto.SessionUser;
 import shane.blog.entity.Member;
 import shane.blog.repository.MemberRepository;
+
+import org.hibernate.mapping.Map;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
@@ -35,9 +37,10 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 		
         String registrationId = userRequest.getClientRegistration().getRegistrationId();
         String userNameAttributeName = userRequest.getClientRegistration().getProviderDetails().getUserInfoEndpoint().getUserNameAttributeName();
-		
         OAuthAttributes attributes = OAuthAttributes.of(registrationId, userNameAttributeName, oAuth2User.getAttributes());
-		
+
+        System.out.println("attributes: " + attributes.getAttributes());
+        
         Member user = saveOrUpdate(attributes);
 		
         httpSession.setAttribute("user", new SessionUser(user));
@@ -61,11 +64,12 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
                     attributes.getNameAttributeKey()
         );
     }
-	
+
     private Member saveOrUpdate(OAuthAttributes attributes) {
         Member user = userRepository.findByEmail(attributes.getEmail())
                                     .map(entity -> {
-                                        entity.update(attributes.getPassword(), attributes.getUsername());
+                                        // entity.update(attributes.getPassword(), attributes.getUsername());
+                                        entity.update(attributes.getUsername(), attributes.getEmail());
                                         return entity;
                                     })
                                     .orElse(attributes.toEntity());

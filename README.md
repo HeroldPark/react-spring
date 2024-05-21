@@ -289,3 +289,37 @@
     - google OAuth2 로그인 안된다.
     - Login.js => SecurityConfig.java => LoginController.java 로 진행이 안된다.(?)
     => GET http://localhost:8989/login?error 405 (Method Not Allowed)
+
+# 24. 2024-05-21
+    - Login.js
+        const form = document.createElement("form");
+        form.method = "POST";
+        form.action = "http://localhost:8989/login/oauth2/google";
+    - SecurityConfig.java
+        // OAuth2 로그인을 사용
+        .oauth2Login(login -> login     // OAuth2 로그인을 이용한다.
+            .userInfoEndpoint()             // 로그인된 유저의 정보를 가져온다.
+            .userService(customOAuth2UserService))
+    - ApiRestController.java
+        // 구글 로그인창 호출
+        @PostMapping(value = "/login/oauth2/google")
+        public ResponseEntity<?> getGoogleAuthUrl(HttpServletRequest request) throws Exception {
+            ......
+        }
+
+        // 구글에서 리다이렉션
+        public String oauth_google_check(HttpServletRequest request,
+                                     @RequestParam(value = "code") String authCode,
+                                     HttpServletResponse response) throws Exception{
+            ..............
+        }
+    - 구글에서 리다이렉션으로 넘어오지 못하는 장애(?)
+![oauth2 로그인](./docs/images/oauth2로그인.png)
+<h3 align="center">
+  oauth2 로그인
+</h3>
+        -> 이 상태에서 계속을 클릭하면 오류 발생.
+        -> Failed to load resource: the server responded with a status of 401 ()
+
+    - SecurityConfig.java 에서 OAuthController.java로 넘어갈때 오류
+    => Cannot invoke "org.springframework.security.core.Authentication.getPrincipal()" because "authentication" is null

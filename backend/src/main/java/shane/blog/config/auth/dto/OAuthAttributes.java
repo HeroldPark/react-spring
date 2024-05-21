@@ -33,7 +33,7 @@ public class OAuthAttributes {
 	
     private static OAuthAttributes ofGoogle(String userNameAttributeName, Map<String, Object> attributes) {
         return OAuthAttributes.builder()
-                .username((String) attributes.get("username"))
+                .username((String) attributes.get("name"))  // 여기서는 name을 username에 입력한다.
                 .password((String) attributes.get("password"))
                 .email((String) attributes.get("email"))
                 .roles((Role) attributes.get("roles"))

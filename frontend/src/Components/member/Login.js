@@ -78,7 +78,7 @@ function Login() {
 		
 		const form = document.createElement("form");
 		form.method = "POST";
-		form.action = "http://localhost:8989/login/oauth2/google"; // 폼의 action 속성에 요청할 URL을 설정
+		form.action = "http://localhost:8989/oauth2/authorization/google";
 		
 		const emailField = document.createElement("input");
 		emailField.type = "hidden"; // 숨겨진 input 필드
@@ -95,6 +95,8 @@ function Login() {
 		
 		document.body.appendChild(form); // 폼을 문서에 추가
 		form.submit(); // 폼 제출
+
+		console.log("googleLogin: submitted form to server");
 	}
 
 	/*
@@ -154,6 +156,7 @@ function Login() {
 			<div className="my-1 d-flex justify-content-center">
 				<button className="btn btn-outline-secondary" onClick={login}><i className="fas fa-sign-in-alt"></i> 로그인</button>
 				<button className="btn btn-outline-secondary" onClick={googleLogin}><i className="fas fa-sign-in-alt"></i> 구글 로그인</button>
+				{/* <a href="http://localhost:8989/oauth2/authorization/google">구글 로그인</a> */}
 			</div>
 
 			{/* Naver 소셜을 통한 로그인 */}

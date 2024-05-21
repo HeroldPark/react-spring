@@ -63,9 +63,13 @@ public class Member extends BaseTimeEntity implements UserDetails {
     }
 
     //== update ==//
-    public void update(String password, String username) {
-        this.password = password;
+    // public void update(String password, String username) {
+    //     this.password = password;
+    //     this.username = username;
+    // }
+    public void update(String username, String email) {
         this.username = username;
+        this.email = email;
     }
 
     //========== UserDetails implements ==========//
@@ -73,10 +77,10 @@ public class Member extends BaseTimeEntity implements UserDetails {
      * Token을 고유한 Email 값으로 생성합니다
      * @return email;
      */
-    @Override
-    public String getUsername() {
-        return email;
-    }
+    // @Override
+    // public String getUsername() {
+    //     return email;
+    // }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

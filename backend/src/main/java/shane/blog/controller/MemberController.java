@@ -10,7 +10,6 @@ import shane.blog.dto.request.member.MemberUpdateDto;
 import shane.blog.dto.response.member.MemberResponseDto;
 import shane.blog.dto.response.member.MemberTokenDto;
 import shane.blog.entity.Member;
-import shane.blog.service.LoginService;
 import shane.blog.service.MemberService;
 
 import org.slf4j.Logger;
