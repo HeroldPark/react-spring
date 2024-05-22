@@ -16,6 +16,7 @@ import CheckPwd from "../member/CheckPwd";
 import EmployeeList from "../employee/EmployeeList"
 import MemberList from "../member/MemberList"
 import PostList from "../post/PostList"
+import CallBackGoogle from "../member/CallBackGoogle"
 
 function Router() {
 
@@ -40,6 +41,8 @@ function Router() {
 			<Route path="/employees" element={<EmployeeList />}></Route>
 			<Route path="/member" element={<MemberList />}></Route>
             <Route path="/post" element={<PostList />}></Route>
+
+			<Route path="/googlecallback" element={<CallBackGoogle />}></Route>
 		</Routes>
 	);
 }

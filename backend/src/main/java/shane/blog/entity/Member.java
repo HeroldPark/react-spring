@@ -63,14 +63,14 @@ public class Member extends BaseTimeEntity implements UserDetails {
     }
 
     //== update ==//
-    // public void update(String password, String username) {
-    //     this.password = password;
-    //     this.username = username;
-    // }
-    public void update(String email, String username) {
-        this.email = email;
+    public void update(String password, String username) {
+        this.password = password;
         this.username = username;
     }
+    // public void update(String email, String username) {
+    //     this.email = email;
+    //     this.username = username;
+    // }
 
     //========== UserDetails implements ==========//
     /**

@@ -1,5 +1,6 @@
 package shane.blog.controller;
 
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,7 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import shane.blog.service.LoginService;
 
 @Slf4j
-@RestController
+@Controller
 @RequestMapping(value = "/login/oauth2", produces = "application/json")
 public class LoginController {
 
@@ -22,10 +23,20 @@ public class LoginController {
         this.loginService = loginService;
     }
 
-    // @PostMapping("/code/{registrationId}")
-    // public void googleLogin(@RequestParam String code, @PathVariable String registrationId) {
-    //     loginService.socialLogin(code, registrationId);
-    // }
+    @GetMapping("/info")
+    public String googleLogin() {
+        log.debug("LoginController.googleLogin() 시작");
+
+        // loginService.socialLogin(code, registrationId);
+        return "/Components/member/Login";
+    }
+
+    @GetMapping("/code/{registrationId}")
+    public void googleLogin(@RequestParam String code, @PathVariable String registrationId) {
+        log.debug("LoginController.googleLogin() 시작");
+
+        loginService.socialLogin(code, registrationId);
+    }
 
     // @GetMapping(value = "/code/{registrationId}")
     // public String googleLogin(@RequestParam String code, @PathVariable String registrationId) {
@@ -50,10 +61,10 @@ public class LoginController {
     //     return "authentication";
     // }
 
-    @RequestMapping(value = "/error", method = { RequestMethod.GET, RequestMethod.POST })
-    public String error(HttpServletRequest request) {
-        log.debug("LoginController.error Processing. \t {}", request);
+    // @RequestMapping(value = "/error", method = { RequestMethod.GET, RequestMethod.POST })
+    // public String error(HttpServletRequest request) {
+    //     log.debug("LoginController.error Processing. \t {}", request);
 
-        return "error";
-    }
+    //     return "error";
+    // }
 }

@@ -34,7 +34,7 @@ public class MemberController {
 
     private final MemberService memberService;
     // private final CustomOAuth2UserService googleService;
-    // private final LoginService  loginService;
+    private final LoginService  loginService;
 
     @GetMapping("/checkId")
     public ResponseEntity<?> checkIdDuplicate(@RequestParam String email) {

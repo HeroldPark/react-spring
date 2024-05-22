@@ -15,12 +15,12 @@
 //     instance
 //       .get(`/oauth2/naver?code=${code}&state=${state}`)
 //       .then((response) => {
-//         const token: Token = {
-//           accessToken: response.data.accessToken,
-//           refreshToken: response.data.refreshToken,
-//           roles: response.data.roles,
-//         };
-//         if (token) setToken(token);
+//             const token: Token = {
+//                 accessToken: response.data.accessToken,
+//                 refreshToken: response.data.refreshToken,
+//                 roles: response.data.roles,
+//             };
+//             if (token) setToken(token);
 //       })
 //       .then(() => router.push('/home'))
 //       .catch((err) => {

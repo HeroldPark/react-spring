@@ -1,13 +1,20 @@
 package shane.blog.security;
 
+import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfigurationSource;
 
@@ -15,22 +22,29 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import shane.blog.security.jwt.JwtAuthenticationEntryPoint;
 import shane.blog.security.jwt.JwtAuthenticationFilter;
+import shane.blog.security.jwt.MyAuthenticationSuccessHandler;
 // import shane.blog.service.PrincipalOAuth2DetailsService;
 import shane.blog.service.CustomOAuth2UserService;
+import shane.blog.service.OAuth2UserService;
 
 @Slf4j
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
 
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final CorsConfigurationSource corsConfigurationSource;
-
-    // private final PrincipalOAuth2DetailsService principalOAuth2DetailsService;
     private final CustomOAuth2UserService customOAuth2UserService;
 
+    private final OAuth2UserService oAuth2UserService;
+ 
+    // public SecurityConfig(OAuth2UserService oAuth2UserService) {
+    //     this.oAuth2UserService = oAuth2UserService;
+    // }
+    
     @Bean
     public AuthenticationManager authenticationManager(
             AuthenticationConfiguration authenticationConfiguration) throws Exception {
@@ -41,8 +55,9 @@ public class SecurityConfig {
           "/user/checkId"
         , "/user/register"
         , "/user/login"
-        , "/login/oauth2/google"
-        // , "/login/oauth2/code/**"
+        , "/oauth2/authorization/google"    // OAuth2 로그인을 사용(1)
+        , "/login/oauth2/code/google"       // OAuth2 로그인을 사용(2)
+        , "/login/oauth2/google"            // OAuth2 성공시 redirect
         , "/board/list"
         , "/board/{boardId}"
         , "/board/search"
@@ -62,7 +77,6 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize
                                 -> authorize
                                         .requestMatchers(allowedUrls).permitAll()
-                                        // .requestMatchers("/login/getGoogleAuthUrl").permitAll() // 해당 경로에 대해 POST 요청을 허용
 
                                         .requestMatchers("/employees").hasAnyRole("USER") // 추가(JPA)
                                         .requestMatchers("/post/**").hasAnyRole("ADMIN", "USER") // 추가(Mybatis)
@@ -74,16 +88,20 @@ public class SecurityConfig {
                 )
 
                 //basic 인증방식은 username:password를 base64 인코딩으로 Authroization 헤더로 보내는 방식
-                .httpBasic(basic -> basic.disable())
-                .formLogin(login -> login.disable())
+                // .httpBasic(basic -> basic.disable())
+                // .formLogin(login -> login.disable())
 
                 // OAuth2 로그인을 사용
                 .oauth2Login(login -> login // OAuth2 로그인을 이용한다.
-                        .defaultSuccessUrl("/login/oauth2/google", true) // OAuth2 성공시 redirect
+                        .loginPage("/login/oauth2/info") // OAuth2 로그인 페이지
+                        .successHandler(successHandler())
+                        // .defaultSuccessUrl("/login/oauth2/google", true) // OAuth2 성공시 redirect
+                        // .successHandler(new MyAuthenticationSuccessHandler())   //인증에 성공하면 실행할 handler (redirect 시킬 목적)
                         .userInfoEndpoint() // 로그인된 유저의 정보를 가져온다.
-                        .userService(customOAuth2UserService))
-                // .userService(principalOAuth2DetailsService)) // 가져온 유저의 정보를
-                // principalOAuth2DetailsService 객체가 처리한다.
+                        .userService(oAuth2UserService) // 가져온 유저의 정보를 oAuth2UserService 객체가 처리한다.
+                        // .userService(customOAuth2UserService)
+                        )
+                // .userService(principalOAuth2DetailsService)) // 가져온 유저의 정보를 principalOAuth2DetailsService 객체가 처리한다.
 
                 // 쿠키와 세션을 사용하지 않는다. 클라이언트의 상태를 유지할 필요가 있는 경우나 인증된 사용자의 상태를 관리해야 하는 경우에는 이 정책을 사용하지 않는다.
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -97,5 +115,28 @@ public class SecurityConfig {
                 // .addFilterBefore(jwtAuthenticationFilter, BasicAuthenticationFilter .class)
 
                 .build();
+    }
+
+    @Bean
+    public AuthenticationSuccessHandler successHandler() {
+        log.debug("SecurityConfig.successHandler() : 시작");
+
+        return ((request, response, authentication) -> {
+            DefaultOAuth2User defaultOAuth2User = (DefaultOAuth2User) authentication.getPrincipal();
+ 
+            String id = defaultOAuth2User.getAttributes().get("code").toString();
+            String body = """
+                    {"id":"%s"}
+                    """.formatted(id);
+ 
+            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+            response.setCharacterEncoding(StandardCharsets.UTF_8.name());
+ 
+            PrintWriter writer = response.getWriter();
+            writer.println(body);
+            writer.flush();
+
+            log.debug("SecurityConfig.successHandler() : id={}, body={}", id, body);
+        });
     }
 }
