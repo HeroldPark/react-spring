@@ -67,20 +67,22 @@ public class Member extends BaseTimeEntity implements UserDetails {
     //     this.password = password;
     //     this.username = username;
     // }
-    public void update(String username, String email) {
-        this.username = username;
+    public void update(String email, String username) {
         this.email = email;
+        this.username = username;
     }
 
     //========== UserDetails implements ==========//
     /**
      * Token을 고유한 Email 값으로 생성합니다
+     * return은 반드시 email로 설정해야 합니다.(UserDetails에서 username은 email로 설정했기 때문에)
+     * JwtTokenUtil.generateToken()에서 email을 가져와 토큰을 생성합니다.
      * @return email;
      */
-    // @Override
-    // public String getUsername() {
-    //     return email;
-    // }
+    @Override
+    public String getUsername() {
+        return email;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

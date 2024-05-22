@@ -1,4 +1,4 @@
-package shane.blog.config.auth;
+package shane.blog.service;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -7,8 +7,6 @@ import shane.blog.config.auth.dto.OAuthAttributes;
 import shane.blog.config.auth.dto.SessionUser;
 import shane.blog.entity.Member;
 import shane.blog.repository.MemberRepository;
-
-import org.hibernate.mapping.Map;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
@@ -34,15 +32,13 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
         OAuth2UserService<OAuth2UserRequest, OAuth2User> delegate = new DefaultOAuth2UserService();
         OAuth2User oAuth2User = delegate.loadUser(userRequest);
-		
         String registrationId = userRequest.getClientRegistration().getRegistrationId();
         String userNameAttributeName = userRequest.getClientRegistration().getProviderDetails().getUserInfoEndpoint().getUserNameAttributeName();
         OAuthAttributes attributes = OAuthAttributes.of(registrationId, userNameAttributeName, oAuth2User.getAttributes());
-
-        System.out.println("attributes: " + attributes.getAttributes());
+		
+        log.debug("attributes: {}", attributes);
         
         Member user = saveOrUpdate(attributes);
-		
         httpSession.setAttribute("user", new SessionUser(user));
 		
         String roles = "";
@@ -64,12 +60,16 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
                     attributes.getNameAttributeKey()
         );
     }
-
+	
     private Member saveOrUpdate(OAuthAttributes attributes) {
         Member user = userRepository.findByEmail(attributes.getEmail())
+                                    // .map(entity -> {
+                                    //     entity.update(attributes.getPassword(), attributes.getUsername());
+                                    //     return entity;
+                                    // })
+                                    // OAuth 서비스 사이트에서 유저 정보 변경이 있을 수 있기 때문에 우리 DB에도 update
                                     .map(entity -> {
-                                        // entity.update(attributes.getPassword(), attributes.getUsername());
-                                        entity.update(attributes.getUsername(), attributes.getEmail());
+                                        entity.update(attributes.getEmail(), attributes.getUsername());
                                         return entity;
                                     })
                                     .orElse(attributes.toEntity());

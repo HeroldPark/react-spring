@@ -18,13 +18,11 @@ public class MemberUpdateDto {
     private String password;
     private String passwordCheck;
     private String username;
-    private String email;
 
     @Builder
-    public MemberUpdateDto(String password, String passwordCheck, String username, String email) {
+    public MemberUpdateDto(String password, String passwordCheck, String username) {
         this.password = password;
         this.passwordCheck = passwordCheck;
         this.username = username;
-        this.email = email;
     }
 }

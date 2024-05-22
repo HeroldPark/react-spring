@@ -3,13 +3,14 @@ package shane.blog.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import shane.blog.common.exception.MemberException;
-import shane.blog.config.auth.CustomOAuth2UserService;
 import shane.blog.dto.request.member.MemberLoginDto;
 import shane.blog.dto.request.member.MemberRegisterDto;
 import shane.blog.dto.request.member.MemberUpdateDto;
 import shane.blog.dto.response.member.MemberResponseDto;
 import shane.blog.dto.response.member.MemberTokenDto;
 import shane.blog.entity.Member;
+import shane.blog.service.CustomOAuth2UserService;
+import shane.blog.service.LoginService;
 import shane.blog.service.MemberService;
 
 import org.slf4j.Logger;
@@ -49,6 +50,8 @@ public class MemberController {
 
     @PostMapping("/login")
     public ResponseEntity<MemberTokenDto> login(@RequestBody MemberLoginDto memberLoginDTO) {
+        log.debug("MemberController.login() start");
+
         MemberTokenDto loginDTO = memberService.login(memberLoginDTO);
         return ResponseEntity.status(HttpStatus.OK).header(loginDTO.getToken()).body(loginDTO);
     }

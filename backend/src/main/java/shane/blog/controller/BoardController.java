@@ -24,12 +24,11 @@ import org.springframework.web.bind.annotation.*;
 
 import jakarta.servlet.http.HttpServletRequest;
 
+@Slf4j
 @RestController
 @RequestMapping("/board")
 @RequiredArgsConstructor
-@Slf4j
 public class BoardController {
-    static Logger logger = (Logger) LoggerFactory.getLogger(BoardController.class);
 
     private final BoardService boardService;
 
@@ -40,11 +39,11 @@ public class BoardController {
             @RequestHeader("Authorization") String authorizationHeader) {
 
         // JWT 인증 토큰 확인을 위해서 추가
-        // System.out.println("Authorization Header: " + authorizationHeader);
+        log.debug("Authorization Header: " + authorizationHeader);
 
         Page<ResBoardListDto> listDTO = boardService.getAllBoards(pageable);
 
-        logger.debug("boardList: " + listDTO.toString());
+        log.debug("boardList: " + listDTO.toString());
 
         return ResponseEntity.status(HttpStatus.OK).body(listDTO);
     }

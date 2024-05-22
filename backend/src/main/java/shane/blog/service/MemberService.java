@@ -72,7 +72,6 @@ public class MemberService {
         Member member = new Member();
         memberRepository.findAll().forEach(e -> {
             if (e.getEmail().equals(email)) {
-                // member.setEmail(e.getUsername());
                 member.setEmail(e.getEmail());
                 member.setRoles(e.getRoles());
             }
@@ -95,8 +94,7 @@ public class MemberService {
         Member updateMember =  memberRepository.findByEmail(member.getEmail()).orElseThrow(
                 () -> new ResourceNotFoundException("Member", "Member Email", member.getEmail())
         );
-        // updateMember.update(encodePwd, updateDto.getUsername());
-        updateMember.update(updateDto.getUsername(), updateDto.getEmail());
+        updateMember.update(encodePwd, updateDto.getUsername());
         return MemberResponseDto.fromEntity(updateMember);
     }
 

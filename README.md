@@ -323,3 +323,6 @@
 
     - SecurityConfig.java 에서 OAuthController.java로 넘어갈때 오류
     => Cannot invoke "org.springframework.security.core.Authentication.getPrincipal()" because "authentication" is null
+
+# 25. 2024-05-22
+    - 기존 로그인 정상 복구 확인

@@ -34,7 +34,7 @@ function Login() {
 			withCredentials: true
 		}
 
-		await axios.post("http://localhost:8989/user/login")
+		await axios.post("http://localhost:8989/user/login", req)
 		.then((resp) => {
 			console.log("[Login.js] login() success :D");
 			console.log(resp.data);
@@ -99,40 +99,6 @@ function Login() {
 		console.log("googleLogin: submitted form to server");
 	}
 
-	/*
-	* Create form to request access token from Google's OAuth 2.0 server.
-	*/
-	// function googleLogin() {
-	// 	// Google's OAuth 2.0 endpoint for requesting an access token
-	// 	var oauth2Endpoint = 'https://accounts.google.com/o/oauth2/auth';
-	
-	// 	// Create <form> element to submit parameters to OAuth 2.0 endpoint.
-	// 	var form = document.createElement('form');
-	// 	form.setAttribute('method', 'GET'); // Send as a GET request.
-	// 	form.setAttribute('action', oauth2Endpoint);
-	
-	// 	// Parameters to pass to OAuth 2.0 endpoint.
-	// 	var params = {'client_id': '33063057275-5rtjgjlas7ia19fdrkfvrh4sm4gc92oi.apps.googleusercontent.com',
-	// 				'redirect_uri': 'http://localhost:8989/login/oauth2/code/google',
-	// 				'response_type': 'token',
-	// 				'scope': 'https://www.googleapis.com/auth/drive.metadata.readonly',
-	// 				'include_granted_scopes': 'true',
-	// 				'state': 'pass-through value'};
-	
-	// 	// Add form parameters as hidden input values.
-	// 	for (var p in params) {
-	// 		var input = document.createElement('input');
-	// 		input.setAttribute('type', 'hidden');
-	// 		input.setAttribute('name', p);
-	// 		input.setAttribute('value', params[p]);
-	// 		form.appendChild(input);
-	// 	}
-	
-	// 	// Add form to page and submit it to open the OAuth 2.0 endpoint.
-	// 	document.body.appendChild(form);
-	// 	form.submit();
-	// }
-
 	return (
 		<div>
 			<table className="table">
@@ -155,8 +121,8 @@ function Login() {
 
 			<div className="my-1 d-flex justify-content-center">
 				<button className="btn btn-outline-secondary" onClick={login}><i className="fas fa-sign-in-alt"></i> 로그인</button>
-				<button className="btn btn-outline-secondary" onClick={googleLogin}><i className="fas fa-sign-in-alt"></i> 구글 로그인</button>
-				{/* <a href="http://localhost:8989/oauth2/authorization/google">구글 로그인</a> */}
+				{/* <button className="btn btn-outline-secondary" onClick={googleLogin}><i className="fas fa-sign-in-alt"></i> 구글 로그인</button> */}
+				<a href="http://localhost:8989/oauth2/authorization/google" className="btn btn-sm btn-success active" role="button">Google Login</a>
 			</div>
 
 			{/* Naver 소셜을 통한 로그인 */}

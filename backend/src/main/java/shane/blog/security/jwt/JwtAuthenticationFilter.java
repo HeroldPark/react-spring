@@ -47,7 +47,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         // 토큰은 "Bearer "로 시작한다.(Bearer 뒤에 공백이 있음에 주의!)
         // 예) BbsList.js에서 /board/list로 보낸다.
         String header = request.getHeader(HEADER_STRING);
-        String username = null;
+        String username = null; // username 또는 email
         String authToken = null;
 
         if(header == null) {
