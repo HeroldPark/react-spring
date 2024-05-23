@@ -1,8 +1,10 @@
 import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom'; // useNavigate로 변경
 
-const CallBack = () => {
-    const router = useRouter();
-    const { setToken } = useToken();
+const CallBackGoogle = () => {
+    const navigate = useNavigate(); // useNavigate 훅을 사용하여 navigate 함수를 가져옵니다.
+    const { token, setToken } = useToken();
+
     const instance = axios.create({
         baseURL: 'http://localhost:8989',
         headers: {
@@ -15,7 +17,7 @@ const CallBack = () => {
         const state = new URL(window.location.href).searchParams.get('state');
 
         instance
-            .get(`/login/oauth2/code/google?code=${code}&state=${state}`)
+            .get(`/login/oauth2/code/google?state=${state}&code=${code}`)
             .then((response) => {
                 const token = {
                     accessToken: response.data.accessToken,
@@ -24,11 +26,11 @@ const CallBack = () => {
                 };
                 if (token) setToken(token);
             })
-            .then(() => router.push('/bbslist'))
+            .then(() => navigate('/bbslist')) // navigate 함수를 사용하여 페이지를 이동합니다.
             .catch((err) => {
-                err;
+                console.error(err); // 에러 핸들링을 위해 console.error를 사용합니다.
             });
-      }, []);
+    }, [history, setToken]); // useEffect의 종속성 배열에 history와 setToken을 추가합니다.
 
     return (
 		<div>
@@ -36,4 +38,5 @@ const CallBack = () => {
         </div>
     );
 }
-export default CallBack;
+
+export default CallBackGoogle;

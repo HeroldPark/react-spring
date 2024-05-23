@@ -94,9 +94,9 @@ public class SecurityConfig {
                 // OAuth2 로그인을 사용
                 .oauth2Login(login -> login // OAuth2 로그인을 이용한다.
                         .loginPage("/login/oauth2/info") // OAuth2 로그인 페이지
-                        .successHandler(successHandler())
+                        // .successHandler(successHandler())
                         // .defaultSuccessUrl("/login/oauth2/google", true) // OAuth2 성공시 redirect
-                        // .successHandler(new MyAuthenticationSuccessHandler())   //인증에 성공하면 실행할 handler (redirect 시킬 목적)
+                        .successHandler(new MyAuthenticationSuccessHandler())   //인증에 성공하면 실행할 handler (redirect 시킬 목적)
                         .userInfoEndpoint() // 로그인된 유저의 정보를 가져온다.
                         .userService(oAuth2UserService) // 가져온 유저의 정보를 oAuth2UserService 객체가 처리한다.
                         // .userService(customOAuth2UserService)
