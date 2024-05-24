@@ -3,8 +3,11 @@ package shane.blog.config.auth.dto;
 import lombok.Builder;
 import lombok.Getter;
 import shane.blog.common.Role;
+import shane.blog.config.auth.MemberProfile;
 import shane.blog.entity.Member;
+
 import java.util.Map;
+import java.util.Arrays;
 
 @Getter
 public class OAuthAttributes {
@@ -52,4 +55,5 @@ public class OAuthAttributes {
                 .picture(picture)
                 .build();
     }
+
 }

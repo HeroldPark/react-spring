@@ -331,3 +331,10 @@
     - SecurityConfig.successHandler를 사용하면 client로 전달되는 URL이 다르다.
         /code/google?state=KG0ZIHh8weoK4rss2Yqp4ERi13jS-RgH0QHA_y6TGhQ%3D&code=4%2F0AdLIrYc_BLB0qjlp13xON-s1WU2ONEww5WFAmBh9G1TmYmnbTgM3gLqAsC_o1SYk3fKc7g&scope=email+profile+openid+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email&authuser=0&prompt=none
     - 여기에서 필요한 값을 client에서 사용하면 될 것 같다.
+  
+# 26. 2024-05-23
+    - 드디어 로그인 성공.
+    - React - Springboot - mariadb - Springboot - React
+    - Google OAuth2 인증 받은 정보 member db 저장 관련 수정 필요
+    - 불필요한 Source 정리
+  

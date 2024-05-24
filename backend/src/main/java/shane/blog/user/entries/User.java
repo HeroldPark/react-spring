@@ -44,8 +44,16 @@ public class User extends BaseTimeEntity { // BaseTimeEntity 상속
 		
         return this;
     }
-	
-    // public String getRoleKey() {
-    //     return this.role.getKey();
-    // }
+
+    public void setName(Object obj) {
+        this.name = obj.toString();
+    }
+
+    public void setEmail(Object obj) {
+        this.email = obj.toString();
+    }
+
+    public void setPicture(Object obj) {
+        this.picture = obj.toString();
+    }
 }

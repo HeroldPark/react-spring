@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -22,9 +23,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import shane.blog.security.jwt.JwtAuthenticationEntryPoint;
 import shane.blog.security.jwt.JwtAuthenticationFilter;
-import shane.blog.security.jwt.MyAuthenticationSuccessHandler;
+import shane.blog.security.jwt.JwtTokenUtil;
+import shane.blog.security.jwt.OAuth2SuccessHandler;
 // import shane.blog.service.PrincipalOAuth2DetailsService;
-import shane.blog.service.CustomOAuth2UserService;
+// import shane.blog.service.CustomOAuth2UserService;
 import shane.blog.service.OAuth2UserService;
 
 @Slf4j
@@ -37,13 +39,13 @@ public class SecurityConfig {
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final CorsConfigurationSource corsConfigurationSource;
-    private final CustomOAuth2UserService customOAuth2UserService;
+    // private final CustomOAuth2UserService customOAuth2UserService;
 
-    private final OAuth2UserService oAuth2UserService;
- 
-    // public SecurityConfig(OAuth2UserService oAuth2UserService) {
-    //     this.oAuth2UserService = oAuth2UserService;
-    // }
+    // private final OAuth2UserService oAuth2UserService;
+    private final DefaultOAuth2UserService oAuth2UserService;
+
+    private final OAuth2SuccessHandler oAuth2SuccessHandler;
+    // private final JwtTokenUtil jwtTokenUtil;
     
     @Bean
     public AuthenticationManager authenticationManager(
@@ -57,7 +59,8 @@ public class SecurityConfig {
         , "/user/login"
         , "/oauth2/authorization/google"    // OAuth2 로그인을 사용(1)
         , "/login/oauth2/code/google"       // OAuth2 로그인을 사용(2)
-        , "/login/oauth2/google"            // OAuth2 성공시 redirect
+        // , "/api/v1/auth/oauth2/google"       // OAuth2 로그인을 사용(2)
+        , "/googlecallback"                // OAuth2 성공시 redirect
         , "/board/list"
         , "/board/{boardId}"
         , "/board/search"
@@ -92,15 +95,19 @@ public class SecurityConfig {
                 // .formLogin(login -> login.disable())
 
                 // OAuth2 로그인을 사용
-                .oauth2Login(login -> login // OAuth2 로그인을 이용한다.
-                        .loginPage("/login/oauth2/info") // OAuth2 로그인 페이지
+                .oauth2Login(oauth2 -> oauth2 // OAuth2 로그인을 이용한다.
+                        // .authorizationEndpoint(endpoint -> endpoint.baseUri("/api/v1/auth/oauth2")) // Login.js에서 "http://localhost:8989/oauth2/authorization/google"와 동일한 결과
+                        .redirectionEndpoint(endpoint -> endpoint.baseUri("/login/oauth2/code/google")) // OAuth2 로그인 성공 후 리다이렉션을 처리한다.
+                        .userInfoEndpoint(endpoint -> endpoint.userService(oAuth2UserService)) // OAuth2 로그인 성공 후 사용자 정보를 가져온다.
+                        .successHandler(oAuth2SuccessHandler)   //인증에 성공하면 실행할 handler (redirect 시킬 목적)
+                        // .loginPage("/login/oauth2/info") // OAuth2 로그인 페이지
                         // .successHandler(successHandler())
                         // .defaultSuccessUrl("/login/oauth2/google", true) // OAuth2 성공시 redirect
-                        .successHandler(new MyAuthenticationSuccessHandler())   //인증에 성공하면 실행할 handler (redirect 시킬 목적)
-                        .userInfoEndpoint() // 로그인된 유저의 정보를 가져온다.
-                        .userService(oAuth2UserService) // 가져온 유저의 정보를 oAuth2UserService 객체가 처리한다.
+                        // .successHandler(new MyAuthenticationSuccessHandler(jwtTokenUtil))   //인증에 성공하면 실행할 handler (redirect 시킬 목적)
+                        // .userInfoEndpoint() // 로그인된 유저의 정보를 가져온다.
+                        // .userService(oAuth2UserService) // 가져온 유저의 정보를 oAuth2UserService 객체가 처리한다.
                         // .userService(customOAuth2UserService)
-                        )
+                    )
                 // .userService(principalOAuth2DetailsService)) // 가져온 유저의 정보를 principalOAuth2DetailsService 객체가 처리한다.
 
                 // 쿠키와 세션을 사용하지 않는다. 클라이언트의 상태를 유지할 필요가 있는 경우나 인증된 사용자의 상태를 관리해야 하는 경우에는 이 정책을 사용하지 않는다.

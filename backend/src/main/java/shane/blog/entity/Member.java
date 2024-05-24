@@ -46,6 +46,9 @@ public class Member extends BaseTimeEntity implements UserDetails {
     @Column(nullable = false)
     private String picture;
 
+    @Column(nullable = false)
+    private String provider;
+
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     public List<Board> boards = new ArrayList<>();
 
@@ -54,12 +57,13 @@ public class Member extends BaseTimeEntity implements UserDetails {
 
     //== 생성자 Builder ==//
     @Builder
-    public Member(String email, String password, String username, Role roles, String picture) {
+    public Member(String email, String password, String username, Role roles, String picture, String provider) {
         this.email = email;
         this.password = password;
         this.username = username;
         this.roles = roles;
         this.picture = picture;
+        this.provider = provider;
     }
 
     //== update ==//
@@ -108,6 +112,10 @@ public class Member extends BaseTimeEntity implements UserDetails {
 
     @Override
     public boolean isEnabled() {
+        return true;
+    }
+
+    public boolean isPresent() {
         return true;
     }
 }

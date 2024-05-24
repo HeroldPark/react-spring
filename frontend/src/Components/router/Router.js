@@ -42,6 +42,7 @@ function Router() {
 			<Route path="/member" element={<MemberList />}></Route>
             <Route path="/post" element={<PostList />}></Route>
 
+			{/* <Route path="/oauth-response/:token/:expirationTime" element={<OAuth />}></Route> */}
 			<Route path="/googlecallback" element={<CallBackGoogle />}></Route>
 		</Routes>
 	);

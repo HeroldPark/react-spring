@@ -1,42 +1,50 @@
-import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom'; // useNavigate로 변경
+import React, { useEffect } from 'react';
+import { useCookies } from 'react-cookie';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useState, useContext } from "react";
+import { AuthContext } from "../context/AuthProvider";
+import { HttpHeadersContext } from "../context/HttpHeadersProvider";
 
-const CallBackGoogle = () => {
-    const navigate = useNavigate(); // useNavigate 훅을 사용하여 navigate 함수를 가져옵니다.
-    const { token, setToken } = useToken();
+export default function CallBackGoogle() {
+    console.log("[CallBackGoogle.js] CallBackGoogle() start");
 
-    const instance = axios.create({
-        baseURL: 'http://localhost:8989',
-        headers: {
-            'Content-type': 'application/json',
-        },
-    });
+    const { auth, setAuth } = useContext(AuthContext);
+    const { headers, setHeaders } = useContext(HttpHeadersContext);
+
+    // const {token, expirationTime } = useParams();
+    const location = useLocation();
+    const searchParams = new URLSearchParams(location.search);
+    const token = searchParams.get("token");
+    const name = searchParams.get("name");
+    const expirationTime = searchParams.get("expirationTime");
+
+    const [cookies, setCookie] = useCookies();
+    const navigate = useNavigate();
+
+    console.log("token: ", token);
+    console.log("name: ", name);
+    console.log("expirationTime: ", expirationTime);
 
     useEffect(() => {
-        const code = new URL(window.location.href).searchParams.get('code');
-        const state = new URL(window.location.href).searchParams.get('state');
+        if(!token || !expirationTime) { return; }
 
-        instance
-            .get(`/login/oauth2/code/google?state=${state}&code=${code}`)
-            .then((response) => {
-                const token = {
-                    accessToken: response.data.accessToken,
-                    refreshToken: response.data.refreshToken,
-                    roles: response.data.roles,
-                };
-                if (token) setToken(token);
-            })
-            .then(() => navigate('/bbslist')) // navigate 함수를 사용하여 페이지를 이동합니다.
-            .catch((err) => {
-                console.error(err); // 에러 핸들링을 위해 console.error를 사용합니다.
-            });
-    }, [history, setToken]); // useEffect의 종속성 배열에 history와 setToken을 추가합니다.
+        const now = (new Date().getTime()) * 1000;
+        const expires = new Date(now + Number(expirationTime));
+
+        setCookie('accessToken', token, { path: '/', expires });
+
+        // JWT 토큰 저장
+		localStorage.setItem("bbs_access_token", token);
+		localStorage.setItem("id", name);
+
+		setAuth(name); // 사용자 인증 정보(아이디 저장)
+		setHeaders({"Authorization": `Bearer ${token}`}); // 헤더 Authorization 필드 저장
+
+        navigate('/bbslist');
+
+    }, [token, expirationTime]);
 
     return (
-		<div>
-            <h1>로그인 중...</h1>
-        </div>
+        <div></div>
     );
 }
-
-export default CallBackGoogle;

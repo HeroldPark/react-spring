@@ -123,6 +123,7 @@ function Login() {
 				<button className="btn btn-outline-secondary" onClick={login}><i className="fas fa-sign-in-alt"></i> 로그인</button>
 				{/* <button className="btn btn-outline-secondary" onClick={googleLogin}><i className="fas fa-sign-in-alt"></i> 구글 로그인</button> */}
 				<a href="http://localhost:8989/oauth2/authorization/google" className="btn btn-sm btn-success active" role="button">Google Login</a>
+				{/* <a href="http://localhost:8989//api/v1/auth/oauth2/google" className="btn btn-sm btn-success active" role="button">Google Login</a> */}
 			</div>
 
 			{/* Naver 소셜을 통한 로그인 */}
