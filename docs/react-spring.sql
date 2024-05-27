@@ -236,14 +236,15 @@ CREATE TABLE IF NOT EXISTS `tb_member` (
   `modified_date` varchar(50) DEFAULT NULL,
   `provider` varchar(16) DEFAULT NULL,
   PRIMARY KEY (`member_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 -- 테이블 데이터 react-spring.tb_member:~2 rows (대략적) 내보내기
 DELETE FROM `tb_member`;
 /*!40000 ALTER TABLE `tb_member` DISABLE KEYS */;
 INSERT INTO `tb_member` (`member_id`, `email`, `username`, `password`, `roles`, `picture`, `created_date`, `modified_date`, `provider`) VALUES
 	(1, 'admin@deltax.ai', 'admin', '$2a$10$HTWwKtPoEo2dfnw7rXMJh.m9Iwn2COOcHquv7TMwKC9BufUMBcCW2', 'ADMIN', NULL, '2024/04/02 11:19:39', '2024/04/02 11:19:39', NULL),
-	(3, 'user@deltax.ai', 'user', '$2a$10$f2APTXwqSTjmYn8oAcWw.ugYzdVHlvNyoywXrZZvr2ydajtbax3SK', 'USER', NULL, '2024/05/14 08:57:20', '2024/05/14 08:57:20', NULL);
+	(3, 'user@deltax.ai', 'user', '$2a$10$f2APTXwqSTjmYn8oAcWw.ugYzdVHlvNyoywXrZZvr2ydajtbax3SK', 'USER', NULL, '2024/05/14 08:57:20', '2024/05/14 08:57:20', NULL),
+	(7, 'heroldpark@gmail.com', '박용렬', 'p@ssw0rd', 'USER', 'https://lh3.googleusercontent.com/a/ACg8ocKOei1-nXJsQQwULK7zncX2e9UIWrcOVjiUWqSHWMmpLmcR12IWGA=s96-c', '2024/05/27 09:53:08', '2024/05/27 09:53:08', NULL);
 /*!40000 ALTER TABLE `tb_member` ENABLE KEYS */;
 
 -- 테이블 react-spring.tb_user 구조 내보내기

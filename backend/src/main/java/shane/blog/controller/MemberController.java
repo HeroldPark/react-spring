@@ -56,22 +56,6 @@ public class MemberController {
         return ResponseEntity.status(HttpStatus.OK).header(loginDTO.getToken()).body(loginDTO);
     }
 
-    // // GOOGLE 계정으로 로그인
-    // // http://localhost:8989/user/code/google
-    // @PostMapping("/code/{registrationId}")
-    // public ResponseEntity<Void> googleLogin(@RequestBody MemberLoginDto memberLoginDTO, @RequestParam String code, @PathVariable String registrationId) {
-    //     log.debug("googleLogin() email={}", memberLoginDTO.getEmail());
-    //     log.debug("googleLogin() registrationId={}", registrationId);
-
-    //     try {
-    //         loginService.socialLogin(code, registrationId);
-    //         return ResponseEntity.ok().build();
-    //     } catch (Exception e) {
-    //         log.error("Error during social login", e);
-    //         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-    //     }
-    // }
-
     @PostMapping("/checkPwd")
     public ResponseEntity<MemberResponseDto> check(
             @AuthenticationPrincipal Member member,

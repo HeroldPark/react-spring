@@ -45,7 +45,6 @@ public class SecurityConfig {
     private final CustomOAuth2UserService customOAuth2UserService; // 최종
 
     private final OAuth2SuccessHandler oAuth2SuccessHandler;
-    // private final JwtTokenUtil jwtTokenUtil;
     
     @Bean
     public AuthenticationManager authenticationManager(
@@ -100,13 +99,6 @@ public class SecurityConfig {
                         .redirectionEndpoint(endpoint -> endpoint.baseUri("/login/oauth2/code/google")) // OAuth2 로그인 성공 후 리다이렉션을 처리한다.
                         .userInfoEndpoint(endpoint -> endpoint.userService(customOAuth2UserService)) // OAuth2 로그인 성공 후 사용자 정보를 가져온다.
                         .successHandler(oAuth2SuccessHandler)   //인증에 성공하면 실행할 handler (redirect 시킬 목적)
-                        // .loginPage("/login/oauth2/info") // OAuth2 로그인 페이지
-                        // .successHandler(successHandler())
-                        // .defaultSuccessUrl("/login/oauth2/google", true) // OAuth2 성공시 redirect
-                        // .successHandler(new MyAuthenticationSuccessHandler(jwtTokenUtil))   //인증에 성공하면 실행할 handler (redirect 시킬 목적)
-                        // .userInfoEndpoint() // 로그인된 유저의 정보를 가져온다.
-                        // .userService(oAuth2UserService) // 가져온 유저의 정보를 oAuth2UserService 객체가 처리한다.
-                        // .userService(customOAuth2UserService)
                     )
                 // .userService(principalOAuth2DetailsService)) // 가져온 유저의 정보를 principalOAuth2DetailsService 객체가 처리한다.
 
@@ -124,26 +116,4 @@ public class SecurityConfig {
                 .build();
     }
 
-    @Bean
-    public AuthenticationSuccessHandler successHandler() {
-        log.debug("SecurityConfig.successHandler() : 시작");
-
-        return ((request, response, authentication) -> {
-            DefaultOAuth2User defaultOAuth2User = (DefaultOAuth2User) authentication.getPrincipal();
- 
-            String id = defaultOAuth2User.getAttributes().get("code").toString();
-            String body = """
-                    {"id":"%s"}
-                    """.formatted(id);
- 
-            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-            response.setCharacterEncoding(StandardCharsets.UTF_8.name());
- 
-            PrintWriter writer = response.getWriter();
-            writer.println(body);
-            writer.flush();
-
-            log.debug("SecurityConfig.successHandler() : id={}, body={}", id, body);
-        });
-    }
 }

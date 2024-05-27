@@ -341,4 +341,5 @@
 # 27. 2024-05-27
     - 일반 로그인, Google OAuth2 로그인 모두 정상
     - kakao, naver 에 대한 SNS 로그인을 추가하여 사용할 수도 있음
+    - Google OAuth2 개발 후 소스 코드 정리 완료(blog/user는 추후 테스트를 위해 남겨둠)
   

@@ -13,6 +13,12 @@ spring:
                 client-secret: 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
                 scope: profile, email
                 redirect-uri: http://localhost:8989/login/oauth2/code/google
+            # kakao:
+            #     client-id: TODO
+            #     client-secret: TODO
+            #     redirect-uri: http://localhost:8989/login/oauth2/code/{registrationId}
+            #     scope: profile_nickname, profile_image, account_email
+            #     authorization-grant-type: authorization_code
         provider:
             google:
                 authorization-uri: https://accounts.google.com/o/oauth2/auth
@@ -22,14 +28,18 @@ spring:
 
 2. SecurityConfig.java
    public class SecurityConfig {
+        private final CustomOAuth2UserService customOAuth2UserService; // 최종
+        private final OAuth2SuccessHandler oAuth2SuccessHandler;
+
         @Bean
         public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
             ........................................................................
-            .oauth2Login(login -> login                                 // OAuth2 로그인을 이용한다.
-                .loginPage("/login/oauth2/info")                        // OAuth2 로그인 페이지(여기로 넘어가지 않는다.?)
-                .successHandler(new MyAuthenticationSuccessHandler())   // 인증에 성공하면 실행할 handler (redirect 시킬 목적)
-                .userInfoEndpoint()                                     // 로그인된 유저의 정보를 가져온다.
-                .userService(oAuth2UserService)                         // 가져온 유저의 정보를 oAuth2UserService 객체가 처리한다.
+            // OAuth2 로그인을 사용
+            .oauth2Login(oauth2 -> oauth2 // OAuth2 로그인을 이용한다.
+                    // .authorizationEndpoint(endpoint -> endpoint.baseUri("/api/v1/auth/oauth2")) // Login.js에서 "http://localhost:8989/oauth2/authorization/google"와 동일한 결과
+                    .redirectionEndpoint(endpoint -> endpoint.baseUri("/login/oauth2/code/google")) // OAuth2 로그인 성공 후 리다이렉션을 처리한다.
+                    .userInfoEndpoint(endpoint -> endpoint.userService(customOAuth2UserService)) // OAuth2 로그인 성공 후 사용자 정보를 가져온다.
+                    .successHandler(oAuth2SuccessHandler)   //인증에 성공하면 실행할 handler (redirect 시킬 목적)
                 )
             ........................................................................
         }
@@ -41,23 +51,24 @@ spring:
         return (
             <div className="my-1 d-flex justify-content-center">
 				<button className="btn btn-outline-secondary" onClick={login}><i className="fas fa-sign-in-alt"></i> 로그인</button>
+				{/* <button className="btn btn-outline-secondary" onClick={googleLogin}><i className="fas fa-sign-in-alt"></i> 구글 로그인</button> */}
 				<a href="http://localhost:8989/oauth2/authorization/google" className="btn btn-sm btn-success active" role="button">Google Login</a>
 			</div>
         );
    }
 
-4. OAuth2UserService.java
-   public class OAuth2UserService extends DefaultOAuth2UserService {
+4. CustomOAuth2UserService.java
+   public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         @Override
         public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
             ........................................................................
         }
     }
 
-5. MyAuthenticationSuccessHandler.java
-   public class MyAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
+5. OAuth2SuccessHandler.java
+   public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
         
-        private static final String REDIRECT_URI = "http://localhost:3000/callbacklogin";
+        private static final String REDIRECT_URI = "http://localhost:3000/googlecallback";
 
         @Override
         public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
@@ -65,11 +76,56 @@ spring:
         }
    }
 
-6. CallBackLogin.js
-    const CallBack = () => {
+6. CallBackGoogle.js
+    import React, { useEffect } from 'react';
+    import { useCookies } from 'react-cookie';
+    import { useLocation, useNavigate, useParams } from 'react-router-dom';
+    import { useState, useContext } from "react";
+    import { AuthContext } from "../context/AuthProvider";
+    import { HttpHeadersContext } from "../context/HttpHeadersProvider";
+
+    export default function CallBackGoogle() {
+        console.log("[CallBackGoogle.js] CallBackGoogle() start");
+
+        const { auth, setAuth } = useContext(AuthContext);
+        const { headers, setHeaders } = useContext(HttpHeadersContext);
+
+        // const {token, expirationTime } = useParams();
+        const location = useLocation();
+        const searchParams = new URLSearchParams(location.search);
+        const token = searchParams.get("token");
+        const name = searchParams.get("name");
+        const email = searchParams.get("email");
+        const expirationTime = searchParams.get("expirationTime");
+
+        const [cookies, setCookie] = useCookies();
+        const navigate = useNavigate();
+
+        console.log("token: ", token);
+        console.log("name: ", name);
+        console.log("email: ", email);
+        console.log("expirationTime: ", expirationTime);
+
+        useEffect(() => {
+            if(!token || !expirationTime) { return; }
+
+            const now = (new Date().getTime()) * 1000;
+            const expires = new Date(now + Number(expirationTime));
+
+            setCookie('accessToken', token, { path: '/', expires });
+
+            // JWT 토큰 저장
+            localStorage.setItem("bbs_access_token", token);
+            localStorage.setItem("id", email);
+
+            setAuth(email); // 사용자 인증 정보(아이디 저장)
+            setHeaders({"Authorization": `Bearer ${token}`}); // 헤더 Authorization 필드 저장
+
+            navigate('/bbslist');
+
+        }, [token, expirationTime]);
+
         return (
-            <div>
-                <h1>로그인 중...</h1>
-            </div>
+            <div></div>
         );
     }
