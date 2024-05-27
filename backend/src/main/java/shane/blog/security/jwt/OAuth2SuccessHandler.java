@@ -43,13 +43,16 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
         Map<String, Object> attributes = oAuth2User.getAttributes();
         UserDetails userDetails = new Member();
         ((Member) userDetails).setUsername((String) attributes.get("name"));
+        ((Member) userDetails).setEmail((String) attributes.get("email"));
 
         String token = jwtTokenUtil.generateToken(userDetails);
         String name = (String) attributes.get("name");
+        String email = (String) attributes.get("email");
 
         String redirectUrl = UriComponentsBuilder.fromUriString(REDIRECT_URI)
                 .queryParam("token", token)
                 .queryParam("name", name)
+                .queryParam("email", email)
                 .queryParam("expirationTime", 3600)
                 .build()
                 .encode(StandardCharsets.UTF_8)

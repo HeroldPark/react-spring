@@ -12,7 +12,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
+
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -24,10 +24,9 @@ import lombok.extern.slf4j.Slf4j;
 import shane.blog.security.jwt.JwtAuthenticationEntryPoint;
 import shane.blog.security.jwt.JwtAuthenticationFilter;
 import shane.blog.security.jwt.JwtTokenUtil;
+import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
+import shane.blog.service.CustomOAuth2UserService;
 import shane.blog.security.jwt.OAuth2SuccessHandler;
-// import shane.blog.service.PrincipalOAuth2DetailsService;
-// import shane.blog.service.CustomOAuth2UserService;
-import shane.blog.service.OAuth2UserService;
 
 @Slf4j
 @Configuration
@@ -39,10 +38,11 @@ public class SecurityConfig {
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final CorsConfigurationSource corsConfigurationSource;
-    // private final CustomOAuth2UserService customOAuth2UserService;
+    
 
-    // private final OAuth2UserService oAuth2UserService;
-    private final DefaultOAuth2UserService oAuth2UserService;
+    // private final OAuth2UserService oAuth2UserService;   // 참고
+    // private final DefaultOAuth2UserService customOAuth2UserService; // 참고
+    private final CustomOAuth2UserService customOAuth2UserService; // 최종
 
     private final OAuth2SuccessHandler oAuth2SuccessHandler;
     // private final JwtTokenUtil jwtTokenUtil;
@@ -57,10 +57,10 @@ public class SecurityConfig {
           "/user/checkId"
         , "/user/register"
         , "/user/login"
-        , "/oauth2/authorization/google"    // OAuth2 로그인을 사용(1)
-        , "/login/oauth2/code/google"       // OAuth2 로그인을 사용(2)
-        // , "/api/v1/auth/oauth2/google"       // OAuth2 로그인을 사용(2)
-        , "/googlecallback"                // OAuth2 성공시 redirect
+        , "/oauth2/authorization/google"    // 최초 OAuth2 인증 요청(1)
+        // , "/api/v1/auth/oauth2/google"   // 최초 OAuth2 인증 요청(2)
+        , "/login/oauth2/code/google"       // OAuth2 리다이렉션(google OAuth2에서 CORS 처리를 해 주지 않아 오류 발생한다.)
+        , "/googlecallback"                 // OAuth2 성공시 redirect
         , "/board/list"
         , "/board/{boardId}"
         , "/board/search"
@@ -98,7 +98,7 @@ public class SecurityConfig {
                 .oauth2Login(oauth2 -> oauth2 // OAuth2 로그인을 이용한다.
                         // .authorizationEndpoint(endpoint -> endpoint.baseUri("/api/v1/auth/oauth2")) // Login.js에서 "http://localhost:8989/oauth2/authorization/google"와 동일한 결과
                         .redirectionEndpoint(endpoint -> endpoint.baseUri("/login/oauth2/code/google")) // OAuth2 로그인 성공 후 리다이렉션을 처리한다.
-                        .userInfoEndpoint(endpoint -> endpoint.userService(oAuth2UserService)) // OAuth2 로그인 성공 후 사용자 정보를 가져온다.
+                        .userInfoEndpoint(endpoint -> endpoint.userService(customOAuth2UserService)) // OAuth2 로그인 성공 후 사용자 정보를 가져온다.
                         .successHandler(oAuth2SuccessHandler)   //인증에 성공하면 실행할 handler (redirect 시킬 목적)
                         // .loginPage("/login/oauth2/info") // OAuth2 로그인 페이지
                         // .successHandler(successHandler())

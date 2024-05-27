@@ -338,3 +338,7 @@
     - Google OAuth2 인증 받은 정보 member db 저장 관련 수정 필요
     - 불필요한 Source 정리
   
+# 27. 2024-05-27
+    - 일반 로그인, Google OAuth2 로그인 모두 정상
+    - kakao, naver 에 대한 SNS 로그인을 추가하여 사용할 수도 있음
+  

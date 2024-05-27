@@ -16,6 +16,7 @@ export default function CallBackGoogle() {
     const searchParams = new URLSearchParams(location.search);
     const token = searchParams.get("token");
     const name = searchParams.get("name");
+    const email = searchParams.get("email");
     const expirationTime = searchParams.get("expirationTime");
 
     const [cookies, setCookie] = useCookies();
@@ -23,6 +24,7 @@ export default function CallBackGoogle() {
 
     console.log("token: ", token);
     console.log("name: ", name);
+    console.log("email: ", email);
     console.log("expirationTime: ", expirationTime);
 
     useEffect(() => {
@@ -35,9 +37,9 @@ export default function CallBackGoogle() {
 
         // JWT 토큰 저장
 		localStorage.setItem("bbs_access_token", token);
-		localStorage.setItem("id", name);
+		localStorage.setItem("id", email);
 
-		setAuth(name); // 사용자 인증 정보(아이디 저장)
+		setAuth(email); // 사용자 인증 정보(아이디 저장)
 		setHeaders({"Authorization": `Bearer ${token}`}); // 헤더 Authorization 필드 저장
 
         navigate('/bbslist');
