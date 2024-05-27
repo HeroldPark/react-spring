@@ -5,17 +5,24 @@ function Menubar() {
 	console.log("[Menubar.js] render()");
 
 	const [isOpenBbs, setIsOpenBbs] = useState(true);
-	const [isOpenWebServer, setIsOpenWebServer] = useState(true);
+	const [isOpenImageManager, setIsOpenImageManager] = useState(true);
+	const [isOpenWebManager, setIsOpenWebManager] = useState(true);
 
 	const toggleSubMenuBbs = (e) => {
 		e.preventDefault();
 		setIsOpenBbs(!isOpenBbs);
-		setIsOpenWebServer(false); // 다른 메뉴의 상태 변경
+		setIsOpenWebManager(false); // 다른 메뉴의 상태 변경
 	};
 	
-	const toggleSubMenuWebServer = (e) => {
+	const toggleSubMenuImageManager = (e) => {
 		e.preventDefault();
-		setIsOpenWebServer(!isOpenWebServer);
+		setIsOpenImageManager(!isOpenImageManager);
+		setIsOpenBbs(false); // 다른 메뉴의 상태 변경
+	};
+
+	const toggleSubMenuWebManager = (e) => {
+		e.preventDefault();
+		setIsOpenWebManager(!isOpenWebManager);
 		setIsOpenBbs(false); // 다른 메뉴의 상태 변경
 	};
 	
@@ -31,10 +38,17 @@ function Menubar() {
 						<li><a href="#" onClick={() => alert('준비 중입니다.')}>카렌다형</a></li>
 					</ul>
 				</li>
-				<li className={`has_sub ${isOpenWebServer ? 'open' : ''}`}>
-					<a href="#" className={isOpenWebServer ? 'on' : ''} onClick={toggleSubMenuWebServer}> <span>웹서버 관리(MyBatis)</span></a>
+				<li className={`has_sub ${isOpenImageManager ? 'open' : ''}`}>
+					<a href="#" className={isOpenImageManager ? 'on' : ''} onClick={toggleSubMenuImageManager}> <span>이미지 관리</span></a>
 					<ul>
-						<li><a href="/post">게시판</a></li>
+						<li><a href="/PictureList">리스트</a></li>
+						<li><a href="/detailPicture">상세정보</a></li>
+					</ul>
+				</li>
+				<li className={`has_sub ${isOpenWebManager ? 'open' : ''}`}>
+					<a href="#" className={isOpenWebManager ? 'on' : ''} onClick={toggleSubMenuWebManager}> <span>웹서버 관리(MyBatis)</span></a>
+					<ul>
+						<li><a href="/postlist">게시판</a></li>
 						<li><a href="/member">사용자리스트</a></li>
 						<li><a href="#" onClick={() => alert('준비 중입니다.')}>이력</a></li>
 					</ul>

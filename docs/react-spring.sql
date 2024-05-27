@@ -106,6 +106,28 @@ INSERT INTO `tbl_member` (`id`, `login_id`, `password`, `name`, `gender`, `birth
 	(13, 'test', '$2a$10$I/iXcBFjDsdMgy6X6EQ.1.MlnLihuBrORWFdUcSuOTzxy/0zMGroS', '테스트', 0, '2024-05-08', 0, '2024-05-10 08:14:49', NULL);
 /*!40000 ALTER TABLE `tbl_member` ENABLE KEYS */;
 
+-- 테이블 react-spring.tbl_picture 구조 내보내기
+CREATE TABLE IF NOT EXISTS `tbl_picture` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(100) DEFAULT NULL,
+  `content` varchar(255) DEFAULT NULL,
+  `writer` varchar(50) DEFAULT NULL,
+  `file_path` varchar(255) DEFAULT NULL,
+  `view_cnt` int(6) DEFAULT NULL,
+  `delete_yn` tinyint(1) DEFAULT NULL,
+  `created_date` datetime DEFAULT NULL,
+  `modified_date` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- 테이블 데이터 react-spring.tbl_picture:~0 rows (대략적) 내보내기
+DELETE FROM `tbl_picture`;
+/*!40000 ALTER TABLE `tbl_picture` DISABLE KEYS */;
+INSERT INTO `tbl_picture` (`id`, `title`, `content`, `writer`, `file_path`, `view_cnt`, `delete_yn`, `created_date`, `modified_date`) VALUES
+	(1, 'Test Title', 'Test Content', 'tester', '/picture/john-lee.jpg', 2, 0, '2024-05-27 13:08:10', '2024-05-27 13:08:10'),
+	(2, 'Test Title 1', 'Test Content 1', 'tester', '/video/sam.mp4', 2, 0, '2024-05-27 13:13:39', '2024-05-27 13:13:39');
+/*!40000 ALTER TABLE `tbl_picture` ENABLE KEYS */;
+
 -- 테이블 react-spring.tbl_post 구조 내보내기
 CREATE TABLE IF NOT EXISTS `tbl_post` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'PK',
@@ -139,15 +161,15 @@ CREATE TABLE IF NOT EXISTS `tb_board` (
   `modified_date` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`board_id`),
   KEY `FK_board_member` (`member_id`),
-  CONSTRAINT `FK_board_member` FOREIGN KEY (`member_id`) REFERENCES `tb_member` (`member_id`) ON DELETE CASCADE ON UPDATE NO ACTION
+  CONSTRAINT `FK_board_member` FOREIGN KEY (`member_id`) REFERENCES `tb_member` (`member_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 -- 테이블 데이터 react-spring.tb_board:~2 rows (대략적) 내보내기
 DELETE FROM `tb_board`;
 /*!40000 ALTER TABLE `tb_board` DISABLE KEYS */;
 INSERT INTO `tb_board` (`board_id`, `title`, `content`, `view_count`, `member_id`, `created_date`, `modified_date`) VALUES
-	(1, 'Hello react-spring world~~', 'start react-spring study...\n\n1. Spring boot + React\n2. Spring boot 3.x.x 은 backend에서 처리함.(여기서 Thymeleaf는 사용하지 않는다)\n3. React는 frontend 아래 배치함.\n4. Optional JPA(Java Persistence API), MyBatis\n5. Left or Header Menu\n6. JWT(Josn Web Token) Security - Authority를 계정에 따라 GUEST, USER, ADMIN으로 설정하여 각각의 메뉴를 권한에 따라 사용 가능하게 함.\n7. 일반 로그인, Google OAuth2 로그인', 39, 1, NULL, '2024/05/17 07:44:58'),
-	(4, 'Development react-spring on the Spring boot framework', '게시판 관리    => JPA ORM 사용\n . 게시판        => Authentication, Authorization 불필요\n . 직원리스트  => USER 권한만 조회 가능\n . 갤러리형     => 준비 중\n . 카렌다형     => 준비 중\n\n웹서버 관리       => MyBatis 사용\n . 게시판           => "ADMIN", "USER" 권한 필요\n . 사용자리스트   => ADMIN 권한만 조회 가능', 40, 1, '2024/05/08 11:22:10', '2024/05/17 07:44:45');
+	(1, 'Hello react-spring world~~', 'start react-spring study...\n\n1. Spring boot + React\n2. Spring boot 3.x.x 은 backend에서 처리함.(여기서 Thymeleaf는 사용하지 않는다)\n3. React는 frontend 아래 배치함.\n4. Optional JPA(Java Persistence API), MyBatis\n5. Left or Header Menu\n6. JWT(Josn Web Token) Security - Authority를 계정에 따라 GUEST, USER, ADMIN으로 설정하여 각각의 메뉴를 권한에 따라 사용 가능하게 함.\n7. 일반 로그인, Google OAuth2 로그인', 41, 1, NULL, '2024/05/27 10:05:38'),
+	(4, 'Development react-spring on the Spring boot framework', '게시판 관리    => JPA ORM 사용\n . 게시판        => Authentication, Authorization 불필요\n . 직원리스트  => USER 권한만 조회 가능\n . 갤러리형     => 준비 중\n . 카렌다형     => 준비 중\n\n웹서버 관리       => MyBatis 사용\n . 게시판           => "ADMIN", "USER" 권한 필요\n . 사용자리스트   => ADMIN 권한만 조회 가능', 48, 1, '2024/05/08 11:22:10', '2024/05/27 14:32:44');
 /*!40000 ALTER TABLE `tb_board` ENABLE KEYS */;
 
 -- 테이블 react-spring.tb_comment 구조 내보내기
@@ -238,7 +260,7 @@ CREATE TABLE IF NOT EXISTS `tb_member` (
   PRIMARY KEY (`member_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
--- 테이블 데이터 react-spring.tb_member:~2 rows (대략적) 내보내기
+-- 테이블 데이터 react-spring.tb_member:~3 rows (대략적) 내보내기
 DELETE FROM `tb_member`;
 /*!40000 ALTER TABLE `tb_member` DISABLE KEYS */;
 INSERT INTO `tb_member` (`member_id`, `email`, `username`, `password`, `roles`, `picture`, `created_date`, `modified_date`, `provider`) VALUES

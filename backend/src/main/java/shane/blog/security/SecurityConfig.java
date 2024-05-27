@@ -65,6 +65,12 @@ public class SecurityConfig {
         , "/board/search"
         , "/board/{boardId}/comment/list/**"
         , "/board/{boardId}/file/download/**"
+
+        , "/post/list"
+        , "/post/{id}"
+        , "/post/search"
+        , "/post/{id}/comment/list/**"
+        , "/post/{id}/file/download/**"
     };
 
     @SuppressWarnings("removal")

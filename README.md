@@ -342,4 +342,6 @@
     - 일반 로그인, Google OAuth2 로그인 모두 정상
     - kakao, naver 에 대한 SNS 로그인을 추가하여 사용할 수도 있음
     - Google OAuth2 개발 후 소스 코드 정리 완료(blog/user는 추후 테스트를 위해 남겨둠)
+    - 오늘부터 TV 화면에 이미지 또는 동영상 출력
+    - coding Mybatis Posting 기본 기능 for image display on the TV Screen
   

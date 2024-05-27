@@ -4,11 +4,11 @@ import Pagination from "react-js-pagination";
 import { Link } from "react-router-dom";
 
 import "../../css/page.css";
-import "../../css/postlist.css";
+import "../../css/picturelist.css";
 
 // mybatis-spring-boot-starter
-function PostList() {
-  const [postList, setPostList] = useState([]);
+function PictureList() {
+  const [pictureList, setPictureList] = useState([]);
 
   // 검색용 Hook
   const [choiceVal, setChoiceVal] = useState("");
@@ -20,6 +20,9 @@ function PostList() {
   const [totalPages, setTotalPages] = useState(0);
   const [totalCnt, setTotalCnt] = useState(0);
 
+  // 파일 로딩
+  const [pos, setPos] = useState("C:/Users/DeltaX_20/Documents/Workspace/upload");
+
   // 기본 설정을 포함한 axios 인스턴스 생성
   const axiosInstance = axios.create({
     baseURL: 'http://localhost:8989', // 기본 URL 설정
@@ -30,21 +33,21 @@ function PostList() {
   });
 
   // Post 전체 조회
-  const getPostList = async (page) => {
+  const getPictureList = async (page) => {
     try {
-		  const response = await axiosInstance.get('/post/list', {
+		  const response = await axiosInstance.get('/picture/list', {
 			  params: {"page": page},
 		  });
 
-      console.log("[PostList.js] useEffect() success :D");
+      console.log("[PictureList.js] useEffect() success :D");
       console.log(response.data);
 
-      setPostList(response.data.list);
+      setPictureList(response.data.list);
       setPageSize(response.data.pagination.pageSize);
       setTotalPages(response.data.pagination.totalPageCount);
       setTotalCnt(response.data.pagination.totalRecordCount);
     } catch (error) {
-      console.log("[PostList.js] useEffect() error :<");
+      console.log("[PictureList.js] useEffect() error :<");
       console.log(error);
     }
   };
@@ -52,7 +55,7 @@ function PostList() {
   // 게시글 검색
   const search = async () => {
     try {
-      const response = await axiosInstance.get('/post/list', {
+      const response = await axiosInstance.get('/picture/list', {
         params: {
           page: page,
           name: choiceVal === "name" ? searchVal : "",
@@ -60,20 +63,20 @@ function PostList() {
         },
       });
 
-      console.log("[PostList.js searchBtn()] success :D");
+      console.log("[PictureList.js searchBtn()] success :D");
       console.log(response.data);
 
-      setPostList(response.data.content);
+      setPictureList(response.data.content);
       setTotalCnt(response.data.totalElements);
     } catch (error) {
-      console.log("[PostList.js searchBtn()] error :<");
+      console.log("[PictureList.js searchBtn()] error :<");
       console.log(error);
     }
   };
 
   // 첫 로딩 시, 한 페이지만 가져옴
   useEffect(() => {
-    getPostList(1);
+    getPictureList(1);
   }, []);
 
   // 검색 조건 저장
@@ -83,7 +86,7 @@ function PostList() {
   // 페이징 보여주기 
   const changePage = (page) => {
     setPage(page);
-    getPostList(page);
+    getPictureList(page);
   };
 
   return (
@@ -132,6 +135,7 @@ function PostList() {
             <th style={{textAlign:"center"}} className="col-1">번호</th>
             <th style={{textAlign:"center"}} className="col-1">제목</th>
             <th style={{textAlign:"center"}} className="col-2">내용</th>
+            <th style={{textAlign:"center"}} className="col-2">파일위치</th>
             <th style={{textAlign:"center"}} className="col-1">작성자</th>
             <th style={{textAlign:"center"}} className="col-1">조회수</th>
             <th style={{textAlign:"center"}} className="col-2">생성일시</th>
@@ -140,8 +144,8 @@ function PostList() {
         </thead>
 
         <tbody>
-          {Array.isArray(postList) && postList.map(function (post, idx) {
-            return <TableRow obj={post} key={idx} cnt={idx + 1} />;
+          {Array.isArray(pictureList) && pictureList.map(function (picture, idx) {
+            return <TableRow obj={picture} key={idx} cnt={idx + 1} pos={pos}/>;
           })}
         </tbody>
       </table>
@@ -158,7 +162,7 @@ function PostList() {
       />
 
       <div className="my-5 d-flex justify-content-center">
-        <Link className="btn btn-outline-secondary" to="/postwrite">
+        <Link className="btn btn-outline-secondary" to="/userwrite">
           <i className="fas fa-pen"></i> &nbsp; 글쓰기
         </Link>
       </div>
@@ -168,23 +172,28 @@ function PostList() {
 
 /* 글 목록 테이블 행 컴포넌트 */
 function TableRow(props) {
-  const post = props.obj;
-
+  const picture = props.obj;
   return (
     <tr>
       <th style={{textAlign:"center"}} >{props.cnt}</th>
       <td style={{textAlign:"center"}} >
-        <Link to={{ pathname: `/postdetail/${post.id}` }}>
-          <span className="underline user-name">{post.title}</span>
+        <Link to={{ pathname: `/pictureDetail/${picture.id}` }}>
+          <span className="underline user-name">{picture.title}</span>
         </Link>
       </td>
-      <td style={{textAlign:"center"}} >{post.content}</td>
-      <td style={{textAlign:"center"}} >{post.writer}</td>
-      <td style={{textAlign:"center"}} >{post.viewCnt}</td>
-      <td style={{ textAlign: 'center' }}>{post.createdDate}</td>
-      <td style={{ textAlign: 'center' }}>{post.modifiedDate}</td>
+      <td style={{textAlign:"center"}} >{picture.content}</td>
+      {/* <td style={{textAlign:"center"}} >{picture.filePath}</td> */}
+      <td style={{textAlign:"center"}} >
+        <Link to={{ pathname: `/pictureView/${props.pos}${picture.filePath}` }}>
+          <span className="underline user-name">{picture.filePath}</span>
+        </Link>
+      </td>
+      <td style={{textAlign:"center"}} >{picture.writer}</td>
+      <td style={{textAlign:"center"}} >{picture.viewCnt}</td>
+      <td style={{ textAlign: 'center' }}>{picture.createdDate}</td>
+      <td style={{ textAlign: 'center' }}>{picture.modifiedDate}</td>
     </tr>
   );
 }
 
-export default PostList;
+export default PictureList;

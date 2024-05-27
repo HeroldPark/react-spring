@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="shane.blog.domain.picture.PictureMapper">
+
+    <!-- tbl_picture 테이블 전체 컬럼 -->
+    <sql id="pictureColumns">
+        id
+        , title
+        , content
+        , file_path
+        , writer
+        , view_cnt
+        , delete_yn
+        , created_date
+        , modified_date
+    </sql>
+
+    <!-- 게시글 검색 -->
+    <sql id="search">
+        <!-- 검색 키워드가 있을 때 -->
+        <if test="keyword != null and keyword != ''">
+            <choose>
+                <!-- 검색 유형이 있을 때 -->
+                <when test="searchType != null and searchType != ''">
+                    <choose>
+                        <when test="'title'.equals( searchType )">
+                            AND title LIKE CONCAT('%', #{keyword}, '%')
+                        </when>
+                        <when test="'content'.equals( searchType )">
+                            AND content LIKE CONCAT('%', #{keyword}, '%')
+                        </when>
+                        <when test="'writer'.equals( searchType )">
+                            AND writer LIKE CONCAT('%', #{keyword}, '%')
+                        </when>
+                    </choose>
+                </when>
+
+                <!-- 전체 검색일 때 -->
+                <otherwise>
+                    AND (
+                           title LIKE CONCAT('%', #{keyword}, '%')
+                        OR content LIKE CONCAT('%', #{keyword}, '%')
+                        OR writer LIKE CONCAT('%', #{keyword}, '%')
+                    )
+                </otherwise>
+            </choose>
+        </if>
+    </sql>
+
+
+    <!-- 게시글 저장 -->
+    <insert id="save" parameterType="pictureReq" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO tbl_picture (   /* id="save" 2024-05-27 by shanepark */
+            <include refid="pictureColumns" />
+        ) VALUES (
+              #{id}
+            , #{title}
+            , #{content}
+            , #{filePath}
+            , #{writer}
+            , #{viewCnt}
+            , #{deleteYn}
+            <choose>
+                <when test="createdDate != null and createdDate != ''">
+                    , #{createdDate}
+                </when>
+                <otherwise>
+                    , NOW()
+                </otherwise>
+            </choose>
+            <if test="modifiedDate != null and modifiedDate != ''">
+                , #{modifiedDate}
+            </if>
+        )
+    </insert>
+
+
+    <!-- 게시글 상세정보 조회 -->
+    <select id="findById" parameterType="long" resultType="pictureRes">
+        SELECT  /* id="findById" 2024-05-27 by shanepark */
+            <include refid="pictureColumns" />
+        FROM
+            tbl_picture
+        WHERE
+            id = #{value}
+    </select>
+
+
+    <!-- 게시글 수정 -->
+    <update id="update" parameterType="pictureReq">
+        UPDATE tbl_picture  /* id="update" 2024-05-27 by shanepark */
+        SET
+              modified_date = NOW()
+            , title = #{title}
+            , content = #{content}
+            , file_path = #{filePath}
+            , writer = #{writer}
+            , detele_yn = #{deleteYn}
+        WHERE
+            id = #{id}
+    </update>
+
+
+    <!-- 게시글 삭제 -->
+    <delete id="deleteById" parameterType="long">
+        UPDATE tbl_picture  /* id="deleteById" 2024-05-27 by shanepark */
+        SET
+            delete_yn = 1
+        WHERE
+            id = #{id}
+    </delete>
+
+
+    <!-- 게시글 수 카운팅 -->
+    <select id="count" parameterType="searchDto" resultType="int">
+        SELECT  /* id="count" 2024-05-27 by shanepark */
+            COUNT(*)
+        FROM
+            tbl_picture
+        WHERE
+            delete_yn = 0
+            <include refid="search" />
+    </select>
+
+    <!-- 게시글 리스트 조회 -->
+    <select id="findList" parameterType="searchDto" resultType="pictureRes">
+        SELECT  /* id="findList" 2024-05-27 by shanepark */
+            <include refid="pictureColumns" />
+        FROM
+            tbl_picture
+        WHERE true
+            <include refid="search" />
+        ORDER BY id DESC
+        LIMIT #{pagination.limitStart}, #{recordSize}
+    </select>
+
+</mapper>
