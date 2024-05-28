@@ -36,7 +36,7 @@ export default function CallBackGoogle() {
         setCookie('accessToken', token, { path: '/', expires });
 
         // JWT 토큰 저장
-		localStorage.setItem("bbs_access_token", token);
+		localStorage.setItem("login_access_token", token);
 		localStorage.setItem("id", email);
 
 		setAuth(email); // 사용자 인증 정보(아이디 저장)

@@ -66,11 +66,14 @@ public class SecurityConfig {
         , "/board/{boardId}/comment/list/**"
         , "/board/{boardId}/file/download/**"
 
-        , "/post/list"
-        , "/post/{id}"
-        , "/post/search"
-        , "/post/{id}/comment/list/**"
-        , "/post/{id}/file/download/**"
+        , "/PictureList"
+        , "/detailPicture"
+
+        // , "/post/list.do"
+        // , "/post/detail.do"
+        // , "/post/search"
+        // , "/post/{id}/comment/list/**"
+        // , "/post/{id}/file/download/**"
     };
 
     @SuppressWarnings("removal")
@@ -88,6 +91,7 @@ public class SecurityConfig {
 
                                         .requestMatchers("/employees").hasAnyRole("USER") // 추가(JPA)
                                         .requestMatchers("/post/**").hasAnyRole("ADMIN", "USER") // 추가(Mybatis)
+                                        .requestMatchers("/comment/**").hasAnyRole("ADMIN", "USER") // 추가(Mybatis)
                                         .requestMatchers("/member/**").hasRole("ADMIN") // 추가(Mybatis)
 
                                         .requestMatchers("/board/**").hasAnyRole("ADMIN", "USER", "GUEST")

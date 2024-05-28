@@ -1,8 +1,11 @@
 package shane.blog.domain.post;
 
+import shane.blog.common.exception.ResourceNotFoundException;
 import shane.blog.domain.common.dto.SearchDto;
 import shane.blog.domain.common.paging.Pagination;
 import shane.blog.domain.common.paging.PagingResponse;
+import shane.blog.dto.response.board.ResBoardDetailsDto;
+import shane.blog.entity.Board;
 import shane.blog.entity.Member;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +34,7 @@ public class PostService {
 
     @Transactional
     public Long write(final PostRequest params, Member member) {
-        // params.setWriter(member.getUsername());
+        params.setWriter(member.getUsername());
         postMapper.save(params);
         return params.getId();
     }
@@ -88,4 +91,16 @@ public class PostService {
         return new PagingResponse<>(list, pagination);
     }
 
+    // 게시글 상세 보기
+    public PostResponse detail(Long id) {
+        PostResponse postResponse = postMapper.findById(id);
+
+        // 조회수 증가
+        PostRequest postRequest = new PostRequest();
+        postRequest.setId(id);
+        postRequest.setViewCnt(postResponse.getViewCnt() + 1);
+        postMapper.update(postRequest);
+
+        return postResponse;
+    }
 }

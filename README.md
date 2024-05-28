@@ -344,4 +344,6 @@
     - Google OAuth2 개발 후 소스 코드 정리 완료(blog/user는 추후 테스트를 위해 남겨둠)
     - 오늘부터 TV 화면에 이미지 또는 동영상 출력
     - coding Mybatis Posting 기본 기능 for image display on the TV Screen
-  
+
+# 28. 2024-05-28
+    - Spring Boot - React - Mybatis - Post 수정 중

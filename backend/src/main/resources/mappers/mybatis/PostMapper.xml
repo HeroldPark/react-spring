@@ -51,7 +51,7 @@
 
     <!-- 게시글 저장 -->
     <insert id="save" parameterType="postReq" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO tbl_post (
+        INSERT INTO tbl_post (  /* id="save" 2024-05-28 by shanepark */
             <include refid="postColumns" />
         ) VALUES (
               #{id}
@@ -60,7 +60,14 @@
             , #{writer}
             , #{viewCnt}
             , #{noticeYn}
-            , #{deleteYn}
+            <choose>
+                <when test="deleteYn != null and deleteYn != ''">
+                    , #{deleteYn}
+                </when>
+                <otherwise>
+                    , 0
+                </otherwise>
+            </choose>
             <choose>
                 <when test="createdDate != null and createdDate != ''">
                     , #{createdDate}
@@ -69,16 +76,21 @@
                     , NOW()
                 </otherwise>
             </choose>
-            <if test="modifiedDate != null and modifiedDate != ''">
-                , #{modifiedDate}
-            </if>
+            <choose>
+                <when test="modifiedDate != null and modifiedDate != ''">
+                    , #{modifiedDate}
+                </when>
+                <otherwise>
+                    , NOW()
+                </otherwise>
+            </choose>
         )
     </insert>
 
 
     <!-- 게시글 상세정보 조회 -->
     <select id="findById" parameterType="long" resultType="postRes">
-        SELECT
+        SELECT  /* id="findById" 2024-05-28 by shanepark */
             <include refid="postColumns" />
         FROM
             tbl_post
@@ -89,13 +101,27 @@
 
     <!-- 게시글 수정 -->
     <update id="update" parameterType="postReq">
-        UPDATE tbl_post
+        UPDATE tbl_post /* id="update" 2024-05-28 by shanepark */
         SET
               modified_date = NOW()
-            , title = #{title}
-            , content = #{content}
-            , writer = #{writer}
-            , notice_yn = #{noticeYn}
+            <if test="title != null and title != ''">
+                , title = #{title}
+            </if>
+            <if test="content != null and content != ''">
+                , content = #{content}
+            </if>
+            <if test="writer != null and writer != ''">
+                , writer = #{writer}
+            </if>
+            <if test="viewCnt != null and viewCnt != ''">
+                , view_cnt = #{viewCnt}
+            </if>
+            <if test="noticeYn != null and noticeYn != ''">
+                , notice_yn = #{noticeYn}
+            </if>
+            <if test="deleteYn != null and deleteYn != ''">
+                , delete_yn = #{deleteYn}
+            </if>
         WHERE
             id = #{id}
     </update>
@@ -103,7 +129,7 @@
 
     <!-- 게시글 삭제 -->
     <delete id="deleteById" parameterType="long">
-        UPDATE tbl_post
+        UPDATE tbl_post /* id="deleteById" 2024-05-28 by shanepark */
         SET
             delete_yn = 1
         WHERE
@@ -113,7 +139,7 @@
 
     <!-- 게시글 수 카운팅 -->
     <select id="count" parameterType="searchDto" resultType="int">
-        SELECT
+        SELECT  /* id="count" 2024-05-28 by shanepark */
             COUNT(*)
         FROM
             tbl_post
@@ -124,7 +150,7 @@
 
     <!-- 게시글 리스트 조회 -->
     <select id="findList" parameterType="searchDto" resultType="postRes">
-        SELECT  /* id="findList" 2024-05-09 by shanepark */
+        SELECT  /* id="findList" 2024-05-28 by shanepark */
             <include refid="postColumns" />
         FROM
             tbl_post

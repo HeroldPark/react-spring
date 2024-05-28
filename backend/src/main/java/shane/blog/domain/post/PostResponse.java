@@ -17,4 +17,10 @@ public class PostResponse {
     private LocalDateTime createdDate;     // 생성일시
     private LocalDateTime modifiedDate;    // 최종 수정일시
 
+    //== 수정 Dirty Checking ==//
+    public void update(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
+
 }

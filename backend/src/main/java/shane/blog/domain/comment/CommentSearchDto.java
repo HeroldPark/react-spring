@@ -1,8 +1,8 @@
 package shane.blog.domain.comment;
 
-import shane.blog.domain.common.dto.SearchDto;
 import lombok.Getter;
 import lombok.Setter;
+import shane.blog.domain.common.dto.SearchDto;
 
 @Getter
 @Setter

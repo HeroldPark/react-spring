@@ -28,7 +28,7 @@ function PictureList() {
     baseURL: 'http://localhost:8989', // 기본 URL 설정
     headers: {
       'Content-Type': 'application/json', // 기본 요청 본문 타입 설정
-      'Authorization': `Bearer ${localStorage.getItem('bbs_access_token')}` // JWT 토큰 포함
+      'Authorization': `Bearer ${localStorage.getItem('login_access_token')}` // JWT 토큰 포함
     }
   });
 

@@ -17,9 +17,18 @@ function PostDetail() {
   const { id } = useParams(); // 파라미터 가져오기
   const navigate = useNavigate();
 
+  // 기본 설정을 포함한 axios 인스턴스 생성
+  const axiosInstance = axios.create({
+    baseURL: 'http://localhost:8989', // 기본 URL 설정
+    headers: {
+      'Content-Type': 'application/json', // 기본 요청 본문 타입 설정
+      'Authorization': `Bearer ${localStorage.getItem('login_access_token')}` // JWT 토큰 포함
+    }
+  });
+
   const getPostDetail = async () => {
     try {
-      const response = await axios.get(`http://localhost:8989/post/${id}`);
+      const response = await axiosInstance.get(`/post/detail.do/${id}`);
 
       console.log("[PostDetail.js] getPostDetail() success :D");
       console.log(response.data);
@@ -33,7 +42,7 @@ function PostDetail() {
 
   const deletePost = async () => {
     try {
-      const response = await axios.delete(`http://localhost:8989/post/${id}/delete`, {headers: headers});
+      const response = await axiosInstance.delete(`/post/${id}/delete`, {headers: headers});
 
       console.log("[PostDetail.js] deletePost() success :D");
       console.log(response.data);
@@ -51,14 +60,14 @@ function PostDetail() {
   useEffect(() => {
 	// 컴포넌트가 렌더링될 때마다 localStorage의 토큰 값으로 headers를 업데이트
 	setHeaders({
-		"Authorization": `Bearer ${localStorage.getItem("post_access_token")}`
+		"Authorization": `Bearer ${localStorage.getItem("login_access_token")}`
 	});
     getPostDetail();
   }, []);
 
   const updatePost = {
     id: post.id,
-    writerName: post.writerName,
+    writer: post.writer,
     title: post.title,
     content: post.content,
 	files: post.files
@@ -82,7 +91,7 @@ function PostDetail() {
 
 					{
 						/* 자신이 작성한 게시글인 경우에만 수정, 삭제 가능 */
-						(localStorage.getItem("id") === post.writerName) ?
+						(localStorage.getItem("id") === post.writer) ?
 							<>
 								<Link className="btn btn-outline-secondary"  to="/postupdate" state={{ post: updatePost }}><i className="fas fa-edit"></i> 수정</Link> &nbsp;
 								<button className="btn btn-outline-danger"  onClick={deletePost}><i className="fas fa-trash-alt"></i> 삭제</button>
@@ -98,7 +107,7 @@ function PostDetail() {
 						<tr>
 							<th className="col-3">작성자</th>
 							<td>
-							<span>{post.writerName}</span>
+							<span>{post.writer}</span>
 							</td>
 						</tr>
 
@@ -119,7 +128,7 @@ function PostDetail() {
 						<tr>
 							<th>조회수</th>
 							<td>
-							<span>{post.viewCount}</span>
+							<span>{post.viewCnt}</span>
 							</td>
 						</tr>
 

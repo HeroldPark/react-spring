@@ -27,7 +27,7 @@ function CheckPwd() {
     useEffect(() => {
         // 컴포넌트가 렌더링될 때마다 localStorage의 토큰 값으로 headers를 업데이트
         setHeaders({
-            "Authorization": `Bearer ${localStorage.getItem("bbs_access_token")}`
+            "Authorization": `Bearer ${localStorage.getItem("login_access_token")}`
         });
       }, []);
 

@@ -72,29 +72,29 @@ public class PostController {
     //     model.addAttribute("response", response);
     //     return "post/list";
     // }
-    @RequestMapping(value = "/list", method = { RequestMethod.GET, RequestMethod.POST })
+    @RequestMapping(value = "/list.do", method = { RequestMethod.GET, RequestMethod.POST })
     public ResponseEntity<PagingResponse<PostResponse>> postList(@ModelAttribute("params") final SearchDto params) {
 
-        logger.debug("/list 시작. \t {}", new Date());
+        logger.debug("/list.do 시작. \t {}", new Date());
 
         // 1. 회원 정보 조회
         PagingResponse<PostResponse> response = postService.findList(params);
-        logger.debug("/list 종료. \t {}", response);
+        logger.debug("/list.do 종료. \t {}", response);
 
         // 2. 조회 결과 리턴
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
-    // 게시글 상세 페이지
-    @GetMapping("/{id}")
-    public String postDetail(@RequestParam final Long id, Model model) {
-        PostResponse post = postService.findPostById(id);
-        model.addAttribute("post", post);
-        return "post/view";
-    }
+    // // 게시글 상세 페이지
+    // @GetMapping("/{id}")
+    // public String postDetail(@RequestParam final Long id, Model model) {
+    //     PostResponse post = postService.findPostById(id);
+    //     model.addAttribute("post", post);
+    //     return "post/view";
+    // }
 
     // 신규 게시글 생성
-    @PostMapping("/save")
+    @PostMapping("/save.do")
     public String savePost(final PostRequest params, Model model) {
         Long id = postService.savePost(params);
         List<FileRequest> files = fileUtils.uploadFiles(params.getFiles());
@@ -104,7 +104,7 @@ public class PostController {
     }
 
     // 게시글 작성 페이지
-    @PostMapping("/write")
+    @PostMapping("/write.do")
     public ResponseEntity<?> postWrite(
             @RequestBody PostRequest postRequest,
             @AuthenticationPrincipal Member member) {
@@ -114,19 +114,8 @@ public class PostController {
         return ResponseEntity.status(HttpStatus.CREATED).body(id);
     }
 
-    // @PostMapping("/write")
-    // public String postWrite(@RequestParam(value = "id", required = false) final Long id, Model model) {
-    //     if (id != null) {
-    //         PostResponse post = postService.findPostById(id);
-    //         model.addAttribute("post", post);
-    //     }
-    //     // return "post/write";
-    //     MessageDto message = new MessageDto("게시글 생성이 완료되었습니다.", "/post/list.do", RequestMethod.GET, null);
-    //     return showMessageAndRedirect(message, model);
-    // }
-
     // 기존 게시글 수정
-    @PostMapping("/update")
+    @PostMapping("/update.do")
     public String updatePost(final PostRequest params, final SearchDto queryParams, Model model) {
 
         // 1. 게시글 정보 수정
@@ -151,11 +140,18 @@ public class PostController {
         return showMessageAndRedirect(message, model);
     }
 
-    // @GetMapping("/{id}")
-    // public ResponseEntity<ResBoardDetailsDto> detail(@PathVariable("boardId") Long boardId) {
-    //     ResBoardDetailsDto findBoardDTO = postService.detail(boardId);
-    //     return ResponseEntity.status(HttpStatus.OK).body(findBoardDTO);
-    // }
+    // 게시글 상세 페이지
+    @GetMapping("/detail.do/{id}")
+    public ResponseEntity<PostResponse> postDetail(@PathVariable("id") Long id) {
+        // PostList.getPostDetail()에서 이렇게 호출한다.
+        // @GetMapping("/detail.do")
+        // public ResponseEntity<PostResponse> postDetail(@ModelAttribute("params") final SearchDto params) {
+        
+        log.info("PostController.postDetail() : {}" + id);
+
+        PostResponse postResponse = postService.detail(id);
+        return ResponseEntity.status(HttpStatus.OK).body(postResponse);
+    }
 
     // // 상세보기 -> 수정
     // @PatchMapping("/{id}/update")
@@ -174,7 +170,7 @@ public class PostController {
     // }
 
     // 게시글 삭제
-    @PostMapping("/delete")
+    @PostMapping("/delete.do")
     public String deletePost(@RequestParam final Long id, final SearchDto queryParams, Model model) {
         postService.deletePost(id);
         MessageDto message = new MessageDto("게시글 삭제가 완료되었습니다.", "/post/list.do", RequestMethod.GET, queryParamsToMap(queryParams));

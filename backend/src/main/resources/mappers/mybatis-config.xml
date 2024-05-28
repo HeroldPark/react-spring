@@ -24,11 +24,21 @@
 
     <typeAliases>
 
+        <typeAlias type="shane.blog.domain.common.dto.SearchDto" alias="searchDto"/>
+        <typeAlias type="shane.blog.domain.comment.CommentSearchDto" alias="commentSearchDto"/>
+
         <typeAlias type="shane.blog.domain.member.MemberRequest" alias="memberReq"/>
         <typeAlias type="shane.blog.domain.member.MemberResponse" alias="memberRes"/>
-        <typeAlias type="shane.blog.domain.common.dto.SearchDto" alias="searchDto"/>
+
+        <typeAlias type="shane.blog.domain.file.FileRequest" alias="fileReq"/>
+        <typeAlias type="shane.blog.domain.file.FileResponse" alias="fileRes"/>
+
         <typeAlias type="shane.blog.domain.post.PostRequest" alias="postReq"/>
         <typeAlias type="shane.blog.domain.post.PostResponse" alias="postRes"/>
+
+        <typeAlias type="shane.blog.domain.comment.CommentRequest" alias="commentReq"/>
+        <typeAlias type="shane.blog.domain.comment.CommentResponse" alias="commentRes"/>
+
         <typeAlias type="shane.blog.domain.picture.PictureRequest" alias="pictureReq"/>
         <typeAlias type="shane.blog.domain.picture.PictureResponse" alias="pictureRes"/>
 

@@ -14,7 +14,7 @@ function PostAnswer() {
 	const { parentSeq } = useParams(); // 부모 글 번호
 
 	const location = useLocation();
-	const { parentBbs } = location.state;
+	const { parentPost } = location.state;
 
 	const [title, setTitle] = useState("");
 	const [content, setContent] = useState("");
@@ -27,6 +27,14 @@ function PostAnswer() {
 		setContent(event.target.value);
 	}
 
+	// 기본 설정을 포함한 axios 인스턴스 생성
+	const axiosInstance = axios.create({
+		baseURL: 'http://localhost:8989', // 기본 URL 설정
+		headers: {
+		  'Content-Type': 'application/json', // 기본 요청 본문 타입 설정
+		  'Authorization': `Bearer ${localStorage.getItem('login_access_token')}` // JWT 토큰 포함
+		}
+	});
 
 	const createPostAnswer = async () => {
 
@@ -36,7 +44,7 @@ function PostAnswer() {
 			content: content
 		}
 		
-		await axios.post(`http://localhost:3000/post/${parentSeq}/answer`, req, {headers: headers})
+		await axiosInstance.post(`/post/${parentSeq}/answer`, req, {headers: headers})
 		.then((resp) => {
 			console.log("[PostAnswer.js] createPostAnswer() success :D");
 			console.log(resp.data);
@@ -66,14 +74,14 @@ function PostAnswer() {
 					<tr>
 						<th className="table-primary">작성자</th>
 						<td>
-							<input type="text" className="form-control" value={parentBbs.id} size="50px" readOnly />
+							<input type="text" className="form-control" value={parentPost.id} size="50px" readOnly />
 						</td>
 					</tr>
 
 					<tr>
 						<th className="table-primary">제목</th>
 						<td>
-							<input type="text" className="form-control" value={parentBbs.title} size="50px" readOnly />
+							<input type="text" className="form-control" value={parentPost.title} size="50px" readOnly />
 						</td>
 					</tr>
 				</tbody>

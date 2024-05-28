@@ -34,6 +34,15 @@ function PostWrite() {
     setFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
   };
 
+  // 기본 설정을 포함한 axios 인스턴스 생성
+  const axiosInstance = axios.create({
+    baseURL: 'http://localhost:8989', // 기본 URL 설정
+    headers: {
+      'Content-Type': 'application/json', // 기본 요청 본문 타입 설정
+      'Authorization': `Bearer ${localStorage.getItem('login_access_token')}` // JWT 토큰 포함
+    }
+  });
+
   /* 파일 업로드 */
   const fileUpload = async (id) => {
 	console.log("업로드할 파일 목록:", files);
@@ -41,18 +50,18 @@ function PostWrite() {
     const fd = new FormData();
     files.forEach((file) => fd.append("file", file));
 
-    await axios
-      .post(`http://localhost:8989/post/${id}/file/upload`, fd, { headers: headers })
-      .then((resp) => {
-        console.log("[file.js] fileUpload() success :D");
-        console.log(resp.data);
+    await axiosInstance
+        .post(`/post/${id}/file/upload`, fd, { headers: headers })
+        .then((resp) => {
+            console.log("[file.js] fileUpload() success :D");
+            console.log(resp.data);
 
-        alert("파일 업로드 성공 :D");
-      })
-      .catch((err) => {
-        console.log("[FileData.js] fileUpload() error :<");
-        console.log(err);
-      });
+            alert("파일 업로드 성공 :D");
+        })
+        .catch((err) => {
+            console.log("[FileData.js] fileUpload() error :<");
+            console.log(err);
+        });
   };
 
   /* [POST /post]: 게시글 작성 */
@@ -63,28 +72,28 @@ function PostWrite() {
       writer: localStorage.getItem("id"), // Add a comma here
     };
 
-    await axios
-      .post("http://localhost:8989/post/write", req, { headers: headers })
-      .then((resp) => {
-        console.log("[PostWrite.js] createPost() success :D");
-        console.log(resp.data);
-        const id = resp.data.id;
-        console.log("id:", id);
-        fileUpload(id);
+    await axiosInstance
+        .post("/post/write.do", req, { headers: headers })
+        .then((resp) => {
+            console.log("[PostWrite.js] createPost() success :D");
+            console.log(resp.data);
+            const id = resp.data.id;
+            console.log("id:", id);
+            fileUpload(id);
 
-        alert("새로운 게시글을 성공적으로 등록했습니다 :D");
-        navigate(`/postdetail/${resp.data.id}`); // 새롭게 등록한 글 상세로 이동
-      })
-      .catch((err) => {
-        console.log("[PostWrite.js] createPost() error :<");
-        console.log(err);
-      });
+            alert("새로운 게시글을 성공적으로 등록했습니다 :D");
+            navigate(`/postdetail/${resp.data.id}`); // 새롭게 등록한 글 상세로 이동
+        })
+        .catch((err) => {
+            console.log("[PostWrite.js] createPost() error :<");
+            console.log(err);
+        });
   };
 
   useEffect(() => {
     // 컴포넌트가 렌더링될 때마다 localStorage의 토큰 값으로 headers를 업데이트
     setHeaders({
-      Authorization: `Bearer ${localStorage.getItem("post_access_token")}`,
+      Authorization: `Bearer ${localStorage.getItem("login_access_token")}`,
     });
 
     // 로그인한 사용자인지 체크

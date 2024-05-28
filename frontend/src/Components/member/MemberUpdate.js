@@ -29,7 +29,7 @@ function MemberUpdate(props) {
 
     useEffect(() => {
         setHeaders({
-            "Authorization": `Bearer ${localStorage.getItem("bbs_access_token")}`
+            "Authorization": `Bearer ${localStorage.getItem("login_access_token")}`
         });
         setName(props.name);
     }, [props.name]);

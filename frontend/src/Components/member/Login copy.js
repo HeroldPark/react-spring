@@ -42,7 +42,7 @@ function Login() {
 				alert(resp.data.email + "님, 성공적으로 로그인 되었습니다 🔐");
 
 				// JWT 토큰 저장
-				localStorage.setItem("bbs_access_token", resp.data.token);
+				localStorage.setItem("login_access_token", resp.data.token);
 				localStorage.setItem("id", resp.data.email);
 
 				setAuth(resp.data.email); // 사용자 인증 정보(아이디 저장)
@@ -92,7 +92,7 @@ function Login() {
 			alert(resp.data.email + "님, 성공적으로 로그인 되었습니다 🔐");
 	
 			// JWT 토큰 저장
-			localStorage.setItem("bbs_access_token", resp.data.token);
+			localStorage.setItem("login_access_token", resp.data.token);
 			localStorage.setItem("id", resp.data.email);
 	
 			setAuth(resp.data.email); // 사용자 인증 정보(아이디 저장)

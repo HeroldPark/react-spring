@@ -23,6 +23,15 @@ function Comment(props) {
 		setContent(event.target.value);
 	};
 
+	// 기본 설정을 포함한 axios 인스턴스 생성
+	const axiosInstance = axios.create({
+		baseURL: 'http://localhost:8989', // 기본 URL 설정
+		headers: {
+		  'Content-Type': 'application/json', // 기본 요청 본문 타입 설정
+		  'Authorization': `Bearer ${localStorage.getItem('login_access_token')}` // JWT 토큰 포함
+		}
+	});
+
 	/* 댓글 수정 */
 	const updateComment = async () => {
 
@@ -30,7 +39,7 @@ function Comment(props) {
 			content: content
 		};
 
-		await axios.patch(`http://localhost:8989/board/${boardId}/comment/update/${commentId}`, req, {headers: headers})
+		await axiosInstance.patch(`/board/${boardId}/comment/update/${commentId}`, req, {headers: headers})
 		.then((resp) => {
 			console.log("[Comment.js] updateComment() success :D");
 			console.log(resp.data);
@@ -52,7 +61,7 @@ function Comment(props) {
 
 	/* 댓글 삭제 */
 	const deleteComment = async () => {
-		await axios.delete(`http://localhost:8989/board/${boardId}}/comment/delete/${commentId}`, {headers: headers})
+		await axiosInstance.delete(`/board/${boardId}}/comment/delete/${commentId}`, {headers: headers})
 			.then((resp) => {
 				console.log("[BbsComment.js] deleteComment() success :D");
 				console.log(resp.data);

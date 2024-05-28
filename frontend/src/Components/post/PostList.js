@@ -25,18 +25,18 @@ function PostList() {
     baseURL: 'http://localhost:8989', // 기본 URL 설정
     headers: {
       'Content-Type': 'application/json', // 기본 요청 본문 타입 설정
-      'Authorization': `Bearer ${localStorage.getItem('bbs_access_token')}` // JWT 토큰 포함
+      'Authorization': `Bearer ${localStorage.getItem('login_access_token')}` // JWT 토큰 포함
     }
   });
 
   // Post 전체 조회
   const getPostList = async (page) => {
     try {
-		  const response = await axiosInstance.get('/post/list', {
+		  const response = await axiosInstance.get('/post/list.do', {
 			  params: {"page": page},
 		  });
 
-      console.log("[PostList.js] useEffect() success :D");
+      console.log("[PostList.js] getPostList() success :D");
       console.log(response.data);
 
       setPostList(response.data.list);
@@ -44,7 +44,30 @@ function PostList() {
       setTotalPages(response.data.pagination.totalPageCount);
       setTotalCnt(response.data.pagination.totalRecordCount);
     } catch (error) {
-      console.log("[PostList.js] useEffect() error :<");
+      console.log("[PostList.js] getPostList() error :<");
+      console.log(error);
+    }
+  };
+
+  // Post 상세 조회 - PostDetail.js에서 처리한다. (데이터 처리 참고용으로 남겨둠)
+  const getPostDetail = async (page, id) => {
+    try {
+		  const response = await axiosInstance.get('/post/detail.do', {
+			  params: {
+          "page": page,
+          "id": id
+        }
+		  });
+
+      console.log("[PostList.js] getPostDetail() success :D");
+      console.log(response.data);
+
+      setPostList(response.data.list);
+      setPageSize(response.data.pagination.pageSize);
+      setTotalPages(response.data.pagination.totalPageCount);
+      setTotalCnt(response.data.pagination.totalRecordCount);
+    } catch (error) {
+      console.log("[PostList.js] getPostDetail() error :<");
       console.log(error);
     }
   };
@@ -52,7 +75,7 @@ function PostList() {
   // 게시글 검색
   const search = async () => {
     try {
-      const response = await axiosInstance.get('/post/list', {
+      const response = await axiosInstance.get('/post/list.do', {
         params: {
           page: page,
           name: choiceVal === "name" ? searchVal : "",
@@ -139,22 +162,27 @@ function PostList() {
           </tr>
         </thead>
 
-        <tbody>
+        {/* <tbody>
           {Array.isArray(postList) && postList.map(function (post, idx) {
             return <TableRow obj={post} key={idx} cnt={idx + 1} />;
+          })}
+        </tbody> */}
+        <tbody>
+          {Array.isArray(postList) && postList.map(function (post, idx) {
+            return <TableRow obj={post} key={idx} cnt={idx + 1} page={page} getPostDetail={getPostDetail} />;
           })}
         </tbody>
       </table>
 
       <Pagination
-        className="pagination"
-        activePage={page}
-        itemsCountPerPage={pageSize}
-        totalItemsCount={totalCnt}
-        pageRangeDisplayed={totalPages}
-        prevPageText={"‹"}
-        nextPageText={"›"}
-        onChange={changePage}
+          className="pagination"
+          activePage={page}
+          itemsCountPerPage={pageSize}
+          totalItemsCount={totalCnt}
+          pageRangeDisplayed={totalPages}
+          prevPageText={"‹"}
+          nextPageText={"›"}
+          onChange={changePage}
       />
 
       <div className="my-5 d-flex justify-content-center">
@@ -168,14 +196,27 @@ function PostList() {
 
 /* 글 목록 테이블 행 컴포넌트 */
 function TableRow(props) {
-  const post = props.obj;
+  const { obj, cnt, page, getPostDetail } = props;
+  const post = obj;
 
   return (
     <tr>
-      <th style={{textAlign:"center"}} >{props.cnt}</th>
-      <td style={{textAlign:"center"}} >
-        <Link to={{ pathname: `/postdetail/${post.id}` }}>
+      <th style={{textAlign:"center"}} >{cnt}</th>
+      {/* 
+        <td style={{textAlign:"center"}} >
+          <Link to={{ pathname: `/post/detail.do/${post.id}` }}>
+            <span className="underline user-name">{post.title}</span>
+          </Link>
+        </td>
+      */}
+      {/* <td>
+        <button className="btn" onClick={() => props.getPostDetail(page, post.id)}>
           <span className="underline user-name">{post.title}</span>
+        </button>
+      </td> */}
+      <td>
+        <Link to={{ pathname: `/postdetail/${post.id}` }}>
+          <span className="underline bbs-title">{post.title}</span>
         </Link>
       </td>
       <td style={{textAlign:"center"}} >{post.content}</td>

@@ -45,10 +45,18 @@ function PostUpdate() {
 
 	useEffect(() => {
 		setHeaders({
-			"Authorization": `Bearer ${localStorage.getItem("post_access_token")}`
+			"Authorization": `Bearer ${localStorage.getItem("login_access_token")}`
 		});
 	}, []);
 	
+	// 기본 설정을 포함한 axios 인스턴스 생성
+	const axiosInstance = axios.create({
+		baseURL: 'http://localhost:8989', // 기본 URL 설정
+		headers: {
+		  'Content-Type': 'application/json', // 기본 요청 본문 타입 설정
+		  'Authorization': `Bearer ${localStorage.getItem('login_access_token')}` // JWT 토큰 포함
+		}
+	});
 
 	/* 파일 업로드 */
 	const fileUpload = async (id) => {
@@ -57,7 +65,7 @@ function PostUpdate() {
 		const fd = new FormData();
 		files.forEach((file) => fd.append(`file`, file));
 
-		await axios.post(`http://localhost:8989/post/${id}/file/upload`, fd, {headers: headers})
+		await axiosInstance.post(`/post/${id}/file/upload`, fd, {headers: headers})
 			.then((resp) => {
 				console.log("[file.js] fileUpload() success :D");
 				console.log(resp.data);
@@ -75,7 +83,7 @@ function PostUpdate() {
 	/* 파일 삭제 */
 	const fileDelete = async (id, fileId) => {
 		try {
-			await axios.delete(`http://localhost:8989/post/${id}/file/delete?fileId=${fileId}`, {headers: headers});
+			await axiosInstance.delete(`/post/${id}/file/delete?fileId=${fileId}`, {headers: headers});
 				console.log("[PostUpdate.js] fileDelete() success :D");
 				alert("파일 삭제 성공 :D");
 		} catch (error) {
@@ -93,7 +101,7 @@ function PostUpdate() {
 			content: content
 		}
 
-		await axios.patch(`http://localhost:8989/post/${post.id}/update`, req, {headers: headers})
+		await axiosInstance.patch(`/post/${post.id}/update`, req, {headers: headers})
 		.then((resp) => {
 			console.log("[PostUpdate.js] updatePost() success :D");
 			console.log(resp.data);
@@ -121,7 +129,7 @@ function PostUpdate() {
 					<tr>
 						<th className="table-primary">작성자</th>
 						<td>
-							<input type="text" className="form-control"  value={post.writerName} size="50px" readOnly />
+							<input type="text" className="form-control"  value={post.writer} size="50px" readOnly />
 						</td>
 					</tr>
 

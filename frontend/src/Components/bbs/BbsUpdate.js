@@ -45,7 +45,7 @@ function BbsUpdate() {
 
 	useEffect(() => {
 		setHeaders({
-			"Authorization": `Bearer ${localStorage.getItem("bbs_access_token")}`
+			"Authorization": `Bearer ${localStorage.getItem("login_access_token")}`
 		});
 	}, []);
 	
