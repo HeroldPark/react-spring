@@ -6,6 +6,8 @@ import { HttpHeadersContext } from "../context/HttpHeadersProvider";
 
 function PostAnswer() {
 
+	console.log("[PostAnswer.js] render()");
+
 	const { auth, setAuth } = useContext(AuthContext)
 	const { headers, setHeaders } = useContext(HttpHeadersContext);
 
@@ -39,18 +41,20 @@ function PostAnswer() {
 	const createPostAnswer = async () => {
 
 		const req = {
-			id: localStorage.getItem("id"),	
-			title: title,
+			id: parentSeq,
+			writer: localStorage.getItem("id"),	
+			title: "Re: " + title,
 			content: content
 		}
 		
-		await axiosInstance.post(`/post/${parentSeq}/answer`, req, {headers: headers})
+		await axiosInstance.post(`/post/answer.do`, req, {headers: headers})
 		.then((resp) => {
 			console.log("[PostAnswer.js] createPostAnswer() success :D");
 			console.log(resp.data);
 
 			alert("답글을 성공적으로 등록했습니다 :D");
-			navigate(`/postdetail/${resp.data.seq}`); // 새롭게 등록한 답글 상세로 이동
+			// navigate(`/postdetail/${resp.data.seq}`); // 새롭게 등록한 답글 상세로 이동
+			navigate(`/postdetail/${resp.data.seq}`, { state: { post: resp.data } }); // 전달
 		})
 		.catch((err) => {
 			console.log("[PostAnswer.js] createPostAnswer() error :<");
@@ -74,7 +78,7 @@ function PostAnswer() {
 					<tr>
 						<th className="table-primary">작성자</th>
 						<td>
-							<input type="text" className="form-control" value={parentPost.id} size="50px" readOnly />
+							<input type="text" className="form-control" value={parentPost.writer} size="50px" readOnly />
 						</td>
 					</tr>
 

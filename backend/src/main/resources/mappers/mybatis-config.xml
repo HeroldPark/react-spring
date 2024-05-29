@@ -36,8 +36,8 @@
         <typeAlias type="shane.blog.domain.post.PostRequest" alias="postReq"/>
         <typeAlias type="shane.blog.domain.post.PostResponse" alias="postRes"/>
 
-        <typeAlias type="shane.blog.domain.comment.CommentRequest" alias="commentReq"/>
-        <typeAlias type="shane.blog.domain.comment.CommentResponse" alias="commentRes"/>
+        <typeAlias type="shane.blog.domain.feedback.FeedbackRequest" alias="feedbackReq"/>
+        <typeAlias type="shane.blog.domain.feedback.FeedbackResponse" alias="feedbackRes"/>
 
         <typeAlias type="shane.blog.domain.picture.PictureRequest" alias="pictureReq"/>
         <typeAlias type="shane.blog.domain.picture.PictureResponse" alias="pictureRes"/>

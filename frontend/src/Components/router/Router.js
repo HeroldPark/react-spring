@@ -55,7 +55,6 @@ function Router() {
             <Route path="/postlist" element={<PostList />}></Route>
 			<Route path="/postwrite" element={<PostWrite />}></Route>
 			<Route path="/postdetail/:id" element={<PostDetail />}></Route>
-			{/* <Route path="/postdetail" element={<PostDetail />}></Route> */}
 			<Route path="/postupdate" element={<PostUpdate />}></Route>
 			<Route path="/postanswer/:parentSeq" element={<PostAnswer />}></Route>
 

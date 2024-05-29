@@ -1,20 +1,22 @@
-package shane.blog.domain.post;
+package shane.blog.domain.feedback;
 
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import shane.blog.domain.common.dto.SearchDto;
 import shane.blog.domain.common.paging.Pagination;
 import shane.blog.domain.common.paging.PagingResponse;
 import shane.blog.entity.Member;
-import jakarta.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 import java.util.Collections;
+import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class PostService {
+@Transactional
+public class FeedbackService {
 
-    private final PostMapper postMapper;
+    private final FeedbackMapper feedbackMapper;
 
     /**
      * 게시글 저장
@@ -22,16 +24,23 @@ public class PostService {
      * @return Generated PK
      */
     @Transactional
-    public Long savePost(final PostRequest params) {
-        postMapper.save(params);
+    public Long saveFeedback(final FeedbackRequest params) {
+        feedbackMapper.save(params);
         return params.getId();
     }
 
     @Transactional
-    public Long write(final PostRequest params, Member member) {
+    public Long write(final FeedbackRequest params, Member member) {
         params.setWriter(member.getUsername());
-        postMapper.save(params);
+        feedbackMapper.save(params);
         return params.getId();
+    }
+
+    @Transactional
+    public List<FeedbackResponse> write2(final FeedbackRequest params) {
+        feedbackMapper.save(params);
+        List<FeedbackResponse> feedbackResponse = feedbackMapper.findByPostId(params.getPostId());
+        return feedbackResponse;
     }
 
     /**
@@ -39,8 +48,8 @@ public class PostService {
      * @param id - PK
      * @return 게시글 상세정보
      */
-    public PostResponse findPostById(final Long id) {
-        return postMapper.findById(id);
+    public FeedbackResponse findFeedbackById(final Long id) {
+        return feedbackMapper.findById(id);
     }
 
     /**
@@ -49,8 +58,8 @@ public class PostService {
      * @return PK
      */
     @Transactional
-    public Long updatePost(final PostRequest params) {
-        postMapper.update(params);
+    public Long updateFeedback(final FeedbackRequest params) {
+        feedbackMapper.update(params);
         return params.getId();
     }
 
@@ -59,8 +68,8 @@ public class PostService {
      * @param id - PK
      * @return PK
      */
-    public Long deletePost(final Long id) {
-        postMapper.deleteById(id);
+    public Long deleteFeedback(final Long id) {
+        feedbackMapper.deleteById(id);
         return id;
     }
 
@@ -69,9 +78,9 @@ public class PostService {
      * @param params - search conditions
      * @return list & pagination information
      */
-    public PagingResponse<PostResponse> findList(final SearchDto params) {
+    public PagingResponse<FeedbackResponse> findList(final SearchDto params) {
         // 조건에 해당하는 데이터가 없는 경우, 응답 데이터에 비어있는 리스트와 null을 담아 반환
-        int count = postMapper.count(params);
+        int count = feedbackMapper.count(params);
         if (count < 1) {
             return new PagingResponse<>(Collections.emptyList(), null);
         }
@@ -82,20 +91,13 @@ public class PostService {
         pagination.setPageSize(params.getPageSize());
 
         // 계산된 페이지 정보의 일부(limitStart, recordSize)를 기준으로 리스트 데이터 조회 후 응답 데이터 반환
-        List<PostResponse> list = postMapper.findList(params);
+        List<FeedbackResponse> list = feedbackMapper.findList(params);
         return new PagingResponse<>(list, pagination);
     }
 
     // 게시글 상세 보기
-    public PostResponse detail(Long id) {
-        PostResponse postResponse = postMapper.findById(id);
-
-        // 조회수 증가
-        PostRequest postRequest = new PostRequest();
-        postRequest.setId(id);
-        postRequest.setViewCnt(postResponse.getViewCnt() + 1);
-        postMapper.update(postRequest);
-
-        return postResponse;
+    public FeedbackResponse detail(Long id) {
+        FeedbackResponse feedbackResponse = feedbackMapper.findById(id);
+        return feedbackResponse;
     }
 }

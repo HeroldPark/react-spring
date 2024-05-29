@@ -2,14 +2,8 @@ package shane.blog.domain.post;
 
 import lombok.Getter;
 import lombok.Setter;
-import shane.blog.domain.comment.CommentRequest;
-import shane.blog.entity.FileEntity;
-
-import org.hibernate.annotations.BatchSize;
+import shane.blog.domain.feedback.FeedbackRequest;
 import org.springframework.web.multipart.MultipartFile;
-
-import jakarta.persistence.OneToMany;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,4 +24,5 @@ public class PostRequest {
     private String createdDate;     // 생성일시
     private String modifiedDate;    // 최종 수정일시
 
+    public List<FeedbackRequest> comments = new ArrayList<>();
 }

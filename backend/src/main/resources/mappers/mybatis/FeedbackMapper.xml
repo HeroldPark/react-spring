@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="shane.blog.domain.feedback.FeedbackMapper">
+
+    <!-- tbl_feedback 테이블 전체 컬럼 -->
+    <sql id="feedbackColumns">
+          id
+        , post_id
+        , content
+        , writer
+        , delete_yn
+        , created_date
+        , modified_date
+    </sql>
+
+    <!-- 게시글 검색 -->
+    <sql id="search">
+        <!-- 검색 키워드가 있을 때 -->
+        <if test="keyword != null and keyword != ''">
+            <choose>
+                <!-- 검색 유형이 있을 때 -->
+                <when test="searchType != null and searchType != ''">
+                    <choose>
+                        <when test="'title'.equals( searchType )">
+                            AND title LIKE CONCAT('%', #{keyword}, '%')
+                        </when>
+                        <when test="'content'.equals( searchType )">
+                            AND content LIKE CONCAT('%', #{keyword}, '%')
+                        </when>
+                        <when test="'writer'.equals( searchType )">
+                            AND writer LIKE CONCAT('%', #{keyword}, '%')
+                        </when>
+                    </choose>
+                </when>
+
+                <!-- 전체 검색일 때 -->
+                <otherwise>
+                    AND (
+                           title LIKE CONCAT('%', #{keyword}, '%')
+                        OR content LIKE CONCAT('%', #{keyword}, '%')
+                        OR writer LIKE CONCAT('%', #{keyword}, '%')
+                    )
+                </otherwise>
+            </choose>
+        </if>
+    </sql>
+
+    <!-- 댓글 저장 -->
+    <insert id="save" parameterType="feedbackReq" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO tbl_feedback (
+            <include refid="feedbackColumns" />
+        ) VALUES (
+              #{id}
+            , #{postId}
+            , #{content}
+            , #{writer}
+            , 0
+            , NOW()
+            , NULL
+        )
+    </insert>
+
+
+    <!-- 댓글 상세정보 조회 -->
+    <select id="findById" parameterType="long" resultType="feedbackRes">
+        SELECT
+            <include refid="feedbackColumns" />
+        FROM
+            tbl_feedback
+        WHERE
+            id = #{value}
+    </select>
+
+    <select id="findByPostId" parameterType="long" resultType="feedbackRes">
+        SELECT
+            <include refid="feedbackColumns" />
+        FROM
+            tbl_feedback
+        WHERE
+            post_id = #{value}
+    </select>
+
+
+    <!-- 댓글 수정 -->
+    <update id="update" parameterType="feedbackReq">
+        UPDATE tbl_feedback
+        SET
+              modified_date = NOW()
+            , content = #{content}
+            , writer = #{writer}
+        WHERE
+            id = #{id}
+    </update>
+
+
+    <!-- 댓글 삭제 -->
+    <delete id="deleteById" parameterType="long">
+        UPDATE tbl_feedback
+        SET
+            delete_yn = 1
+        WHERE
+            id = #{id}
+    </delete>
+
+
+    <!-- 댓글 리스트 조회 -->
+    <select id="findAll" parameterType="searchDto" resultType="feedbackRes">
+        SELECT
+            <include refid="feedbackColumns" />
+        FROM
+            tbl_feedback
+        WHERE
+            delete_yn = 0
+            AND post_id = #{postId}
+        ORDER BY
+            id DESC
+        LIMIT #{pagination.limitStart}, #{recordSize}
+    </select>
+
+
+    <!-- 댓글 수 카운팅 -->
+    <select id="count" parameterType="searchDto" resultType="int">
+        SELECT
+            COUNT(*)
+        FROM
+            tbl_feedback
+        WHERE
+            delete_yn = 0
+            AND post_id = #{postId}
+    </select>
+
+    <!-- 게시글 리스트 조회 -->
+    <select id="findList" parameterType="searchDto" resultType="feedbackRes">
+        SELECT  /* id="findList" 2024-05-28 by shanepark */
+            <include refid="feedbackColumns" />
+        FROM
+            tbl_feedback
+        WHERE true
+            <include refid="search" />
+        ORDER BY id DESC
+        LIMIT #{pagination.limitStart}, #{recordSize}
+    </select>
+
+</mapper>

@@ -4,6 +4,9 @@ import shane.blog.domain.common.dto.MessageDto;
 import shane.blog.domain.common.dto.SearchDto;
 import shane.blog.domain.common.file.FileUtils;
 import shane.blog.domain.common.paging.PagingResponse;
+import shane.blog.domain.feedback.FeedbackRequest;
+import shane.blog.domain.feedback.FeedbackResponse;
+import shane.blog.domain.feedback.FeedbackService;
 import shane.blog.domain.file.FileRequest;
 import shane.blog.domain.file.FileResponse;
 import shane.blog.domain.member.MemberResponse;
@@ -45,6 +48,7 @@ public class PostController {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     private final PostService postService;
+    private final FeedbackService feedbackService;
     private final FileApiService fileService;
     private final FileUtils fileUtils;
 
@@ -151,6 +155,22 @@ public class PostController {
 
         PostResponse postResponse = postService.detail(id);
         return ResponseEntity.status(HttpStatus.OK).body(postResponse);
+    }
+
+    // 게시글 상세, 답글쓰기
+    @PostMapping("/answer.do")
+    public ResponseEntity<List<FeedbackResponse>> postAnswer(@RequestBody PostRequest postRequest) {
+        // public ResponseEntity<PostResponse> postAnswer(@PathVariable("parentSeq") Long parentSeq) {
+       
+        log.info("PostController.postAnswer() : {}" + postRequest);
+
+        FeedbackRequest feedbackRequest = new FeedbackRequest();
+        feedbackRequest.setPostId(postRequest.getId());
+        feedbackRequest.setContent(postRequest.getContent());
+        feedbackRequest.setWriter(postRequest.getWriter());
+
+        List<FeedbackResponse> feedbackResponse = feedbackService.write2(feedbackRequest);
+        return ResponseEntity.status(HttpStatus.OK).body(feedbackResponse);
     }
 
     // // 상세보기 -> 수정

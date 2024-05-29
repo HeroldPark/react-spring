@@ -8,6 +8,8 @@ import "../../css/postlist.css";
 
 // mybatis-spring-boot-starter
 function PostList() {
+  console.log("[PostList.js] render()");
+
   const [postList, setPostList] = useState([]);
 
   // 검색용 Hook
@@ -216,12 +218,12 @@ function TableRow(props) {
       </td> */}
       <td>
         <Link to={{ pathname: `/postdetail/${post.id}` }}>
-          <span className="underline bbs-title">{post.title}</span>
+          <span className="underline user-name">{post.title}</span>
         </Link>
       </td>
-      <td style={{textAlign:"center"}} >{post.content}</td>
-      <td style={{textAlign:"center"}} >{post.writer}</td>
-      <td style={{textAlign:"center"}} >{post.viewCnt}</td>
+      <td style={{textAlign: "center"}} >{post.content}</td>
+      <td style={{textAlign: "center"}} >{post.writer}</td>
+      <td style={{textAlign: "center"}} >{post.viewCnt}</td>
       <td style={{ textAlign: 'center' }}>{post.createdDate}</td>
       <td style={{ textAlign: 'center' }}>{post.modifiedDate}</td>
     </tr>

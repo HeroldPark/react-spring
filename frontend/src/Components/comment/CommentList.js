@@ -7,6 +7,8 @@ import "../../css/commentList.css"; // 스타일 파일 import
 
 function CommentList(props) {
 
+	console.log("[CommentList.js] render()");
+
 	const boardId = props.boardId;
 
 	// Paging
@@ -25,10 +27,19 @@ function CommentList(props) {
 		getCommentListRef.current(page);
 	}
 
+	// 기본 설정을 포함한 axios 인스턴스 생성
+	const axiosInstance = axios.create({
+		baseURL: 'http://localhost:8989', // 기본 URL 설정
+		headers: {
+		  'Content-Type': 'application/json', // 기본 요청 본문 타입 설정
+		  'Authorization': `Bearer ${localStorage.getItem('login_access_token')}` // JWT 토큰 포함
+		}
+	});
+
 	const getCommentList = async (page) => {
-		await axios.get(`http://localhost:8989/board/${boardId}/comment/list`, { params: {"page": page - 1} })
+		await axiosInstance.get(`/board/${boardId}/comment/list`, { params: {"page": page - 1} })
 			.then((resp) => {
-				console.log("[BbsComment.js] getCommentList() success :D");
+				console.log("[CommentList.js] getCommentList() success :D");
 				console.log(resp.data);
 
 				setPageSize(resp.data.pageSize);
@@ -36,7 +47,7 @@ function CommentList(props) {
 				setTotalCnt(resp.data.totalElements);
 				setCommentList(resp.data.content);
 			}).catch((err) => {
-				console.log("[BbsComment.js] getCommentList() error :<");
+				console.log("[CommentList.js] getCommentList() error :<");
 				console.log(err);
 
 			});

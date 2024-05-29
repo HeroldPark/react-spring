@@ -347,3 +347,6 @@
 
 # 28. 2024-05-28
     - Spring Boot - React - Mybatis - Post 수정 중
+
+# 29. 2024-05-29
+    - React - MyBatis 연동은 Post + Feedback으로 명명함.

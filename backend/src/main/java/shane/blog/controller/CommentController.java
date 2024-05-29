@@ -1,6 +1,7 @@
 package shane.blog.controller;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import shane.blog.dto.request.comment.CommentDto;
 import shane.blog.dto.response.comment.ResCommentDto;
 import shane.blog.entity.Member;
@@ -15,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+@Slf4j
 @RestController
 @RequestMapping("/board/{boardId}/comment")
 @RequiredArgsConstructor
@@ -27,6 +29,8 @@ public class CommentController {
             @PathVariable Long boardId,
             @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
 
+        log.debug("CommentController.commentList: 시작");
+        
         Page<ResCommentDto> commentList = commentService.getAllComments(pageable, boardId);
         return ResponseEntity.status(HttpStatus.OK).body(commentList);
     }
