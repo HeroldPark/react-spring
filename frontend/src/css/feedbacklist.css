@@ -1,36 +1,36 @@
 /* feedbacklist.css */
 
-.comment-list-container {
+.feedback-list-container {
     margin-top: 20px;
   }
   
-  .comment-item {
+  .feedback-item {
     border: 1px solid #ccc;
     border-radius: 5px;
     padding: 10px;
     margin-bottom: 10px;
   }
   
-  .comment-info {
+  .feedback-info {
     font-size: 14px;
     color: #555;
     margin-bottom: 5px;
   }
   
-  .comment-author {
+  .feedback-author {
     font-weight: bold;
     margin-right: 10px;
   }
   
-  .comment-date {
+  .feedback-date {
     color: #888;
   }
   
-  .comment-content {
+  .feedback-content {
     margin-top: 5px;
   }
   
-  .no-comments {
+  .no-feedbacks {
     color: #888;
     font-style: italic;
   }

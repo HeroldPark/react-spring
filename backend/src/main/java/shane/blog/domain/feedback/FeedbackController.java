@@ -4,9 +4,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import shane.blog.domain.common.dto.SearchDto;
 import shane.blog.domain.common.paging.PagingResponse;
-import shane.blog.domain.post.PostResponse;
 import shane.blog.domain.post.PostService;
 import shane.blog.entity.Member;
+
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -14,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
-@RequestMapping("/feedback/{id}/feedback")
+@RequestMapping("/feedback")
 @RequiredArgsConstructor
 public class FeedbackController {
 
@@ -30,41 +32,52 @@ public class FeedbackController {
     //     return ResponseEntity.status(HttpStatus.OK).body(postList);
     // }
 
-    @GetMapping("/list")
-    public ResponseEntity<PagingResponse<FeedbackResponse>> feedbackList(@ModelAttribute("params") final SearchDto params) {
+    @PostMapping("/list.do")
+    public ResponseEntity<PagingResponse<FeedbackResponse>> feedbackList(
+        @ModelAttribute("params") final SearchDto params,
+        @RequestBody FeedbackRequest feedbackRequest) {
 
         log.debug("FeedbackController.feedbackList: 시작");
         
-        PagingResponse<FeedbackResponse> feedbackList = feedbackService.findList(params);
+        params.setPostId(feedbackRequest.getPostId());
+        PagingResponse<FeedbackResponse> feedbackList = feedbackService.finAll(params);
         return ResponseEntity.status(HttpStatus.OK).body(feedbackList);
     }
 
-    @PostMapping("/write")
-    public ResponseEntity<FeedbackResponse> write(
+    @PostMapping("/write.do")
+    public ResponseEntity<Long> write(
             @AuthenticationPrincipal Member member,
-            @PathVariable Long id,
+            // @PathVariable Long id,
             @RequestBody FeedbackRequest feedbackRequest) {
 
-        // FeedbackResponse feedbackResponse = feedbackService.write(id, member, feedbackDto);
-        FeedbackResponse feedbackResponse = new FeedbackResponse();
-        return ResponseEntity.status(HttpStatus.CREATED).body(feedbackResponse);
+        Long id = feedbackService.write(feedbackRequest, member);
+        return ResponseEntity.status(HttpStatus.CREATED).body(id);
     }
 
-    @PatchMapping("/update/{feedbackId}")
-    public ResponseEntity<FeedbackResponse> update(
-            @PathVariable Long feedbackId,
-            @RequestBody FeedbackRequest feedbackDto) {
+    @PatchMapping("/update.do")
+    public ResponseEntity<FeedbackResponse> update(@RequestBody FeedbackRequest feedbackRequest) {
+        log.info("FeedbackController.update() : {}", feedbackRequest);
 
-        // FeedbackResponse updateFeedbackDTO = feedbackService.update(feedbackId, feedbackDto);
-        FeedbackResponse updateFeedbackDTO = new FeedbackResponse();
-        return ResponseEntity.status(HttpStatus.OK).body(updateFeedbackDTO);
+        FeedbackResponse feedbackResponse = feedbackService.update(feedbackRequest);
+        return ResponseEntity.status(HttpStatus.OK).body(feedbackResponse);
     }
 
-    @DeleteMapping("/delete/{feedbackId}")
-    public ResponseEntity<Long> delete(@PathVariable Long feedbackId) {
+    @PostMapping("/delete.do")
+    public ResponseEntity<Long> delete(@RequestBody FeedbackRequest feedbackRequest) {
+        log.info("FeedbackController.delete() : {}", feedbackRequest);
 
-        // feedbackService.delete(feedbackId);
+        Long id = feedbackRequest.getId();
+        feedbackService.delete(id);
         return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    // 답글 상세 페이지
+    @GetMapping("/detail.do/{id}")
+    public ResponseEntity<List<FeedbackResponse>> feedbackDetail(@PathVariable("id") Long postId) {
+        log.info("FeedbackController.feedbackDetail() : {}" + postId);
+
+        List<FeedbackResponse> feedbackResponse = feedbackService.detail(postId);
+        return ResponseEntity.status(HttpStatus.OK).body(feedbackResponse);
     }
 
 }

@@ -8,16 +8,13 @@ import { HttpHeadersContext } from "../context/HttpHeadersProvider";
 
 /* 댓글 컴포넌트 */
 function Feedback(props) {
-
-	console.log("[Feedback.js] render()");
-
 	const {auth, setAuth} = useContext(AuthContext);
 	const {headers, setHeaders} = useContext(HttpHeadersContext);
 	
 	const page = props.page;
 	const feedback = props.obj;
 	const feedbackId = feedback.feedbackId;
-	const { postId } = useParams(); // postId, 파라미터 가져오기
+	const { boardId } = useParams(); // boardId, 파라미터 가져오기
 
 	const [show, setShow] = useState(false);
 
@@ -25,8 +22,6 @@ function Feedback(props) {
 	const changeContent = (event) => {
 		setContent(event.target.value);
 	};
-
-	const navigate = useNavigate();
 
 	// 기본 설정을 포함한 axios 인스턴스 생성
 	const axiosInstance = axios.create({
@@ -38,7 +33,8 @@ function Feedback(props) {
 	});
 
 	/* 댓글 수정 */
-	const updateFeedback = async (feedbackId) => {
+	const updateFeedback = async () => {
+
 		const req = {
 			id: feedbackId,
 			content: content
@@ -53,6 +49,7 @@ function Feedback(props) {
 
 			// 업데이트된 댓글 목록을 다시 불러오기
 			props.getFeedbackList(page);
+
 		}).catch((err) => {
 			console.log("[Feedback.js] updateFeedback() error :<");
 			console.log(err);
@@ -64,22 +61,18 @@ function Feedback(props) {
 	}
 
 	/* 댓글 삭제 */
-	const deleteFeedback = async (feedbackId) => {
-		const req = {
-			id: feedbackId,
-			content: content
-		};
-
-		await axiosInstance.post(`/feedback/delete.do`, req, {headers: headers})
+	const deleteFeedback = async () => {
+		await axiosInstance.delete(`/feedback/delete.do`, req, {headers: headers})
 			.then((resp) => {
-				console.log("[Feedback.js] deleteFeedback() success :D");
+				console.log("[PostFeedback.js] deleteFeedback() success :D");
 				console.log(resp.data);
 
-				alert("댓글을 성공적으로 삭제했습니다 :D");
+				alert("답글을 성공적으로 삭제했습니다 :D");
 				//삭제된 댓글 목록 다시 불러오기
 				props.getFeedbackList(page);
+
 			}).catch((err) => {
-				console.log("[Feedback.js] deleteFeedback() error :<");
+				console.log("[PostFeedback.js] deleteFeedback() error :<");
 				console.log(err);
 			});
 	}
@@ -102,7 +95,7 @@ function Feedback(props) {
 					</div>
 					<div className="col-5">
 						<div className="row">
-							<span className="feedback-id">{feedback.writer}</span>
+							<span className="feedback-id">{feedback.feedbackWriterName}</span>
 						</div>
 						<div className="row">
 							<span>{feedback.createdDate}</span>
@@ -112,10 +105,10 @@ function Feedback(props) {
 					<div className="col-4 d-flex justify-content-end">
 					{
 						/* 자신이 작성한 댓글인 경우에만 수정 삭제 가능 */
-						(localStorage.getItem("id") === feedback.writer) ?
+						(localStorage.getItem("id") === feedback.feedbackWriterName) ?
 							<>
 								<button className="btn btn-outline-secondary" onClick={updateToggle}><i className="fas fa-edit"></i> 수정</button> &nbsp; 
-								<button className="btn btn-outline-danger" onClick={() => deleteFeedback(feedback.id)}><i className="fas fa-trash-alt"></i> 삭제</button>
+								<button className="btn btn-outline-danger" onClick={deleteFeedback}><i className="fas fa-trash-alt"></i> 삭제</button>
 							
 							</>
 							:
@@ -133,9 +126,7 @@ function Feedback(props) {
 								<textarea className="col-10" rows="5" value={content} onChange={changeContent}></textarea>
 							</div>
 							<div className="my-1 d-flex justify-content-center">
-							<button className="btn btn-dark" onClick={() => updateFeedback(feedback.id)}>
-								<i className="fas fa-edit"></i> 수정 완료
-							</button>
+								<button className="btn btn-dark" onClick={updateFeedback}><i className="fas fa-edit"></i>수정 완료</button>
 							</div>
 						</>
 					:

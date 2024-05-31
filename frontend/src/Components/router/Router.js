@@ -25,6 +25,12 @@ import PostDetail from "../post/PostDetail"
 import PostUpdate from "../post/PostUpdate"
 import PostAnswer from "../post/PostAnswer"
 
+import FeedbackList from "../feedback/FeedbackList"
+import FeedbackWrite from "../feedback/FeedbackWrite"
+import FeedbackDetail from "../feedback/FeedbackDetail"
+import FeedbackUpdate from "../feedback/FeedbackUpdate"
+
+
 import CallBackGoogle from "../member/CallBackGoogle"
 
 function Router() {
@@ -57,6 +63,11 @@ function Router() {
 			<Route path="/postdetail/:id" element={<PostDetail />}></Route>
 			<Route path="/postupdate" element={<PostUpdate />}></Route>
 			<Route path="/postanswer/:parentSeq" element={<PostAnswer />}></Route>
+
+			<Route path="/feedbacklist" element={<FeedbackList />}></Route>
+			<Route path="/feedbackwrite" element={<FeedbackWrite />}></Route>
+			<Route path="/feedbackdetail/:id" element={<FeedbackDetail />}></Route>
+			<Route path="/feedbackupdate" element={<FeedbackUpdate />}></Route>
 
 			{/* <Route path="/oauth-response/:token/:expirationTime" element={<OAuth />}></Route> */}
 			<Route path="/googlecallback" element={<CallBackGoogle />}></Route>

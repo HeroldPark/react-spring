@@ -21,6 +21,7 @@ import shane.blog.service.BoardService;
 import shane.blog.domain.file.FileApiService;
 import lombok.RequiredArgsConstructor;
 
+import org.apache.ibatis.javassist.NotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -123,7 +124,7 @@ public class PostController {
     public String updatePost(final PostRequest params, final SearchDto queryParams, Model model) {
 
         // 1. 게시글 정보 수정
-        postService.updatePost(params);
+        postService.update(params);
 
         // 2. 파일 업로드 (to disk)
         List<FileRequest> uploadFiles = fileUtils.uploadFiles(params.getFiles());
@@ -166,6 +167,7 @@ public class PostController {
 
         FeedbackRequest feedbackRequest = new FeedbackRequest();
         feedbackRequest.setPostId(postRequest.getId());
+        feedbackRequest.setTitle(postRequest.getTitle());
         feedbackRequest.setContent(postRequest.getContent());
         feedbackRequest.setWriter(postRequest.getWriter());
 
@@ -173,26 +175,41 @@ public class PostController {
         return ResponseEntity.status(HttpStatus.OK).body(feedbackResponse);
     }
 
-    // // 상세보기 -> 수정
-    // @PatchMapping("/{id}/update")
-    // public ResponseEntity<ResBoardDetailsDto> update(
-    //         @PathVariable Long boardId,
-    //         @RequestBody BoardUpdateDto boardDTO) {
-    //     ResBoardDetailsDto updateBoardDTO = postService.update(boardId, boardDTO);
-    //     return ResponseEntity.status(HttpStatus.OK).body(updateBoardDTO);
-    // }
+    // 상세보기 -> 수정
+    @PatchMapping("/update.do")
+    public ResponseEntity<Long> update(
+            // @PathVariable Long id,
+            @RequestBody PostRequest postRequest) {
 
-    // // 상세보기 -> 삭제
-    // @DeleteMapping("/{id}/delete")
-    // public ResponseEntity<Long> delete(@PathVariable Long boardId) {
-    //     postService.delete(boardId);
-    //     return ResponseEntity.status(HttpStatus.OK).build();
-    // }
+        log.info("PostController.update() : {}" + postRequest);
 
+        // postRequest.setId(id);
+        Long id = postService.update(postRequest);
+        return ResponseEntity.status(HttpStatus.OK).body(id);
+    }
+
+    // 상세보기 -> 삭제
+    @DeleteMapping("/{id}/delete.do")
+    public ResponseEntity<?> delete(@PathVariable Long id) {
+        try {
+            postService.delete(id);
+            return ResponseEntity.status(HttpStatus.OK).body(id);
+        } catch (Exception e) {
+            String errorMessage = "Failed to delete post with id: " + id + ". " + e.getMessage();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
+        }
+    }
+    
+    // 게시글 삭제 실패 시 오류 원인을 front로 전달하는 메서드
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<String> handleNotFoundException(NotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
+    
     // 게시글 삭제
     @PostMapping("/delete.do")
     public String deletePost(@RequestParam final Long id, final SearchDto queryParams, Model model) {
-        postService.deletePost(id);
+        postService.delete(id);
         MessageDto message = new MessageDto("게시글 삭제가 완료되었습니다.", "/post/list.do", RequestMethod.GET, queryParamsToMap(queryParams));
         return showMessageAndRedirect(message, model);
     }

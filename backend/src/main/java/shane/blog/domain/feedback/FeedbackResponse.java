@@ -17,6 +17,7 @@ public class FeedbackResponse {
 
     private Long id;                // PK
     private Long postId;            // 게시글 FK
+    private String title;           // 댓글 제목
     private String content;         // 댓글 내용
     private String writer;          // 댓글 작성자
     private Boolean deleteYn;       // 삭제 여부

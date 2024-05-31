@@ -49,7 +49,7 @@ public class PostService {
      * @return PK
      */
     @Transactional
-    public Long updatePost(final PostRequest params) {
+    public Long update(final PostRequest params) {
         postMapper.update(params);
         return params.getId();
     }
@@ -59,7 +59,7 @@ public class PostService {
      * @param id - PK
      * @return PK
      */
-    public Long deletePost(final Long id) {
+    public Long delete(final Long id) {
         postMapper.deleteById(id);
         return id;
     }
@@ -88,6 +88,19 @@ public class PostService {
 
     // 게시글 상세 보기
     public PostResponse detail(Long id) {
+        PostResponse postResponse = postMapper.findById(id);
+
+        // 조회수 증가
+        PostRequest postRequest = new PostRequest();
+        postRequest.setId(id);
+        postRequest.setViewCnt(postResponse.getViewCnt() + 1);
+        postMapper.update(postRequest);
+
+        return postResponse;
+    }
+
+    // 답글 상세 보기
+    public PostResponse view(Long id) {
         PostResponse postResponse = postMapper.findById(id);
 
         // 조회수 증가

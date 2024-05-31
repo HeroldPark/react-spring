@@ -33,11 +33,12 @@ INSERT INTO `city` (`id`, `name`, `state`, `country`) VALUES
 	(1, 'San Francisco', 'CA', 'US');
 /*!40000 ALTER TABLE `city` ENABLE KEYS */;
 
--- 테이블 react-spring.tbl_comment 구조 내보내기
-CREATE TABLE IF NOT EXISTS `tbl_comment` (
+-- 테이블 react-spring.tbl_feedback 구조 내보내기
+CREATE TABLE IF NOT EXISTS `tbl_feedback` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '댓글 번호 (PK)',
   `post_id` bigint(20) NOT NULL COMMENT '게시글 번호 (FK)',
   `content` varchar(1000) NOT NULL COMMENT '내용',
+  `title` varchar(100) NOT NULL COMMENT '제목',
   `writer` varchar(20) NOT NULL COMMENT '작성자',
   `delete_yn` tinyint(1) NOT NULL COMMENT '삭제 여부',
   `created_date` datetime NOT NULL DEFAULT current_timestamp() COMMENT '생성일시',
@@ -45,12 +46,36 @@ CREATE TABLE IF NOT EXISTS `tbl_comment` (
   PRIMARY KEY (`id`),
   KEY `fk_post_comment` (`post_id`),
   CONSTRAINT `fk_post_comment` FOREIGN KEY (`post_id`) REFERENCES `tbl_post` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=103 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='댓글';
+) ENGINE=InnoDB AUTO_INCREMENT=127 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='댓글';
 
--- 테이블 데이터 react-spring.tbl_comment:~0 rows (대략적) 내보내기
-DELETE FROM `tbl_comment`;
-/*!40000 ALTER TABLE `tbl_comment` DISABLE KEYS */;
-/*!40000 ALTER TABLE `tbl_comment` ENABLE KEYS */;
+-- 테이블 데이터 react-spring.tbl_feedback:~23 rows (대략적) 내보내기
+DELETE FROM `tbl_feedback`;
+/*!40000 ALTER TABLE `tbl_feedback` DISABLE KEYS */;
+INSERT INTO `tbl_feedback` (`id`, `post_id`, `content`, `title`, `writer`, `delete_yn`, `created_date`, `modified_date`) VALUES
+	(103, 6018, 'ddd', '', 'admin@deltax.ai', 0, '2024-05-29 15:06:22', NULL),
+	(104, 6018, 'ddd', '', 'admin@deltax.ai', 0, '2024-05-29 15:18:03', NULL),
+	(105, 6018, 'ddd', '', 'admin@deltax.ai', 0, '2024-05-29 15:22:22', NULL),
+	(106, 6018, 'ddd', '', 'admin@deltax.ai', 0, '2024-05-29 15:27:37', NULL),
+	(108, 6018, 'ddd', '', 'admin@deltax.ai', 0, '2024-05-29 15:39:37', NULL),
+	(109, 6018, 'ddd', '', 'admin@deltax.ai', 0, '2024-05-29 15:42:28', NULL),
+	(110, 6018, 'ddd', '', 'admin@deltax.ai', 0, '2024-05-29 16:12:02', NULL),
+	(111, 6018, 'ddd', '', 'admin@deltax.ai', 0, '2024-05-29 16:13:37', NULL),
+	(112, 6018, 'ddd', '', 'admin@deltax.ai', 0, '2024-05-29 16:15:08', NULL),
+	(113, 6018, 'ddd', '', 'admin@deltax.ai', 0, '2024-05-29 16:28:38', NULL),
+	(114, 6018, 'ddd', '', 'admin@deltax.ai', 0, '2024-05-29 16:29:40', NULL),
+	(115, 6018, 'ddd', '', 'admin@deltax.ai', 0, '2024-05-29 16:42:42', NULL),
+	(116, 6018, 'ddd', '', 'admin@deltax.ai', 0, '2024-05-29 16:45:16', NULL),
+	(117, 6018, 'ddd', '', 'admin@deltax.ai', 0, '2024-05-29 16:47:14', NULL),
+	(118, 6018, 'ddd', '', 'admin@deltax.ai', 0, '2024-05-29 16:49:29', NULL),
+	(119, 6018, 'ddd', '', 'admin@deltax.ai', 0, '2024-05-29 16:50:53', NULL),
+	(120, 6018, 'sss', '', 'admin@deltax.ai', 0, '2024-05-29 16:58:56', NULL),
+	(121, 6018, 'ddd', '', 'admin@deltax.ai', 0, '2024-05-29 16:59:49', NULL),
+	(122, 6018, 'ddd', '', 'admin@deltax.ai', 0, '2024-05-29 17:02:11', NULL),
+	(123, 6018, 'ddd', '', 'admin@deltax.ai', 0, '2024-05-29 17:04:28', NULL),
+	(124, 6018, 'ddd', '', 'admin@deltax.ai', 0, '2024-05-29 17:05:24', NULL),
+	(125, 6018, 'ddd', '', 'admin@deltax.ai', 0, '2024-05-29 17:07:56', NULL),
+	(126, 6018, 'ddd', '', 'admin@deltax.ai', 0, '2024-05-29 17:11:20', NULL);
+/*!40000 ALTER TABLE `tbl_feedback` ENABLE KEYS */;
 
 -- 테이블 react-spring.tbl_file 구조 내보내기
 CREATE TABLE IF NOT EXISTS `tbl_file` (
@@ -120,7 +145,7 @@ CREATE TABLE IF NOT EXISTS `tbl_picture` (
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- 테이블 데이터 react-spring.tbl_picture:~0 rows (대략적) 내보내기
+-- 테이블 데이터 react-spring.tbl_picture:~2 rows (대략적) 내보내기
 DELETE FROM `tbl_picture`;
 /*!40000 ALTER TABLE `tbl_picture` DISABLE KEYS */;
 INSERT INTO `tbl_picture` (`id`, `title`, `content`, `writer`, `file_path`, `view_cnt`, `delete_yn`, `created_date`, `modified_date`) VALUES
@@ -135,19 +160,20 @@ CREATE TABLE IF NOT EXISTS `tbl_post` (
   `content` text NOT NULL COMMENT '내용',
   `writer` varchar(20) NOT NULL COMMENT '작성자',
   `view_cnt` int(11) NOT NULL COMMENT '조회 수',
-  `notice_yn` tinyint(1) NOT NULL COMMENT '공지글 여부',
+  `notice_yn` tinyint(1) DEFAULT NULL COMMENT '공지글 여부',
   `delete_yn` tinyint(1) NOT NULL COMMENT '삭제 여부',
   `created_date` datetime NOT NULL DEFAULT current_timestamp() COMMENT '생성일시',
   `modified_date` datetime DEFAULT NULL COMMENT '최종 수정일시',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6018 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='게시글';
+) ENGINE=InnoDB AUTO_INCREMENT=6019 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='게시글';
 
--- 테이블 데이터 react-spring.tbl_post:~2 rows (대략적) 내보내기
+-- 테이블 데이터 react-spring.tbl_post:~3 rows (대략적) 내보내기
 DELETE FROM `tbl_post`;
 /*!40000 ALTER TABLE `tbl_post` DISABLE KEYS */;
 INSERT INTO `tbl_post` (`id`, `title`, `content`, `writer`, `view_cnt`, `notice_yn`, `delete_yn`, `created_date`, `modified_date`) VALUES
-	(1, 'Test Title 1', 'Test Content 1', 'tester', 11, 1, 0, '2024-05-09 10:32:23', NULL),
-	(2, 'Test Title 2', 'Test Content 2', 'tester', 11, 1, 0, '2024-05-10 09:18:00', '2024-05-10 09:18:00');
+	(1, 'Test Title 1', 'Test Content 1', 'tester', 12, 1, 0, '2024-05-09 10:32:23', '2024-05-31 07:41:01'),
+	(2, 'Test Title 2', 'Test Content 2', 'tester', 19, 1, 0, '2024-05-10 09:18:00', '2024-05-31 07:41:06'),
+	(6018, 'aaa', 'bbb', 'admin@deltax.ai', 148, NULL, 0, '2024-05-28 11:57:42', '2024-05-31 08:47:37');
 /*!40000 ALTER TABLE `tbl_post` ENABLE KEYS */;
 
 -- 테이블 react-spring.tb_board 구조 내보내기
@@ -168,8 +194,8 @@ CREATE TABLE IF NOT EXISTS `tb_board` (
 DELETE FROM `tb_board`;
 /*!40000 ALTER TABLE `tb_board` DISABLE KEYS */;
 INSERT INTO `tb_board` (`board_id`, `title`, `content`, `view_count`, `member_id`, `created_date`, `modified_date`) VALUES
-	(1, 'Hello react-spring world~~', 'start react-spring study...\n\n1. Spring boot + React\n2. Spring boot 3.x.x 은 backend에서 처리함.(여기서 Thymeleaf는 사용하지 않는다)\n3. React는 frontend 아래 배치함.\n4. Optional JPA(Java Persistence API), MyBatis\n5. Left or Header Menu\n6. JWT(Josn Web Token) Security - Authority를 계정에 따라 GUEST, USER, ADMIN으로 설정하여 각각의 메뉴를 권한에 따라 사용 가능하게 함.\n7. 일반 로그인, Google OAuth2 로그인', 41, 1, NULL, '2024/05/27 10:05:38'),
-	(4, 'Development react-spring on the Spring boot framework', '게시판 관리    => JPA ORM 사용\n . 게시판        => Authentication, Authorization 불필요\n . 직원리스트  => USER 권한만 조회 가능\n . 갤러리형     => 준비 중\n . 카렌다형     => 준비 중\n\n웹서버 관리       => MyBatis 사용\n . 게시판           => "ADMIN", "USER" 권한 필요\n . 사용자리스트   => ADMIN 권한만 조회 가능', 48, 1, '2024/05/08 11:22:10', '2024/05/27 14:32:44');
+	(1, 'Hello react-spring world~~', 'start react-spring study...\n\n1. Spring boot + React\n2. Spring boot 3.x.x 은 backend에서 처리함.(여기서 Thymeleaf는 사용하지 않는다)\n3. React는 frontend 아래 배치함.\n4. Optional JPA(Java Persistence API), MyBatis\n5. Left or Header Menu\n6. JWT(Josn Web Token) Security - Authority를 계정에 따라 GUEST, USER, ADMIN으로 설정하여 각각의 메뉴를 권한에 따라 사용 가능하게 함.\n7. 일반 로그인, Google OAuth2 로그인', 42, 1, NULL, '2024/05/29 16:23:52'),
+	(4, 'Development react-spring on the Spring boot framework', '게시판 관리    => JPA ORM 사용\n . 게시판        => Authentication, Authorization 불필요\n . 직원리스트  => USER 권한만 조회 가능\n . 갤러리형     => 준비 중\n . 카렌다형     => 준비 중\n\n웹서버 관리       => MyBatis 사용\n . 게시판           => "ADMIN", "USER" 권한 필요\n . 사용자리스트   => ADMIN 권한만 조회 가능', 54, 1, '2024/05/08 11:22:10', '2024/05/31 08:19:09');
 /*!40000 ALTER TABLE `tb_board` ENABLE KEYS */;
 
 -- 테이블 react-spring.tb_comment 구조 내보내기

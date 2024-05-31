@@ -36,6 +36,7 @@ function Comment(props) {
 	const updateComment = async () => {
 
 		const req = {
+			commentId: commentId,
 			content: content
 		};
 

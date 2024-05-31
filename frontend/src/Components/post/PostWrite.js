@@ -7,6 +7,8 @@ import { HttpHeadersContext } from "../context/HttpHeadersProvider";
 import "../../css/postwrite.css";
 
 function PostWrite() {
+  console.log("[PostWrite.js] 시작");
+
   const { auth, setAuth } = useContext(AuthContext);
   const { headers, setHeaders } = useContext(HttpHeadersContext);
 

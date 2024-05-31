@@ -4,23 +4,23 @@ import { useEffect, useContext, useState } from "react";
 import { AuthContext } from "../context/AuthProvider";
 import { HttpHeadersContext } from "../context/HttpHeadersProvider";
 
-import "../../css/postupdate.css";
+import "../../css/feedbackupdate.css";
 
-function PostUpdate() {
-	console.log("[PostUpdate.js] 시작");
+function FeedbackUpdate() {
+	console.log("[FeedbackUpdate.js] 시작");
 
 	const { headers, setHeaders } = useContext(HttpHeadersContext);
 	const { auth, setAuth } = useContext(AuthContext);
 	const navigate = useNavigate();
 
 	const location = useLocation();
-	const { post } = location.state;
+	const { feedback } = location.state;
 	
-	const id = post.id;
-	const [title, setTitle] = useState(post.title);
-	const [content, setContent] = useState(post.content);
+	const id = feedback.id;
+	const [title, setTitle] = useState(feedback.title);
+	const [content, setContent] = useState(feedback.content);
 	const [files, setFiles] = useState([]);
-	const [severFiles, setSeverFiles ] = useState(post.files || []);
+	const [severFiles, setSeverFiles ] = useState(feedback.files || []);
 
 	const changeTitle = (event) => {
 		setTitle(event.target.value);
@@ -62,66 +62,66 @@ function PostUpdate() {
 
 	/* 파일 업로드 */
 	const fileUpload = async (id) => {
+		console.log("업로드할 파일 목록:", files);
 		// 파일 데이터 저장
-		const formData = new FormData();
-		formData.append('id', id);
-		files.forEach((file) => formData.append('file', file));
-	
-		try {
-			const resp = await axiosInstance.post(`/post/upload.do`, formData, {
-				headers: {
-					'Content-Type': 'multipart/form-data'
-				}
+		const fd = new FormData();
+		files.forEach((file) => fd.append(`file`, file));
+
+		await axiosInstance.post(`/feedback/${id}/file/upload`, fd, {headers: headers})
+			.then((resp) => {
+				console.log("[file.js] fileUpload() success :D");
+				console.log(resp.data);
+				alert("게시물과 파일을 성공적으로 수정했습니다. :D");
+				
+				// 새롭게 등록한 글 상세로 이동
+				navigate(`/feedbackdetail/${id}`); 
+			})
+			.catch((err) => {
+				console.log("[FileData.js] fileUpload() error :<");
+				console.log(err);
 			});
-			console.log("[PostUpdate.js] fileUpload() success :D");
-			console.log(resp.data);
-			alert("게시물과 파일을 성공적으로 수정했습니다. :D");
-	
-			// 새롭게 등록한 글 상세로 이동
-			navigate(`/postdetail/${id}`);
-		} catch (err) {
-			console.log("[PostUpdate.js] fileUpload() error :<");
-			console.log(err);
-		}
 	};
 
 	/* 파일 삭제 */
 	const fileDelete = async (id, fileId) => {
 		try {
-			await axiosInstance.delete(`/post/delete.do?fileId=${fileId}`, {headers: headers});
-				console.log("[PostUpdate.js] fileDelete() success :D");
+			await axiosInstance.delete(`/feedback/${id}/file/delete?fileId=${fileId}`, {headers: headers});
+				console.log("[FeedbackUpdate.js] fileDelete() success :D");
 				alert("파일 삭제 성공 :D");
 		} catch (error) {
-			console.error("[PostUpdate.js] fileDelete() error :<");
+			console.error("[FeedbackUpdate.js] fileDelete() error :<");
 			console.error(error);
 		}
 	};
 
 	/* 게시판 수정 */
-	const updatePost = async () => {
+	const updateFeedback = async () => {
+
 		const req = {
-			id: post.id, 
+			id: feedback.id,
 			title: title, 
 			content: content
 		}
 
-		await axiosInstance.patch(`/post/update.do`, req, {headers: headers})
+		await axiosInstance.patch(`/feedback/${feedback.id}/update.do`, req, {headers: headers})
 		.then((resp) => {
-			console.log("[PostUpdate.js] updatePost() success :D");
+			console.log("[FeedbackUpdate.js] updateFeedback() success :D");
 			console.log(resp.data);
-			const id = resp.data;
+			const id = resp.data.id;
 
 			if (files.length > 0) {
 				fileUpload(id);
 			} else {
-				alert("게시글을 성공적으로 수정했습니다 :D");
-				navigate(`/postdetail/${resp.data}`); // 새롭게 등록한 글 상세로 이동
+				alert("답글을 성공적으로 수정했습니다 :D");
+				// navigate(`/feedbackdetail/${resp.data.id}`); // 새롭게 등록한 글 상세로 이동
+				navigate(`/feedbackdetail/${resp.data.seq}`, { state: { feedback: resp.data } }); // 전달
 			}
 		})
 		.catch((err) => {
-			console.log("[PostUpdate.js] updatePost() error :<");
+			console.log("[FeedbackUpdate.js] updateFeedback() error :<");
 			console.log(err);
 		});
+
 	}
 
 
@@ -132,7 +132,7 @@ function PostUpdate() {
 					<tr>
 						<th className="table-primary">작성자</th>
 						<td>
-							<input type="text" className="form-control"  value={post.writerName} size="50px" readOnly />
+							<input type="text" className="form-control"  value={feedback.writer} size="50px" readOnly />
 						</td>
 					</tr>
 
@@ -157,7 +157,7 @@ function PostUpdate() {
 							<ul>
 								{/* 기존의 파일 데이터, 삭제 로직 */}
 								{severFiles.map((file, index) => (
-									<li key={`server_${file.fileId}`} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+									<li key={file.fileId} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
 										<span>
 											<strong>File Name:</strong> {file.originFileName} &nbsp;
 											<button className="delete-button" type="button" onClick={() => handleRemoveSeverFile(index, id, file.fileId)}>
@@ -168,14 +168,14 @@ function PostUpdate() {
 								))}
 								{/* 새로운 파일을 저장할 때 */}
 								{files.map((file, index) => (
-									<li key={`new_${index}`} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-										<span>
-											<strong>File Name:</strong> {file.name} &nbsp;
-											<button className="delete-button" type="button" onClick={() => handleRemoveFile(index)}>
-												x
-											</button>
-										</span>
-									</li>
+									<li key={file.fileId} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+									<span>
+										<strong>File Name:</strong> {file.name} &nbsp;
+										<button className="delete-button" type="button" onClick={() => handleRemoveFile(index)}>
+											x
+										</button>
+									</span>
+								</li>
 								))}
 							</ul>
 						</div>
@@ -184,7 +184,6 @@ function PostUpdate() {
 							<p>No files</p>
 						</div>
 					)}
-
 					<div className='file-select-box'>
 							<input type='file' name='file' onChange={handleChangeFile} multiple="multiple" />
 					</div>
@@ -194,11 +193,11 @@ function PostUpdate() {
 			</table>
 
 			<div className="my-3 d-flex justify-content-center">
-				<button className="btn btn-dark" onClick={updatePost}><i className="fas fa-pen"></i> 수정하기</button>
+				<button className="btn btn-dark" onClick={updateFeedback}><i className="fas fa-pen"></i> 수정하기</button>
 			</div>
 		</div>
 	);
 
 }
 
-export default PostUpdate;
+export default FeedbackUpdate;

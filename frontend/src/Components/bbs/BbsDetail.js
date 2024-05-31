@@ -11,6 +11,8 @@ import "../../css/bbsdetail.css"; // 추가: 스타일 파일 import
 import FileDisplay from "../file/FileDisplay";
 
 function BbsDetail() {
+  console.log("[BbsDetail.js] 시작");
+
   const { headers, setHeaders } = useContext(HttpHeadersContext);
   const { auth, setAuth } = useContext(AuthContext);
   const [ bbs, setBbs] = useState({});

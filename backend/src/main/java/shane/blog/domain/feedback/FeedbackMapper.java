@@ -35,7 +35,7 @@ public interface FeedbackMapper {
      *
      * @param params - 게시글 정보
      */
-    void update(FeedbackRequest params);
+    int update(FeedbackRequest params);
 
     /**
      * 게시글 삭제
@@ -57,5 +57,12 @@ public interface FeedbackMapper {
      * @return 게시글 리스트
      */
     List<FeedbackResponse> findList(SearchDto params);
+
+    /**
+     * 게시글 리스트 조회
+     *
+     * @return 게시글 리스트
+     */
+    List<FeedbackResponse> findAll(SearchDto params);
 
 }

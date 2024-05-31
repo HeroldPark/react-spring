@@ -62,27 +62,25 @@ function PostUpdate() {
 
 	/* 파일 업로드 */
 	const fileUpload = async (id) => {
+		console.log("업로드할 파일 목록:", files);
 		// 파일 데이터 저장
-		const formData = new FormData();
-		formData.append('id', id);
-		files.forEach((file) => formData.append('file', file));
-	
-		try {
-			const resp = await axiosInstance.post(`/post/upload.do`, formData, {
-				headers: {
-					'Content-Type': 'multipart/form-data'
-				}
+		const fd = new FormData();
+		files.forEach((file) => fd.append(`file`, file));
+		const req = { id: id, files: files };
+
+		await axiosInstance.post(`/post/upload.do`, req, {headers: headers})
+			.then((resp) => {
+				console.log("[PostUpdate.js] fileUpload() success :D");
+				console.log(resp.data);
+				alert("게시물과 파일을 성공적으로 수정했습니다. :D");
+				
+				// 새롭게 등록한 글 상세로 이동
+				navigate(`/postdetail/${id}`); 
+			})
+			.catch((err) => {
+				console.log("[PostUpdate.js] fileUpload() error :<");
+				console.log(err);
 			});
-			console.log("[PostUpdate.js] fileUpload() success :D");
-			console.log(resp.data);
-			alert("게시물과 파일을 성공적으로 수정했습니다. :D");
-	
-			// 새롭게 등록한 글 상세로 이동
-			navigate(`/postdetail/${id}`);
-		} catch (err) {
-			console.log("[PostUpdate.js] fileUpload() error :<");
-			console.log(err);
-		}
 	};
 
 	/* 파일 삭제 */
@@ -157,7 +155,7 @@ function PostUpdate() {
 							<ul>
 								{/* 기존의 파일 데이터, 삭제 로직 */}
 								{severFiles.map((file, index) => (
-									<li key={`server_${file.fileId}`} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+									<li key={file.fileId} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
 										<span>
 											<strong>File Name:</strong> {file.originFileName} &nbsp;
 											<button className="delete-button" type="button" onClick={() => handleRemoveSeverFile(index, id, file.fileId)}>
@@ -168,14 +166,14 @@ function PostUpdate() {
 								))}
 								{/* 새로운 파일을 저장할 때 */}
 								{files.map((file, index) => (
-									<li key={`new_${index}`} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-										<span>
-											<strong>File Name:</strong> {file.name} &nbsp;
-											<button className="delete-button" type="button" onClick={() => handleRemoveFile(index)}>
-												x
-											</button>
-										</span>
-									</li>
+									<li key={file.fileId} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+									<span>
+										<strong>File Name:</strong> {file.name} &nbsp;
+										<button className="delete-button" type="button" onClick={() => handleRemoveFile(index)}>
+											x
+										</button>
+									</span>
+								</li>
 								))}
 							</ul>
 						</div>
@@ -184,7 +182,6 @@ function PostUpdate() {
 							<p>No files</p>
 						</div>
 					)}
-
 					<div className='file-select-box'>
 							<input type='file' name='file' onChange={handleChangeFile} multiple="multiple" />
 					</div>

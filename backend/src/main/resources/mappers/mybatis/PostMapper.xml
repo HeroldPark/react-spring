@@ -129,11 +129,16 @@
 
     <!-- 게시글 삭제 -->
     <delete id="deleteById" parameterType="long">
-        UPDATE tbl_post /* id="deleteById" 2024-05-28 by shanepark */
+        <!-- 
+        UPDATE tbl_post
         SET
             delete_yn = 1
         WHERE
             id = #{id}
+        -->
+        DELETE FROM tbl_post     /* id="deleteById" 2024-05-28 by shanepark */
+        WHERE
+            id = #{value}
     </delete>
 
 

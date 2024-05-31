@@ -14,7 +14,7 @@ function PostDetail() {
 
   const { headers, setHeaders } = useContext(HttpHeadersContext);
   const { auth } = useContext(AuthContext);
-  const [post, setPost] = useState(null);
+  const [post, setPost] = useState(null);	// 일반 객체인 경우와 배열인 경우를 구분하기 위해 null로 초기화
   const { id } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
@@ -55,9 +55,9 @@ function PostDetail() {
 
   const deletePost = async (postId) => {
     try {
-      const response = await axiosInstance.delete(`/post/${postId}/delete`, { headers });
+      const response = await axiosInstance.delete(`/post/${postId}/delete.do`, { headers });
 
-      console.log("[PostDetail.js] deletePost() success :D");
+      console.log("[PostDetail.js] delete() success :D");
       console.log(response.data);
 
       if (response.status === 200) {
@@ -69,7 +69,8 @@ function PostDetail() {
         }
       }
     } catch (error) {
-      console.log("[PostDetail.js] deletePost() error :<");
+      alert("게시글을 삭제 샐패 :<");
+      console.log("[PostDetail.js] delete() error :<");
       console.error(error);
     }
   };
@@ -95,6 +96,9 @@ function PostDetail() {
           <Link className="btn btn-outline-secondary" to="/postlist"><i className="fas fa-list"></i> 글목록</Link> &nbsp;
           <Link className="btn btn-outline-secondary" to={{ pathname: `/postanswer/${post.id}` }} state={{ parentPost }}>
             <i className="fas fa-pen"></i> 답글쓰기
+          </Link> &nbsp;
+          <Link className="btn btn-outline-secondary" to={{ pathname: `/feedbackdetail/${post.id}` }} state={{ parentPost }}>
+            <i className="fas fa-pen"></i> 답글보기
           </Link> &nbsp;
           {
             localStorage.getItem("id") === post.writer &&
@@ -133,10 +137,16 @@ function PostDetail() {
         <div>
           <FileDisplay files={post.files} id={post.id} />
         </div>
+        {/* 댓글 리스트 */}
+        <FeedbackList postId={post.id} />
 
-        <FeedbackList id={post.id} />
-
-        {auth && <FeedbackWrite id={post.id} />}
+        {/* 댓글 작성 컴포넌트 */}
+        {
+          (auth) ? // 로그인한 사용자만 댓글 작성 가능
+          <FeedbackWrite postId={post.id} title={post.title} />
+          :
+            null
+        }
       </div>
     );
   };

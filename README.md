@@ -350,3 +350,12 @@
 
 # 29. 2024-05-29
     - React - MyBatis 연동은 Post + Feedback으로 명명함.
+    - Spring boot+React+MyBatis+Post+Feedback 개발 중
+
+# 30. 2024-05-30
+    - 상세조회에서 댓글 출력 안되는 장애 발생.
+    - github에서 가져와 수정 필요하다.
+    - security 도 봐야할 것 같다.
+
+# 31. 2024-05-31
+    - multipart file 전달 중

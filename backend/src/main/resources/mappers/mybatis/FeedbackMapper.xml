@@ -7,6 +7,7 @@
     <sql id="feedbackColumns">
           id
         , post_id
+        , title
         , content
         , writer
         , delete_yn
@@ -53,6 +54,7 @@
         ) VALUES (
               #{id}
             , #{postId}
+            , #{title}
             , #{content}
             , #{writer}
             , 0
@@ -87,8 +89,15 @@
         UPDATE tbl_feedback
         SET
               modified_date = NOW()
-            , content = #{content}
-            , writer = #{writer}
+            <if test="title != null and title != ''">
+                , title = #{title}
+            </if>
+            <if test="content != null and content != ''">
+                , content = #{content}
+            </if>
+            <if test="writer != null and writer != ''">
+                , writer = #{writer}
+            </if>
         WHERE
             id = #{id}
     </update>
@@ -96,27 +105,18 @@
 
     <!-- 댓글 삭제 -->
     <delete id="deleteById" parameterType="long">
+        <!-- 
         UPDATE tbl_feedback
         SET
             delete_yn = 1
         WHERE
             id = #{id}
-    </delete>
-
-
-    <!-- 댓글 리스트 조회 -->
-    <select id="findAll" parameterType="searchDto" resultType="feedbackRes">
-        SELECT
-            <include refid="feedbackColumns" />
-        FROM
-            tbl_feedback
+        -->
+        
+        DELETE FROM tbl_feedback
         WHERE
-            delete_yn = 0
-            AND post_id = #{postId}
-        ORDER BY
-            id DESC
-        LIMIT #{pagination.limitStart}, #{recordSize}
-    </select>
+            id = #{value}
+    </delete>
 
 
     <!-- 댓글 수 카운팅 -->
@@ -140,6 +140,20 @@
             <include refid="search" />
         ORDER BY id DESC
         LIMIT #{pagination.limitStart}, #{recordSize}
+    </select>
+
+    <!-- 댓글 리스트 조회 -->
+    <select id="findAll" parameterType="searchDto" resultType="feedbackRes">
+        SELECT
+            <include refid="feedbackColumns" />
+        FROM
+            tbl_feedback
+        WHERE
+            delete_yn = 0
+            AND post_id = #{postId}
+        ORDER BY
+            id DESC
+        <!-- LIMIT #{pagination.limitStart}, #{recordSize} -->
     </select>
 
 </mapper>
