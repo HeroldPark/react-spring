@@ -34,6 +34,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -98,16 +100,6 @@ public class PostController {
     //     return "post/view";
     // }
 
-    // 신규 게시글 생성
-    @PostMapping("/save.do")
-    public String savePost(final PostRequest params, Model model) {
-        Long id = postService.savePost(params);
-        List<FileRequest> files = fileUtils.uploadFiles(params.getFiles());
-        fileService.saveFiles(id, files);
-        MessageDto message = new MessageDto("게시글 생성이 완료되었습니다.", "/post/list.do", RequestMethod.GET, null);
-        return showMessageAndRedirect(message, model);
-    }
-
     // 게시글 작성 페이지
     @PostMapping("/write.do")
     public ResponseEntity<?> postWrite(
@@ -119,32 +111,6 @@ public class PostController {
         return ResponseEntity.status(HttpStatus.CREATED).body(id);
     }
 
-    // 기존 게시글 수정
-    @PostMapping("/update.do")
-    public String updatePost(final PostRequest params, final SearchDto queryParams, Model model) {
-
-        // 1. 게시글 정보 수정
-        postService.update(params);
-
-        // 2. 파일 업로드 (to disk)
-        List<FileRequest> uploadFiles = fileUtils.uploadFiles(params.getFiles());
-
-        // 3. 파일 정보 저장 (to database)
-        fileService.saveFiles(params.getId(), uploadFiles);
-
-        // 4. 삭제할 파일 정보 조회 (from database)
-        List<FileResponse> deleteFiles = fileService.findAllFileByIds(params.getRemoveFileIds());
-
-        // 5. 파일 삭제 (from disk)
-        fileUtils.deleteFiles(deleteFiles);
-
-        // 6. 파일 삭제 (from database)
-        fileService.deleteAllFileByIds(params.getRemoveFileIds());
-
-        MessageDto message = new MessageDto("게시글 수정이 완료되었습니다.", "/post/list.do", RequestMethod.GET, queryParamsToMap(queryParams));
-        return showMessageAndRedirect(message, model);
-    }
-
     // 게시글 상세 페이지
     @GetMapping("/detail.do/{id}")
     public ResponseEntity<PostResponse> postDetail(@PathVariable("id") Long id) {
@@ -152,7 +118,7 @@ public class PostController {
         // @GetMapping("/detail.do")
         // public ResponseEntity<PostResponse> postDetail(@ModelAttribute("params") final SearchDto params) {
         
-        log.info("PostController.postDetail() : {}" + id);
+        log.info("PostController.postDetail() : {}", id);
 
         PostResponse postResponse = postService.detail(id);
         return ResponseEntity.status(HttpStatus.OK).body(postResponse);
@@ -163,7 +129,7 @@ public class PostController {
     public ResponseEntity<List<FeedbackResponse>> postAnswer(@RequestBody PostRequest postRequest) {
         // public ResponseEntity<PostResponse> postAnswer(@PathVariable("parentSeq") Long parentSeq) {
        
-        log.info("PostController.postAnswer() : {}" + postRequest);
+        log.info("PostController.postAnswer() : {}", postRequest);
 
         FeedbackRequest feedbackRequest = new FeedbackRequest();
         feedbackRequest.setPostId(postRequest.getId());
@@ -175,18 +141,18 @@ public class PostController {
         return ResponseEntity.status(HttpStatus.OK).body(feedbackResponse);
     }
 
-    // 상세보기 -> 수정
-    @PatchMapping("/update.do")
-    public ResponseEntity<Long> update(
-            // @PathVariable Long id,
-            @RequestBody PostRequest postRequest) {
+    // // 상세보기 -> 수정
+    // @PatchMapping("/update.do")
+    // public ResponseEntity<Long> update(
+    //         // @PathVariable Long id,
+    //         @RequestBody PostRequest postRequest) {
 
-        log.info("PostController.update() : {}" + postRequest);
+    //     log.info("PostController.update() : {}", postRequest);
 
-        // postRequest.setId(id);
-        Long id = postService.update(postRequest);
-        return ResponseEntity.status(HttpStatus.OK).body(id);
-    }
+    //     // postRequest.setId(id);
+    //     Long id = postService.update(postRequest);
+    //     return ResponseEntity.status(HttpStatus.OK).body(id);
+    // }
 
     // 상세보기 -> 삭제
     @DeleteMapping("/{id}/delete.do")
@@ -200,12 +166,78 @@ public class PostController {
         }
     }
     
-    // 게시글 삭제 실패 시 오류 원인을 front로 전달하는 메서드
-    @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity<String> handleNotFoundException(NotFoundException ex) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
-    }
+    // // 게시글 삭제 실패 시 오류 원인을 front로 전달하는 메서드
+    // @ExceptionHandler(NotFoundException.class)
+    // public ResponseEntity<String> handleNotFoundException(NotFoundException ex) {
+    //     return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    // }
     
+    // 신규 게시글 생성
+    @PostMapping("/save.do")
+    public String savePost(final PostRequest params, @RequestPart("multipartFiles") MultipartFile[] multipartFiles, Model model) {
+        Long id = postService.savePost(params);
+        // List<FileRequest> files = fileUtils.uploadFiles(params.getFiles());
+        List<FileRequest> uploadFiles = fileUtils.uploadFiles(multipartFiles);
+        fileService.saveFiles(id, uploadFiles);
+        MessageDto message = new MessageDto("게시글 생성이 완료되었습니다.", "/post/list.do", RequestMethod.GET, null);
+        return showMessageAndRedirect(message, model);
+    }
+
+    // 기존 게시글 수정
+    @PostMapping("/update.do")
+    public ResponseEntity<PagingResponse<PostResponse>> updatePost(
+        @RequestPart("params") PostRequest params,
+        @RequestPart("multipartFiles") MultipartFile[] multipartFiles,
+        final SearchDto queryParams,
+        Model model) {
+
+        log.info("PostController.updatePost() : {}", params);
+
+        // 1. 게시글 정보 수정
+        postService.update(params);
+
+        // 2. 파일 업로드 (to disk)
+        // List<FileRequest> uploadFiles = fileUtils.uploadFiles(params.getFiles());
+        List<FileRequest> uploadFiles = fileUtils.uploadFiles(multipartFiles);
+
+        // 3. 파일 정보 저장 (to database)
+        fileService.saveFiles(params.getId(), uploadFiles);
+
+        // 4. 삭제할 파일 정보 조회 (from database)
+        List<FileResponse> deleteFiles = fileService.findAllFileByIds(params.getRemoveFileIds());
+
+        // 5. 파일 삭제 (from disk)
+        fileUtils.deleteFiles(deleteFiles);
+
+        // 6. 파일 삭제 (from database)
+        fileService.deleteAllFileByIds(params.getRemoveFileIds());
+
+        // MessageDto message = new MessageDto("게시글 수정이 완료되었습니다.", "/post/list.do", RequestMethod.GET, queryParamsToMap(queryParams));
+        // return showMessageAndRedirect(message, model);
+        SearchDto params2 = new SearchDto();
+        params2.setPage(1);
+        params2.setRecordSize(10);
+        params2.setPageSize(10);
+        params2.setKeyword("");
+        params2.setId(params.getId());
+
+        PagingResponse<PostResponse> response = postService.findList(params2);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    @RequestMapping(value = "/upload.do", method = { RequestMethod.GET, RequestMethod.POST })
+    public ResponseEntity<PagingResponse<PostResponse>> postUpload(@ModelAttribute("params") final SearchDto params) {
+
+        logger.debug("/upload.do 시작. \t {}", new Date());
+
+        // 1. 회원 정보 조회
+        PagingResponse<PostResponse> response = postService.findList(params);
+        logger.debug("/upload.do 종료. \t {}", response);
+
+        // 2. 조회 결과 리턴
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
     // 게시글 삭제
     @PostMapping("/delete.do")
     public String deletePost(@RequestParam final Long id, final SearchDto queryParams, Model model) {

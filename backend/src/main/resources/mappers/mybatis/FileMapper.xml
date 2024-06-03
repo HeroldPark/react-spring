@@ -3,7 +3,7 @@
 
 <mapper namespace="shane.blog.domain.file.FileMapper">
 
-    <!-- tb_file 테이블 전체 컬럼 -->
+    <!-- tbl_file 테이블 전체 컬럼 -->
     <sql id="fileColumns">
           id
         , post_id
@@ -18,7 +18,7 @@
 
     <!-- 파일 정보 저장 -->
     <insert id="saveAll" parameterType="list">
-        INSERT INTO tb_file (
+        INSERT INTO tbl_file (
             <include refid="fileColumns" />
         ) VALUES
         <foreach item="file" collection="list" separator=",">
@@ -41,7 +41,7 @@
         SELECT
             <include refid="fileColumns" />
         FROM
-            tb_file
+            tbl_file
         WHERE
             delete_yn = 0
             AND post_id = #{value}
@@ -55,7 +55,7 @@
         SELECT
             <include refid="fileColumns" />
         FROM
-            tb_file
+            tbl_file
         WHERE
             delete_yn = 0
             AND id IN
@@ -69,7 +69,7 @@
 
     <!-- 파일 삭제 -->
     <delete id="deleteAllByIds" parameterType="list">
-        UPDATE tb_file
+        UPDATE tbl_file
         SET
               delete_yn = 1
             , deleted_date = NOW()
@@ -86,7 +86,7 @@
         SELECT
             <include refid="fileColumns" />
         FROM
-            tb_file
+            tbl_file
         WHERE
             delete_yn = 0
             AND id = #{value}

@@ -31,7 +31,7 @@ public class FileUtils {
      * @param multipartFiles - 파일 객체 List
      * @return DB에 저장할 파일 정보 List
      */
-    public List<FileRequest> uploadFiles(final List<MultipartFile> multipartFiles) {
+    public List<FileRequest> uploadFiles(final MultipartFile[] multipartFiles) {
         List<FileRequest> files = new ArrayList<>();
         for (MultipartFile multipartFile : multipartFiles) {
             if (multipartFile.isEmpty()) {
@@ -54,7 +54,7 @@ public class FileUtils {
         }
 
         String saveName = generateSaveFilename(multipartFile.getOriginalFilename());
-        String today = LocalDate.now().format(DateTimeFormatter.ofPattern("yyMMdd")).toString();
+        String today = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")).toString();
         String uploadPath = getUploadPath(today) + File.separator + saveName;
         File uploadFile = new File(uploadPath);
 
