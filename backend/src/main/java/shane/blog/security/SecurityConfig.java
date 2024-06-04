@@ -74,6 +74,8 @@ public class SecurityConfig {
         // , "/post/search"
         // , "/post/{id}/comment/list/**"
         // , "/post/{id}/file/download/**"
+
+        // , "/file/{postId}/files/{postId}/download"
     };
 
     @SuppressWarnings("removal")
@@ -86,20 +88,21 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource))
 
                 .authorizeHttpRequests(authorize
-                                -> authorize
-                                        .requestMatchers(allowedUrls).permitAll()
+                    -> authorize
+                            .requestMatchers(allowedUrls).permitAll()
 
-                                        .requestMatchers("/board/**").hasAnyRole("ADMIN", "USER", "GUEST")
-                                        .requestMatchers("/comment/**").hasAnyRole("ADMIN", "USER") // 추가(JPA)
+                            .requestMatchers("/board/**").hasAnyRole("ADMIN", "USER", "GUEST")
+                            .requestMatchers("/comment/**").hasAnyRole("ADMIN", "USER") // 추가(JPA)
 
-                                        .requestMatchers("/employees").hasAnyRole("USER") // 추가(JPA)
+                            .requestMatchers("/employees").hasAnyRole("USER") // 추가(JPA)
 
-                                        .requestMatchers("/post/**").hasAnyRole("ADMIN", "USER") // 추가(Mybatis)
-                                        .requestMatchers("/feedback/**").hasAnyRole("ADMIN", "USER") // 추가(Mybatis)
+                            .requestMatchers("/post/**").hasAnyRole("ADMIN", "USER") // 추가(Mybatis)
+                            .requestMatchers("/feedback/**").hasAnyRole("ADMIN", "USER") // 추가(Mybatis)
+                            .requestMatchers("/file/**").hasAnyRole("ADMIN", "USER") // 추가(Mybatis)
 
-                                        .requestMatchers("/member/**").hasRole("ADMIN") // 추가(Mybatis)
+                            .requestMatchers("/member/**").hasRole("ADMIN") // 추가(Mybatis)
 
-                                        .anyRequest().authenticated()      // 나머지는 모두 인증, 인가 받아야 한다.
+                            .anyRequest().authenticated()      // 나머지는 모두 인증, 인가 받아야 한다.
                 // .anyRequest().permitAll()
                 )
 

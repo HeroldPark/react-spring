@@ -362,3 +362,6 @@
 
 # 32. 2024-06-03
     - MultipartFile로 client에서 server로 데이터 전달 후 파일 저장
+
+# 33. 2024-06-04
+    - MultipartFile 방식으로 file upload/download 완료

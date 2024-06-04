@@ -5,7 +5,7 @@ function Home() {
     return (
         <div className="container mt-5">
             <div className="jumbotron">
-                <h1 className="display-4">Welcome to Jhcode33's Board!</h1>
+                <h1 className="display-4">Welcome to Springboot-React's Board!</h1>
                 <p className="lead">
                     Explore and engage with the community. Share your thoughts, ask questions,
                     and connect with others through this SPA board.
@@ -23,11 +23,7 @@ function Home() {
                     <ul>
                         <li>
 							- &nbsp;
-                            <a href="https://github.com/jhcode33/react-spring-blog-backend" target="_blank" rel="noopener noreferrer">Backend Repository</a>
-                        </li>
-                        <li>
-							- &nbsp;
-                            <a href="https://github.com/jhcode33/react-spring-blog-frontend" target="_blank" rel="noopener noreferrer">Frontend Repository</a>
+                            <a href="git@github.com:HeroldPark/react-spring.git" target="_blank" rel="noopener noreferrer">Git Repository</a>
                         </li>
                     </ul>
                 </div>
@@ -35,7 +31,7 @@ function Home() {
                 <div className="mt-4">
                     <h5>📧Contact me email</h5>
 						- &nbsp;
-						<a href="mailto:jhcode33@gmail.com">jhcode33@gmail.com</a>
+						<a href="mailto:shanepark@reltax.ai">shanepark@reltax.ai</a>
 
                 </div>
             </div>

@@ -55,6 +55,7 @@ function PostUpdate() {
         setHeaders({
             "Authorization": `Bearer ${localStorage.getItem("login_access_token")}`
         });
+        findAllFileByPostId(post.id);
     }, []);
     
     // 기본 설정을 포함한 axios 인스턴스 생성
@@ -137,6 +138,21 @@ function PostUpdate() {
             console.log(err);
         });
     }
+
+    // Post 전체 조회
+    const findAllFileByPostId = async (postId) => {
+        try {
+            const response = await axiosInstance.get('/file/{postId}/files');
+
+            console.log("[PostList.js] findAllFileByPostId() success :D");
+            console.log(response.data);
+
+            setPostList(response.data.list);
+        } catch (error) {
+            console.log("[PostList.js] findAllFileByPostId() error :<");
+            console.log(error);
+        }
+    };
 
 
     return (

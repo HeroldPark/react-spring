@@ -121,7 +121,7 @@ public class FileUtils {
             return;
         }
         for (FileResponse file : files) {
-            String uploadedDate = file.getCreatedDate().toLocalDate().format(DateTimeFormatter.ofPattern("yyMMdd"));
+            String uploadedDate = file.getCreatedDate().toLocalDate().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
             deleteFile(uploadedDate, file.getSaveName());
         }
     }
@@ -153,7 +153,7 @@ public class FileUtils {
      * @return 첨부파일(리소스)
      */
     public Resource readFileAsResource(final FileResponse file) {
-        String uploadedDate = file.getCreatedDate().toLocalDate().format(DateTimeFormatter.ofPattern("yyMMdd"));
+        String uploadedDate = file.getCreatedDate().toLocalDate().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
         String filename = file.getSaveName();
         Path filePath = Paths.get(uploadPath, uploadedDate, filename);
         try {

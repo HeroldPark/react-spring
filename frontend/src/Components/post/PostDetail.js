@@ -14,7 +14,8 @@ function PostDetail() {
 
   const { headers, setHeaders } = useContext(HttpHeadersContext);
   const { auth } = useContext(AuthContext);
-  const [post, setPost] = useState(null);	// 일반 객체인 경우와 배열인 경우를 구분하기 위해 null로 초기화
+  const [post, setPost] = useState(null);  // 일반 객체인 경우와 배열인 경우를 구분하기 위해 null로 초기화
+  const [attach, setAttach] = useState(null);
   const { id } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
@@ -47,6 +48,20 @@ function PostDetail() {
       console.log(response.data);
 
       setPost(response.data);
+
+      // 첨부 파일 조회
+      const postId = response.data.id;
+      try {
+        const response = await axiosInstance.get(`/file/${postId}`);
+        console.log("[PostDetail.js] getPostDetail() files success :D");
+
+        setAttach({
+          files: response.data
+        });
+      } catch (error) {
+        console.log("[PostDetail.js] getPostDetail() error :<<");
+        console.error(error);
+      }
     } catch (error) {
       console.log("[PostDetail.js] getPostDetail() error :<");
       console.error(error);
@@ -134,9 +149,13 @@ function PostDetail() {
           </tbody>
         </table>
 
+        {/* 첨부 파일 리스트 */}
         <div>
-          <FileDisplay files={post.files} id={post.id} />
+          {attach && attach.files && (
+            <FileDisplay files={attach.files} id={attach.id} />
+          )}
         </div>
+
         {/* 댓글 리스트 */}
         <FeedbackList postId={post.id} />
 
@@ -161,6 +180,7 @@ function PostDetail() {
       }
     </div>
   );
+
 }
 
 export default PostDetail;

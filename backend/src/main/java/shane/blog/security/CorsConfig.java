@@ -20,6 +20,7 @@ public class CorsConfig implements WebMvcConfigurer {
          configuration.setAllowedOrigins(List.of("http://localhost:3000", "http://localhost:8989"));
          configuration.setAllowedMethods(Arrays.asList("GET","POST", "OPTIONS", "PATCH", "DELETE"));
          configuration.setAllowedHeaders(Arrays.asList("Content-Type", "Authorization"));
+         configuration.setExposedHeaders(Arrays.asList("Content-Disposition", "File-Name"));    // for file download
          configuration.setAllowCredentials(true);
  
          UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
