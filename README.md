@@ -365,3 +365,8 @@
 
 # 33. 2024-06-04
     - MultipartFile 방식으로 file upload/download 완료
+
+# 34. 2024-06-05
+    - Spring boot + React + Security + Google OAuth2 Login
+    - Spring boot + React + Security + JPA + JWT + Board + Comment
+    - Spring boot + React + Security + MyBatis + JWT + Post + Feedback

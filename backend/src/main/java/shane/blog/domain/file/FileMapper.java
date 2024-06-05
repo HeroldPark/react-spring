@@ -40,4 +40,11 @@ public interface FileMapper {
      */
     FileResponse findById(Long id);
 
+    /**
+     * 파일 상세정보 조회
+     * @param id - PK
+     * @return 파일 상세정보
+     */
+    Boolean deleteById(Long id);
+
 }

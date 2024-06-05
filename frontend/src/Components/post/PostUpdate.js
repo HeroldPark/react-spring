@@ -46,9 +46,9 @@ function PostUpdate() {
         setFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
     };
 
-    const handleRemoveSeverFile = (index, id, fileId) => {
+    const handleRemoveSeverFile = (index, postId, fileId) => {
         setSeverFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
-        fileDelete(id, fileId);
+        fileDelete(postId, fileId);
     }
 
     useEffect(() => {
@@ -92,16 +92,17 @@ function PostUpdate() {
         }
     };
 
-    /* 파일 삭제 */
-    const fileDelete = async (id, fileId) => {
-        try {
-            await axiosInstance.delete(`/post/delete.do?fileId=${fileId}`, {headers: headers});
-                console.log("[PostUpdate.js] fileDelete() success :D");
-                alert("파일 삭제 성공 :D");
-        } catch (error) {
-            console.error("[PostUpdate.js] fileDelete() error :<");
+    /* 첨부파일 삭제 */
+    const fileDelete = async (postId, fileId) => {
+        await axiosInstance.get(`/file/delete.do?id=${fileId}`)
+        .then(response => {
+            console.log("[PostUpdate.js] fileDelete() success :" + response.data);
+            alert(response.data);
+        })
+        .catch(error => {
             console.error(error);
-        }
+            console.error("[PostUpdate.js] fileDelete() error :<");
+        });
     };
 
     /* 게시판 수정 */
@@ -115,7 +116,7 @@ function PostUpdate() {
             id: post.id, 
             title: title,
             content: content,
-            removeFileIds: severFiles.map(file => file.fileId) // Extract file IDs for removal
+            removeFileIds: severFiles.map(file => file.id) // Extract file IDs for removal
         }
         formData.append('params', new Blob([JSON.stringify(req)], { type: 'application/json' })); // Blob으로 변환하여 전송
 
@@ -142,14 +143,14 @@ function PostUpdate() {
     // Post 전체 조회
     const findAllFileByPostId = async (postId) => {
         try {
-            const response = await axiosInstance.get('/file/{postId}/files');
+            const response = await axiosInstance.get(`/file/${postId}`);
 
-            console.log("[PostList.js] findAllFileByPostId() success :D");
+            console.log("[PostUpdate.js] findAllFileByPostId() success :D");
             console.log(response.data);
 
             setPostList(response.data.list);
         } catch (error) {
-            console.log("[PostList.js] findAllFileByPostId() error :<");
+            console.log("[PostUpdate.js] findAllFileByPostId() error :<");
             console.log(error);
         }
     };
@@ -187,10 +188,10 @@ function PostUpdate() {
                             <ul>
                                 {/* 기존의 파일 데이터, 삭제 로직 */}
                                 {severFiles.map((file, index) => (
-                                    <li key={`server_${file.fileId}`} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                    <li key={`server_${file.id}`} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                         <span>
-                                            <strong>File Name:</strong> {file.originFileName} &nbsp;
-                                            <button className="delete-button" type="button" onClick={() => handleRemoveSeverFile(index, id, file.fileId)}>
+                                            <strong>File Name:</strong> {file.originalName} &nbsp;
+                                            <button className="delete-button" type="button" onClick={() => handleRemoveSeverFile(index, id, file.id)}>
                                                 x
                                             </button>
                                         </span>
@@ -200,7 +201,7 @@ function PostUpdate() {
                                 {files.map((file, index) => (
                                     <li key={`new_${index}`} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                         <span>
-                                            <strong>File Name:</strong> {file.originFileName} &nbsp;
+                                            <strong>File Name:</strong> {file.originalName} &nbsp;
                                             <button className="delete-button" type="button" onClick={() => handleRemoveFile(index)}>
                                                 x
                                             </button>

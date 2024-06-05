@@ -80,6 +80,13 @@
             </foreach>
     </delete>
 
+    <!-- 게시글 삭제 -->
+    <delete id="deleteById" parameterType="long">
+        DELETE FROM tbl_file     /* id="deleteById" 2024-06-05 by shanepark */
+        WHERE
+            id = #{value}
+    </delete>
+
 
     <!-- 파일 상세정보 조회 -->
     <select id="findById" parameterType="long" resultType="fileRes">

@@ -72,4 +72,14 @@ public class FileApiService {
         return fileMapper.findById(id);
     }
 
+    /**
+     * 게시글 삭제
+     * @param id - PK
+     * @return PK
+     */
+    public Boolean delete(final Long id) {
+        Boolean isDeleted = fileMapper.deleteById(id);
+        return isDeleted;
+    }
+
 }

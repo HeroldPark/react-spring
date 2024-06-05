@@ -52,7 +52,7 @@ public class PostController {
 
     private final PostService postService;
     private final FeedbackService feedbackService;
-    private final FileApiService fileService;
+    private final FileApiService fileApiService;
     private final FileUtils fileUtils;
 
     // 사용자에게 메시지를 전달하고, 페이지를 리다이렉트 한다.
@@ -178,7 +178,7 @@ public class PostController {
         Long id = postService.savePost(params);
         // List<FileRequest> files = fileUtils.uploadFiles(params.getFiles());
         List<FileRequest> uploadFiles = fileUtils.uploadFiles(multipartFiles);
-        fileService.saveFiles(id, uploadFiles);
+        fileApiService.saveFiles(id, uploadFiles);
         MessageDto message = new MessageDto("게시글 생성이 완료되었습니다.", "/post/list.do", RequestMethod.GET, null);
         return showMessageAndRedirect(message, model);
     }
@@ -201,16 +201,16 @@ public class PostController {
         List<FileRequest> uploadFiles = fileUtils.uploadFiles(multipartFiles);
 
         // 3. 파일 정보 저장 (to database)
-        fileService.saveFiles(params.getId(), uploadFiles);
+        fileApiService.saveFiles(params.getId(), uploadFiles);
 
         // 4. 삭제할 파일 정보 조회 (from database)
-        List<FileResponse> deleteFiles = fileService.findAllFileByIds(params.getRemoveFileIds());
+        List<FileResponse> deleteFiles = fileApiService.findAllFileByIds(params.getRemoveFileIds());
 
         // 5. 파일 삭제 (from disk)
         fileUtils.deleteFiles(deleteFiles);
 
         // 6. 파일 삭제 (from database)
-        fileService.deleteAllFileByIds(params.getRemoveFileIds());
+        fileApiService.deleteAllFileByIds(params.getRemoveFileIds());
 
         // MessageDto message = new MessageDto("게시글 수정이 완료되었습니다.", "/post/list.do", RequestMethod.GET, queryParamsToMap(queryParams));
         // return showMessageAndRedirect(message, model);
@@ -239,9 +239,9 @@ public class PostController {
     }
 
     // 게시글 삭제
-    @PostMapping("/delete.do")
+    @GetMapping("/delete.do")
     public String deletePost(@RequestParam final Long id, final SearchDto queryParams, Model model) {
-        postService.delete(id);
+        fileApiService.delete(id);
         MessageDto message = new MessageDto("게시글 삭제가 완료되었습니다.", "/post/list.do", RequestMethod.GET, queryParamsToMap(queryParams));
         return showMessageAndRedirect(message, model);
     }

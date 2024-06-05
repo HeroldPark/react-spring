@@ -5,7 +5,7 @@ function Footer() {
 		<footer className="py-4 bg-dark text-light footer">
           <div className="container text-center">
             <p>
-              <small>Copyright &copy;JHcode33</small>
+              <small>Copyright &copy;ShanePark</small>
             </p>
           </div>
         </footer>

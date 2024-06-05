@@ -15,7 +15,7 @@ function PostDetail() {
   const { headers, setHeaders } = useContext(HttpHeadersContext);
   const { auth } = useContext(AuthContext);
   const [post, setPost] = useState(null);  // 일반 객체인 경우와 배열인 경우를 구분하기 위해 null로 초기화
-  const [attach, setAttach] = useState(null);
+  const [attach, setAttach] = useState(null); // 첨부 파일
   const { id } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
@@ -96,7 +96,8 @@ function PostDetail() {
       writer: post.writer,
       title: post.title,
       content: post.content,
-      files: post.files
+      // files: post.files
+      files: attach && attach.files ? attach.files : null
     };
 
     const parentPost = {
@@ -118,7 +119,13 @@ function PostDetail() {
           {
             localStorage.getItem("id") === post.writer &&
             <>
-              <Link className="btn btn-outline-secondary" to="/postupdate" state={{ post: updatePost }}><i className="fas fa-edit"></i> 수정</Link> &nbsp;
+              <Link
+                className="btn btn-outline-secondary"
+                to="/postupdate"
+                state={{ post: updatePost }}
+              >
+                <i className="fas fa-edit"></i> 수정
+              </Link> &nbsp;
               <button className="btn btn-outline-danger" onClick={() => deletePost(post.id)}><i className="fas fa-trash-alt"></i> 삭제</button>
             </>
           }
@@ -151,8 +158,10 @@ function PostDetail() {
 
         {/* 첨부 파일 리스트 */}
         <div>
-          {attach && attach.files && (
+          {attach && attach.files ? (
             <FileDisplay files={attach.files} id={attach.id} />
+          ) : (
+            <p>첨부 파일이 없습니다.</p>
           )}
         </div>
 
