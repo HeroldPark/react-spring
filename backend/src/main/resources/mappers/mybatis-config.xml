@@ -24,6 +24,7 @@
 
     <typeAliases>
 
+        <typeAlias type="shane.blog.domain.commoncode.CommonResponse" alias="commonRes"/>
         <typeAlias type="shane.blog.domain.common.dto.SearchDto" alias="searchDto"/>
         <typeAlias type="shane.blog.domain.comment.CommentSearchDto" alias="commentSearchDto"/>
 

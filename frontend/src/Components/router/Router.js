@@ -33,6 +33,8 @@ import FeedbackUpdate from "../feedback/FeedbackUpdate"
 
 import CallBackGoogle from "../member/CallBackGoogle"
 
+import SettingList from "../commoncode/SettingList"
+
 function Router() {
 
 	console.log("[Router.js] render()");
@@ -71,6 +73,8 @@ function Router() {
 
 			{/* <Route path="/oauth-response/:token/:expirationTime" element={<OAuth />}></Route> */}
 			<Route path="/googlecallback" element={<CallBackGoogle />}></Route>
+
+			<Route path="/settinglist" element={<SettingList />}></Route>
 		</Routes>
 	);
 }

@@ -1,0 +1,148 @@
+/* src/SettingList.css */
+body {
+    font-family: Arial, sans-serif;
+  }
+  
+  .SettingList-header {
+    background-color: #f1f1f1;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .path {
+    font-size: 0.9em;
+    color: #666;
+  }
+  
+  .search-box {
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .sch-group {
+    display: flex;
+    align-items: center;
+  }
+  
+  .sch-group select,
+  .sch-group input {
+    margin-right: 10px;
+    padding: 5px;
+  }
+  
+  .sch-group button {
+    padding: 5px 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .sch-group button:hover {
+    background-color: #0056b3;
+  }
+  
+  .both-wrap {
+    display: flex;
+    padding: 20px;
+  }
+  
+  .both-left,
+  .both-right {
+    flex: 1;
+    margin-right: 20px;
+  }
+  
+  .both-right {
+    margin-right: 0;
+  }
+  
+  .tree-wrap {
+    border: 1px solid #ddd;
+    padding: 10px;
+    background-color: #fff;
+  }
+  
+  .tree-list ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .tree-list li {
+    padding: 5px;
+    cursor: pointer;
+  }
+  
+  .tree-list li:hover {
+    background-color: #f1f1f1;
+  }
+  
+  .btn-group {
+    margin-top: 20px;
+    text-align: right;
+  }
+  
+  .btn-basic {
+    padding: 5px 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .btn-basic:hover {
+    background-color: #0056b3;
+  }
+  
+  .view-table {
+    border: 1px solid #ddd;
+    padding: 10px;
+    background-color: #fff;
+  }
+  
+  .view-table table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .view-table th,
+  .view-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+  
+  .popLayer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .pop-wrap {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+  }
+  
+  .pop-wrap table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .pop-wrap th,
+  .pop-wrap td {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+  
+  .pop-btns {
+    text-align: right;
+    margin-top: 10px;
+  }
+  

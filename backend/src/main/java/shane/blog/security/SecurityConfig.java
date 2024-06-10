@@ -68,6 +68,7 @@ public class SecurityConfig {
 
         , "/PictureList"
         , "/detailPicture"
+        , "/commoncode/**"
 
         // , "/post/list.do"
         // , "/post/detail.do"

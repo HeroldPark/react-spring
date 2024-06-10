@@ -50,6 +50,7 @@ function Menubar() {
 					<ul>
 						<li><a href="/postlist">게시판</a></li>
 						<li><a href="/member">사용자리스트</a></li>
+						<li><a href="/SettingList">공통코드</a></li>
 						<li><a href="#" onClick={() => alert('준비 중입니다.')}>이력</a></li>
 					</ul>
 				</li>

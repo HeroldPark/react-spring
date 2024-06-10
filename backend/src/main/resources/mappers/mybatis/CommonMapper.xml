@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="shane.blog.domain.commoncode.CommonMapper">
+	
+	<select id="getFullCodeList" parameterType="commonRes" resultType="commonRes">
+		SELECT	/* fn: getFullCodeList, wr: shanepark, date: 2023-05-04 */
+			COMMON_CODE						AS commonCode
+			, COMMON_NAME					AS commonName
+			, PARENTS_CODE					AS parentsCode			
+		FROM TBL_COMMON_CODE
+		<where>
+			<if test="useYN neq null">
+				AND USE_YN = #{useYN}
+			</if>
+			<if test="delYN neq null">
+				AND DEL_YN = #{delYN}
+			</if>
+			<choose>
+				<when test="isCategory neq null and isCategory neq ''.toString()">
+				AND (PARENTS_CODE = 'PGM_CATEGORY' OR PARENTS_CODE LIKE 'PGM_CATE%' )				
+				</when>
+				<otherwise>				
+				AND COMMON_CODE != 'PGM_CATEGORY' AND  COMMON_CODE NOT LIKE '%PGM_CATE%' AND PARENTS_CODE != 'PGM_CATEGORY' AND PARENTS_CODE NOT LIKE '%PGM_CATE%'
+				</otherwise>
+			</choose>
+			AND GROUP_CODE = #{groupCode}
+		</where>
+		ORDER BY CODE_ORDER ASC
+	</select>
+
+	<select id="getCodesOrderMax" parameterType="commonRes" resultType="Integer">
+		SELECT	/* fn: getCodesOrderMax, wr: shanepark, date: 2023-05-04 */
+			MIN(CODE_ORDER+1) AS ORDER_MAX
+      		FROM TBL_COMMON_CODE 
+    		WHERE (CODE_ORDER + 1) NOT IN (SELECT CODE_ORDER FROM TBL_COMMON_CODE WHERE PARENTS_CODE = 'ROOT');
+	</select>
+
+	<select id="getParentsCodeList" parameterType="commonRes" resultType="commonRes">
+		SELECT	/* fn: getParentsCodeList, wr: shanepark, date: 2023-05-04 */
+			COMMON_CODE						AS commonCode
+			, COMMON_NAME					AS commonName
+			, PARENTS_CODE					AS parentsCode
+			, REFER_ID1						AS referId1
+			, REFER_ID2						AS referId2
+		FROM TBL_COMMON_CODE
+		<where>
+			<if test="useYN neq null">
+				AND USE_YN = #{useYN}
+			</if>
+			<if test="delYN neq null">
+				AND DEL_YN = #{delYN}
+			</if>
+			AND PARENTS_CODE = 'ROOT' AND GROUP_CODE = #{groupCode}
+		</where>
+		ORDER BY CODE_ORDER ASC
+	</select>
+
+	<insert id="doInsertCode" parameterType="commonRes">
+		INSERT	/* fn: doInsertCode, wr: shanepark, date: 2023-05-04 */
+		INTO TBL_COMMON_CODE (
+			COMMON_CODE					/*  */
+			, COMMON_NAME 				/*  */
+			, PARENTS_CODE				/*  */
+			, GROUP_CODE				/*  */
+			, COMMENT					/*  */
+			, CODE_ORDER				/*  */
+			, REG_USER					/*  */
+			, REG_DATE					/*  */
+			<if test="referId1 neq null and referId1 neq ''.toString()">
+				, REFER_ID1					/*  */
+			</if>
+			<if test="referId2 neq null and referId2 neq ''.toString()">
+				, REFER_ID2					/*  */
+			</if>
+		) VALUES (
+			#{commonCode}
+			, #{commonName}
+			, #{parentsCode}
+			, #{groupCode}
+			, #{comment}
+			, #{codeOrder}
+			, #{regUser}
+			, NOW()
+			<if test="referId1 neq null and referId1 neq ''.toString()">
+				, #{referId1}
+			</if>
+			<if test="referId2 neq null and referId2 neq ''.toString()">
+				, #{referId2}
+			</if>
+		)
+	</insert>
+	
+	<select id="getCommonCodeDetail" parameterType="commonRes" resultType="commonRes">
+		SELECT		/* fn: getCommonCodeDetail, wr: shanepark, date: 2023-05-04 */
+			CC.COMM_SEQ							AS commSeq
+			, CC.COMMON_CODE					AS commonCode
+			, CC.PARENTS_CODE					AS parentsCode
+			, IFNULL(PCC.COMMON_NAME, '최상위') 	AS parentsName
+			, REFER_ID1 						AS referId1
+			, REFER_ID2 						AS referId2 
+			, CC.GROUP_CODE						AS groupCode
+			, CC.COMMON_NAME					AS commonName
+			, CC.COMMENT						AS comment
+			, CC.CODE_ORDER						AS codeOrder
+			, CC.USE_YN							AS useYN
+			, CC.DEL_YN							AS delYN
+			, CC.REG_USER						AS regUser
+			, CC.REG_DATE						AS regDate
+			, (SELECT COUNT(COMMON_CODE)+1 FROM TBL_COMMON_CODE WHERE PARENTS_CODE = #{commonCode}) AS orderMAx
+		FROM TBL_COMMON_CODE CC
+		LEFT JOIN (
+			SELECT
+				COMMON_NAME
+				, COMMON_CODE
+			FROM TBL_COMMON_CODE
+			WHERE USE_YN = 'Y' AND DEL_YN = 'N'
+				AND PARENTS_CODE = #{parentsCode}
+		) PCC
+		ON CC.PARENTS_CODE = PCC.COMMON_CODE
+		WHERE CC.COMMON_CODE = #{commonCode} 
+			AND CC.PARENTS_CODE = #{parentsCode}
+			AND CC.GROUP_CODE = #{groupCode}
+	</select>
+	
+	<update id="doDeleteCode" parameterType="commonRes">
+		UPDATE /* fn: doDeleteCode, wr: shanepark, date: 2023-05-04 */
+		TBL_COMMON_CODE SET 
+		DEL_YN = 'Y'
+		WHERE 	COMMON_CODE 		= #{commonCode} 
+			AND PARENTS_CODE 		= #{parentsCode} 
+			AND GROUP_CODE 			= #{groupCode}
+	</update>
+	
+	<select id="dupleCode" parameterType="commonRes" resultType="int">
+		SELECT	/* fn: dupleCode, wr: shanepark, date: 2023-05-04 */
+			COUNT(1)
+		FROM TBL_COMMON_CODE
+		<where>
+			<!-- USE_YN = 'Y' AND DEL_YN = 'N' -->
+			<if test="commonCode neq null and commonCode neq ''.toString()">
+				AND COMMON_CODE 		= #{commonCode} 
+			</if>
+			<!-- <if test="parentsCode neq null and parentsCode neq ''.toString()">
+			AND PARENTS_CODE 		= #{parentsCode} 
+			</if> -->
+			<if test="groupCode neq null and groupCode neq ''.toString()">
+				AND GROUP_CODE 			= #{groupCode}
+			</if>
+		</where>
+	</select>
+	
+	<update id="doUpdateCode" parameterType="commonRes">
+		UPDATE	/* fn: doUpdateCode, wr: shanepark, date: 2023-05-04 */
+		TBL_COMMON_CODE SET
+			<choose>
+				<when test="'U'.toString() eq doTran">
+					COMMON_NAME 			= #{commonName}
+					, COMMENT				= #{comment}
+					, CODE_ORDER			= #{codeOrder}
+					, USE_YN				= #{useYN}
+					<if test="referId1 neq null and referId1 neq ''.toString()">
+						, REFER_ID1				= #{referId1}
+					</if>
+					<if test="referId2 neq null and referId2 neq ''.toString()">
+						, REFER_ID2				= #{referId2}
+					</if>
+				</when>
+				<when test="'D'.toString() eq doTran">
+					USE_YN					= 'N'
+					, DEL_YN				= 'Y'
+				</when>
+			</choose>
+			, MOD_USER					= #{modUser}
+			, MOD_DATE					= NOW()
+			WHERE COMMON_CODE 		= #{commonCode} 
+				AND PARENTS_CODE 	= #{parentsCode} 
+				AND GROUP_CODE 		= #{groupCode}
+	</update>
+	
+	<select id="getChildNodes" parameterType="commonRes" resultType="int">
+		SELECT	/* fn: getChildNodes, wr: shanepark, date: 2023-05-04 */
+			COUNT(1)
+		FROM TBL_COMMON_CODE
+		WHERE
+			USE_YN = 'Y' AND DEL_YN = 'N'
+			AND PARENTS_CODE 	= #{commonCode}
+			AND GROUP_CODE 		= #{groupCode}
+	</select>
+	
+	<select id="getSubCodeList" parameterType="commonRes" resultType="commonRes">
+		SELECT	/* fn: getSubCodeList, wr: shanepark, date: 2023-05-04 */
+			COMMON_CODE						AS commonCode
+			, COMMON_NAME					AS commonName
+			, PARENTS_CODE					AS parentsCode
+			, REFER_ID1						AS referId1
+			, REFER_ID2						AS referId2
+			, COMMENT						AS comment
+		FROM TBL_COMMON_CODE
+		<where>
+			<if test="useYN neq null">
+				AND USE_YN = #{useYN}
+			</if>
+			<if test="delYN neq null">
+				AND DEL_YN = #{delYN}
+			</if>
+			<if test="groupCode neq null">
+				AND GROUP_CODE = #{groupCode}
+			</if>
+			<if test="commonCode neq null">
+				AND PARENTS_CODE = #{commonCode}
+			</if>
+		</where>
+			ORDER BY CODE_ORDER ASC
+	</select>
+	
+</mapper>

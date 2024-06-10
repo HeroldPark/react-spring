@@ -57,6 +57,11 @@ tasks.named('test') {
     useJUnitPlatform()
 }
 
+// 변경된 부분만 다시 컴파일하게 한다.
+tasks.withType(JavaCompile) {
+    options.incremental = true
+}
+
 // frontend - backend 연동
 
 def frontendDir = "$projectDir/../frontend"
