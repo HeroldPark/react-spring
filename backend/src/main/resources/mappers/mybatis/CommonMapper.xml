@@ -6,7 +6,8 @@
 		SELECT	/* fn: getFullCodeList, wr: shanepark, date: 2023-05-04 */
 			COMMON_CODE						AS commonCode
 			, COMMON_NAME					AS commonName
-			, PARENTS_CODE					AS parentsCode			
+			, PARENTS_CODE					AS parentsCode
+			, CODE_ORDER					AS codeOrder
 		FROM TBL_COMMON_CODE
 		<where>
 			<if test="useYN neq null">
@@ -123,11 +124,9 @@
 	</select>
 	
 	<update id="doDeleteCode" parameterType="commonRes">
-		UPDATE /* fn: doDeleteCode, wr: shanepark, date: 2023-05-04 */
-		TBL_COMMON_CODE SET 
-		DEL_YN = 'Y'
+		DELETE FROM TBL_COMMON_CODE	/* fn: doDeleteCode, wr: shanepark, date: 2024-06-14 */
 		WHERE 	COMMON_CODE 		= #{commonCode} 
-			AND PARENTS_CODE 		= #{parentsCode} 
+			AND PARENTS_CODE 		= #{parentsCode}
 			AND GROUP_CODE 			= #{groupCode}
 	</update>
 	
@@ -153,7 +152,7 @@
 		UPDATE	/* fn: doUpdateCode, wr: shanepark, date: 2023-05-04 */
 		TBL_COMMON_CODE SET
 			<choose>
-				<when test="'U'.toString() eq doTran">
+				<when test="'update'.toString() eq doTran">
 					COMMON_NAME 			= #{commonName}
 					, COMMENT				= #{comment}
 					, CODE_ORDER			= #{codeOrder}
@@ -165,7 +164,7 @@
 						, REFER_ID2				= #{referId2}
 					</if>
 				</when>
-				<when test="'D'.toString() eq doTran">
+				<when test="'delete'.toString() eq doTran">
 					USE_YN					= 'N'
 					, DEL_YN				= 'Y'
 				</when>

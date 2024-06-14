@@ -378,4 +378,11 @@
 
 # 36. 2024-06-11
     - yarn add react-simple-tree-menu
-    - 
+    - commonCode 메뉴 트리 구성
+
+# 37. 2024-06-12
+    - yarn add react-resizable
+    - commonCode layerPopup 창 크기 조절 기능
+
+# 38. 2024-06-14
+    - react tree menu 완료(공통코드)

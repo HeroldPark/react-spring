@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import Modal from 'react-modal';
+import LayerPopup from './LayerPopup'; // Import the LayerPopup component
+import TreeMenu from 'react-simple-tree-menu';
+
 import "../../css/SettingList.css";
 import "../../css/content.css";
-import TreeMenu from 'react-simple-tree-menu';
 import 'react-simple-tree-menu/dist/main.css';
-
-Modal.setAppElement('#root');
 
 const SettingList = () => {
   const [searchType, setSearchType] = useState('');
@@ -17,14 +16,20 @@ const SettingList = () => {
   const [formData, setFormData] = useState({
     commonCode: '',
     commonName: '',
-    parentsCode: '',
+    parentsCode: 'ROOT',
+    parentsName: '최상위',
+    groupCode: '',
     comment: '',
     codeOrder: '',
     referId1: '',
     referId2: '',
-    useYN: 'Y'
+    useYN: 'Y',
+    doTran: '',
+    modUser: '',
+    regUser: ''
   });
-
+  const [mode, setMode] = useState('add');
+  
   const axiosInstance = axios.create({
     baseURL: 'http://localhost:8989',
     headers: {
@@ -33,6 +38,7 @@ const SettingList = () => {
     }
   });
 
+  // This effect runs once after the initial render
   useEffect(() => {
     axiosInstance.get('/commoncode/setting_list')
       .then(response => {
@@ -43,12 +49,32 @@ const SettingList = () => {
       });
   }, []);
 
+  // This effect runs every time the modal is opened
+  useEffect(() => {
+    if (modalIsOpen) {
+      setFormData((prevState) => ({
+        ...prevState,
+        parentsCode: prevState.commonCode === '' ? 'ROOT' : prevState.commonCode,
+        parentsName: prevState.commonName === '' ? '최상위' : prevState.commonName,
+      }));
+    }
+  }, [modalIsOpen]);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
   const handleSearch = (e) => {
     e.preventDefault();
     // Implement search functionality
   };
 
-  const openModal = () => {
+  const openModal = (mode) => {
+    setMode(mode);
     setIsOpen(true);
   };
 
@@ -56,14 +82,43 @@ const SettingList = () => {
     setIsOpen(false);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e, mode) => {
     e.preventDefault();
-    // Implement form submission logic
-  };
+    
+    console.log("SettingList.js mode=" + mode );
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    formData.doTran = mode;
+    formData.groupCode = 'PUB';
+    formData.modUser = 'admin';
+    if (mode === 'delete') {
+      axiosInstance.post('/commoncode/commonCodeTranAjax', formData)
+        .then(response => {
+          alert(response.data.msgMent);
+          closeModal();
+        })
+        .catch(error => {
+          console.error("There was an error deleting the data!", error);
+        });
+    } else if (mode === 'add') {
+      formData.regUser = 'admin';
+      axiosInstance.post('/commoncode/commonCodeTranAjax', formData)
+        .then(response => {
+          alert(response.data.msgMent);
+          closeModal();
+        })
+        .catch(error => {
+          console.error("There was an error creating the data!", error);
+        });
+    } else if (mode === 'update') {
+      await axiosInstance.post('/commoncode/commonCodeTranAjax', formData)
+        .then(response => {
+          alert(response.data.msgMent);
+          closeModal();
+        })
+        .catch(error => {
+          console.error("There was an error updating the data!", error);
+        });
+    }
   };
 
   const handleNodeClick = (node) => {
@@ -88,6 +143,9 @@ const SettingList = () => {
           referId2: commonCodeData.referId2 || '',
           useYN: commonCodeData.useYN || 'Y'
         });
+
+        setMode('update');
+        // openModal('update');
       })
       .catch(error => {
         console.error("There was an error fetching the data!", error);
@@ -97,16 +155,12 @@ const SettingList = () => {
   };
 
   const buildTreeData = (nodes) => {
-    if (!Array.isArray(nodes)) {
-      return [];
-    }
-
     const map = {};
     const roots = [];
 
-    // 모든 노드를 맵에 저장하고 children 배열 초기화
+    // 모든 노드를 맵에 저장하고 nodes 배열 초기화
     nodes.forEach(node => {
-        map[node.commonCode] = { 
+        map[node.commonCode] = {
             ...node, 
             key: node.commonCode,
             label: `${node.commonCode} - ${node.commonName}`, 
@@ -114,7 +168,7 @@ const SettingList = () => {
         };
     });
 
-    // 각 노드를 부모에 추가
+    // ROOT이면 roots 노드에 추가하고, 아니면 부모에 추가
     nodes.forEach(node => {
         if (node.parentsCode === "ROOT") {
             roots.push(map[node.commonCode]);
@@ -123,7 +177,7 @@ const SettingList = () => {
         }
     });
 
-    // 빈 nodes 배열이 아닌 경우에만 nodes 속성을 포함
+    // 빈 nodes 배열이면 삭제, 아니면 codeOrder 속성에 따라 sort
     roots.forEach(root => {
         if (root.nodes.length === 0) {
             delete root.nodes;
@@ -173,18 +227,18 @@ const SettingList = () => {
                 />
               </div>
               <div className="btn-group right">
-                <button type="button" className="btn-basic blue-small" onClick={openModal}>등록</button>
+                <button type="button" className="btn-basic blue-small" onClick={() => openModal('add')}>등록</button>
               </div>
             </div>
           </div>
 
           <div className="both-right">
             <div className="btn-group right">
-              <a href="#" onClick={() => handleSubmit('U')} className="btn-basic outline-small" style={{ marginRight: '5px' }}>수정</a> 
-              <a href="#" onClick={() => handleSubmit('D')} className="btn-basic outline-small">삭제</a>
+            <a href="#" onClick={() => handleSubmit(e, 'update')} className="btn-basic outline-small" style={{ marginRight: '5px' }}>수정</a> 
+              <a href="#" onClick={(e) => handleSubmit(e, 'delete')} className="btn-basic outline-small">삭제</a>
             </div>
             <div className="view-table">
-              <form id="frm" name="frm" onSubmit={handleSubmit}>
+              <form id="frm" name="frm" onSubmit={(e) => handleSubmit(e, mode)}>
                 <input type="hidden" name="groupCode" value="PUB" />
                 <input type="hidden" name="doTran" />
                 <input type="hidden" id="checkModCode" value="Y" />
@@ -243,18 +297,18 @@ const SettingList = () => {
               </form>
             </div>
             <div className="btn-group right">
-              <a href="#" onClick={() => handleSubmit('U')} className="btn-basic outline-small" style={{ marginRight: '5px' }}>수정</a>
-              <a href="#" onClick={() => handleSubmit('D')} className="btn-basic outline-small">삭제</a>
+            <a href="#" onClick={(e) => handleSubmit(e, 'update')} className="btn-basic outline-small" style={{ marginRight: '5px' }}>수정</a>
+            <a href="#" onClick={(e) => handleSubmit(e, 'delete')} className="btn-basic outline-small">삭제</a>
             </div>
           </div>
         </div>
       </section>
 
-      <Modal isOpen={modalIsOpen} onRequestClose={closeModal} contentLabel="Code Registration Modal">
-        <h2>공용코드 등록</h2>
-        <form id="regFrm" name="regFrm" onSubmit={handleSubmit}>
+      <LayerPopup isOpen={modalIsOpen} closeModal={closeModal} onSubmit={(e) => handleSubmit(e, mode)} onDelete={(e) => handleSubmit(e, 'delete')} mode={mode}>
+        <h2>{mode === 'update' ? '코드 수정' : '코드 등록'}</h2>
+        <form id="regFrm" name="regFrm" onSubmit={(e) => handleSubmit(e, mode)}>
           <input type="hidden" name="groupCode" value="PUB" />
-          <input type="hidden" name="doTran" value="I" />
+          <input type="hidden" name="doTran" value="add" />
           <input type="hidden" id="checkRegCode" value="Y" />
           <table>
             <colgroup>
@@ -268,13 +322,13 @@ const SettingList = () => {
                 <th className="common_code">공용코드<em>*</em></th>
                 <td><input type="text" className="form-control" name="commonCode" value={formData.commonCode} maxLength="20" onChange={handleChange} required title="공용코드" /></td>
                 <th>상위공용코드</th>
-                <td><input type="text" className="form-control" name="parentsCode" value="" readOnly /></td>
+                <td><input type="text" className="form-control" name="parentsCode" value={formData.parentsCode} readOnly /></td>
               </tr>
               <tr>
                 <th>코드명<em>*</em></th>
                 <td><input type="text" className="form-control" name="commonName" value={formData.commonName} onChange={handleChange} required title="공용코드명" /></td>
                 <th>상위코드명</th>
-                <td><input type="text" className="form-control" name="parentsName" value="" readOnly /></td>
+                <td><input type="text" className="form-control" name="parentsName" value={formData.parentsName} readOnly /></td>
               </tr>
               <tr>
                 <th>참조명</th>
@@ -306,8 +360,7 @@ const SettingList = () => {
             </tbody>
           </table>
         </form>
-        <button onClick={closeModal}>닫기</button>
-      </Modal>
+      </LayerPopup>
     </div>
   );
 }

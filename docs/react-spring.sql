@@ -51,13 +51,13 @@ CREATE TABLE IF NOT EXISTS `tbl_common_code` (
   `REFER_ID1` varchar(255) DEFAULT NULL COMMENT '참조1',
   `REFER_ID2` int(11) DEFAULT NULL COMMENT '참조2',
   PRIMARY KEY (`COMM_SEQ`,`COMMON_CODE`,`PARENTS_CODE`)
-) ENGINE=InnoDB AUTO_INCREMENT=643 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=652 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 -- 테이블 데이터 react-spring.tbl_common_code:~79 rows (대략적) 내보내기
 DELETE FROM `tbl_common_code`;
 /*!40000 ALTER TABLE `tbl_common_code` DISABLE KEYS */;
 INSERT INTO `tbl_common_code` (`COMM_SEQ`, `COMMON_CODE`, `PARENTS_CODE`, `GROUP_CODE`, `COMMON_NAME`, `COMMENT`, `CODE_ORDER`, `USE_YN`, `DEL_YN`, `REG_USER`, `REG_DATE`, `MOD_USER`, `MOD_DATE`, `REFER_ID1`, `REFER_ID2`) VALUES
-	(1, 'MODBUS_SERVER', 'ROOT', 'PUB', 'On', 'Modbus Server Configration - Web이 Server 임.\r\n코드명 : On(서버 실행), Off(서버 미실행)\r\n참조명 : ip(사용)\r\n참조값 : port(사용)', 20, 'Y', 'N', 'sysop', '2018-10-17 11:43:17', 'null', '2024-05-30 08:25:15', '127.0.0.1', 9090),
+	(1, 'MODBUS_SERVER', 'ROOT', 'PUB', 'Off', 'Modbus Server Configration - Web이 Server 임.\r\n코드명 : On(서버 실행), Off(서버 미실행)\r\n참조명 : ip(사용)\r\n참조값 : port(사용)', 20, 'Y', 'N', 'sysop', '2018-10-17 11:43:17', 'admin', '2024-06-14 12:46:16', '127.0.0.1', 9090),
 	(2, 'SERVER_CRACKHOLE_000', 'MODBUS_SERVER', 'PUB', 'CrackHole', '코드명 : 미사용\r\n참조명 : register\r\n참조값 : port(미사용)', 10, 'Y', 'N', 'sysop', '2018-10-17 14:18:02', 'null', '2024-04-17 10:13:58', '0', 502),
 	(3, 'SERVER_BLANKEDGE_001', 'MODBUS_SERVER', 'PUB', 'BlankEdge', '코드명 : 미사용\r\n참조명 : register\r\n참조값 : port(미사용)', 20, 'Y', 'N', 'sysop', '2018-10-17 15:29:10', 'null', '2024-04-17 10:14:09', '1', 503),
 	(4, 'SPT_TYPE', 'ROOT', 'PUB', '종목 타입', '종목에 대한 설정', 195, 'Y', 'Y', 'sysop', '2018-10-17 16:43:46', 'sysop', '2018-12-04 10:30:23', NULL, NULL),
