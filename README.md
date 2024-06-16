@@ -386,3 +386,24 @@
 
 # 38. 2024-06-14
     - react tree menu 완료(공통코드)
+
+# 39. 2024-06-16(javascript)
+    - 비트코인 GPT 인공지능 AI 업비트 자동매매 시스템 만들기
+    - https://github.com/youtube-jocoding/gpt-bitcoin?tab=readme-ov-file
+    - Bitcoin 거래 : chatGPT-4o + serpApi + Upbit
+    - javascript 로 하려니 아래 오류 발생으로 python으로 전환
+
+    ERROR in ./node_modules/serpapi/script/src/utils.js 13:32-48
+    Module not found: Error: Can't resolve 'https' in 'D:\Workspace\Workspace-react\react-spring\frontend\node_modules\serpapi\script\src'
+    => yarn add https-browserify
+
+    ERROR in ./node_modules/serpapi/script/src/utils.js 14:38-60
+    Module not found: Error: Can't resolve 'querystring' in 'D:\Workspace\Workspace-react\react-spring\frontend\node_modules\serpapi\script\src'
+    => yarn add querystring-es3
+
+# 40. 2024-06-16 (C:\Program Files\Python312\python.exe)
+    - 비트코인 GPT 인공지능 AI 업비트 자동매매 시스템 만들기
+    - pip install google-search-results
+    - $ pwd
+        /d/Workspace/Workspace-react/react-spring/frontend/autotrade
+    - $ python search_example.py

@@ -1,39 +1,40 @@
-import { Routes, Route } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 
-import Home from "../app/Home"
-import BbsList from "../bbs/BbsList"
-import BbsWrite from "../bbs/BbsWrite"
-import BbsDetail from "../bbs/BbsDetail"
-import BbsUpdate from "../bbs/BbsUpdate"
-import BbsAnswer from "../bbs/BbsAnswer"
+import Home from "../app/Home";
+import BbsAnswer from "../bbs/BbsAnswer";
+import BbsDetail from "../bbs/BbsDetail";
+import BbsList from "../bbs/BbsList";
+import BbsUpdate from "../bbs/BbsUpdate";
+import BbsWrite from "../bbs/BbsWrite";
 
-import Join from "../member/Join"
-import Login from "../member/Login"
-import Logout from "../member/Logout"
-import Update from "../member/MemberUpdate"
-import MemberUpdate from "../member/MemberUpdate";
 import CheckPwd from "../member/CheckPwd";
+import Join from "../member/Join";
+import Login from "../member/Login";
+import Logout from "../member/Logout";
+import MemberUpdate from "../member/MemberUpdate";
 
-import EmployeeList from "../employee/EmployeeList"
-import MemberList from "../member/MemberList"
+import EmployeeList from "../employee/EmployeeList";
+import MemberList from "../member/MemberList";
 
-import PictureList from "../picture/PictureList"
+import PictureList from "../picture/PictureList";
 
-import PostList from "../post/PostList"
-import PostWrite from "../post/PostWrite"
-import PostDetail from "../post/PostDetail"
-import PostUpdate from "../post/PostUpdate"
-import PostAnswer from "../post/PostAnswer"
+import PostAnswer from "../post/PostAnswer";
+import PostDetail from "../post/PostDetail";
+import PostList from "../post/PostList";
+import PostUpdate from "../post/PostUpdate";
+import PostWrite from "../post/PostWrite";
 
-import FeedbackList from "../feedback/FeedbackList"
-import FeedbackWrite from "../feedback/FeedbackWrite"
-import FeedbackDetail from "../feedback/FeedbackDetail"
-import FeedbackUpdate from "../feedback/FeedbackUpdate"
+import FeedbackDetail from "../feedback/FeedbackDetail";
+import FeedbackList from "../feedback/FeedbackList";
+import FeedbackUpdate from "../feedback/FeedbackUpdate";
+import FeedbackWrite from "../feedback/FeedbackWrite";
 
 
-import CallBackGoogle from "../member/CallBackGoogle"
+import CallBackGoogle from "../member/CallBackGoogle";
 
-import SettingList from "../commoncode/SettingList"
+import SettingList from "../commoncode/SettingList";
+
+import SerpapiEngine from "../serpapi/SerpapiEngine";
 
 function Router() {
 
@@ -75,6 +76,8 @@ function Router() {
 			<Route path="/googlecallback" element={<CallBackGoogle />}></Route>
 
 			<Route path="/settinglist" element={<SettingList />}></Route>
+
+			<Route path="/searchengine" element={<SerpapiEngine />}></Route>
 		</Routes>
 	);
 }

@@ -38,11 +38,13 @@
         "postwrite",
         "rawtypes",
         "rcontent",
+        "serpapi",
         "settinglist",
         "shareclasses",
         "treebeard",
         "userinfo",
         "userwrite",
         "viewcount"
-    ]
+    ],
+    "CodeGPT.apiKey": "CodeGPT Plus Beta"
 }
