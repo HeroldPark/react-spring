@@ -407,3 +407,11 @@
     - $ pwd
         /d/Workspace/Workspace-react/react-spring/frontend/autotrade
     - $ python search_example.py
+
+# 41. 2024-06-17
+    - 공공 API 사용 : 인구통계, 날씨 정보 등
+    - GSIS Open API(https://sgis.kostat.go.kr/)
+  
+    - npm install dotenv
+    - GEOCode : 위치정보
+    - OpenApi : 인구통계

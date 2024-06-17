@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 function Menubar() {
 
-	console.log("[Menubar.js] render()");
+	console.log("[Menubar.js] 시작");
 
 	const [isOpenBbs, setIsOpenBbs] = useState(true);
 	const [isOpenImageManager, setIsOpenImageManager] = useState(true);
@@ -51,7 +51,8 @@ function Menubar() {
 						<li><a href="/postlist">게시판</a></li>
 						<li><a href="/member">사용자리스트</a></li>
 						<li><a href="/SettingList">공통코드</a></li>
-						<li><a href="/SerpapiEngine">SerpapiEngine</a></li>
+						<li><a href="/OpenApi">Open API</a></li>
+						<li><a href="/OpenApiExample">GEOCode API</a></li>
 						<li><a href="#" onClick={() => alert('준비 중입니다.')}>이력</a></li>
 					</ul>
 				</li>

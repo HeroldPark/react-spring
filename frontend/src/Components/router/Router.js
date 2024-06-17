@@ -33,8 +33,10 @@ import FeedbackWrite from "../feedback/FeedbackWrite";
 import CallBackGoogle from "../member/CallBackGoogle";
 
 import SettingList from "../commoncode/SettingList";
+import OpenApi from "../openapi/OpenApi";
+import OpenApiExample from "../openapi/OpenApiExample";
 
-import SerpapiEngine from "../serpapi/SerpapiEngine";
+// import SerpApiExample from "../serpapi/SerpApiExample";
 
 function Router() {
 
@@ -76,8 +78,10 @@ function Router() {
 			<Route path="/googlecallback" element={<CallBackGoogle />}></Route>
 
 			<Route path="/settinglist" element={<SettingList />}></Route>
+			<Route path="/OpenApi" element={<OpenApi />}></Route>
+			<Route path="/OpenApiExample" element={<OpenApiExample />}></Route>
 
-			<Route path="/searchengine" element={<SerpapiEngine />}></Route>
+			{/* <Route path="/SerpApiExample" element={<SerpApiExample />}></Route> */}
 		</Routes>
 	);
 }

@@ -2,7 +2,7 @@
 This script demonstrates how to use the SerpApi to get Google search results using the GoogleSearch class.
 C:\Program Files\Python312\python.exe
 pip install google-search-results
-usage : python search_example.py
+usage : python serpApiExample.py
 """
 
 import sys

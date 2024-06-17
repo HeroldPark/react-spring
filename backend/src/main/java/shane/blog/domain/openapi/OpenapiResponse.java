@@ -1,11 +1,11 @@
-package shane.blog.domain.post;
+package shane.blog.domain.openapi;
 
 import lombok.Getter;
 
 import java.time.LocalDateTime;
 
 @Getter
-public class PostResponse {
+public class OpenapiResponse {
 
     private Long id; // PK
     private String title; // 제목
@@ -14,13 +14,7 @@ public class PostResponse {
     private int viewCnt; // 조회 수
     private Boolean noticeYn; // 공지글 여부
     private Boolean deleteYn; // 삭제 여부
-    private LocalDateTime createdDate; // 생성일시
-    private LocalDateTime modifiedDate; // 최종 수정일시
-
-    // == 수정 Dirty Checking ==//
-    public void update(String title, String content) {
-        this.title = title;
-        this.content = content;
-    }
+    private String createdDate; // 생성일시
+    private String modifiedDate; // 최종 수정일시
 
 }

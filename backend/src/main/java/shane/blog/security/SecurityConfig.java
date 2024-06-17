@@ -69,6 +69,7 @@ public class SecurityConfig {
         , "/PictureList"
         , "/detailPicture"
         , "/commoncode/**"
+        , "/openapi/**"
 
         // , "/post/list.do"
         // , "/post/detail.do"

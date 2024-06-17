@@ -14,7 +14,6 @@ import shane.blog.domain.common.paging.PagingResponse;
 import shane.blog.domain.member.MemberApiControllerTest;
 import shane.blog.domain.member.MemberResponse;
 
-
 import java.util.Date;
 import java.text.SimpleDateFormat;
 
@@ -40,8 +39,8 @@ public class PostServiceTest {
     // 각 테스트 메소드가 실행되기전에 실행
     // @BeforeEach
     // public void cleanup() {
-    //     System.out.println("cleanup() Pass"); // DEBUG CONSOLE에 출력
-    //     // postMapper.deleteById();
+    // System.out.println("cleanup() Pass"); // DEBUG CONSOLE에 출력
+    // // postMapper.deleteById();
     // }
 
     @Test

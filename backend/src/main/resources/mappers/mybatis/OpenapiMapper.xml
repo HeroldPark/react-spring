@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="shane.blog.domain.openapi.OpenapiMapper">
+
+    <!-- tbl_openapi 테이블 전체 컬럼 -->
+    <sql id="openapiColumns">
+          id
+        , title
+        , content
+        , writer
+        , view_cnt
+        , notice_yn
+        , delete_yn
+        , created_date
+        , modified_date
+    </sql>
+
+    <!-- 게시글 검색 -->
+    <sql id="search">
+        <!-- 검색 키워드가 있을 때 -->
+        <if test="keyword != null and keyword != ''">
+            <choose>
+                <!-- 검색 유형이 있을 때 -->
+                <when test="searchType != null and searchType != ''">
+                    <choose>
+                        <when test="'title'.equals( searchType )">
+                            AND title LIKE CONCAT('%', #{keyword}, '%')
+                        </when>
+                        <when test="'content'.equals( searchType )">
+                            AND content LIKE CONCAT('%', #{keyword}, '%')
+                        </when>
+                        <when test="'writer'.equals( searchType )">
+                            AND writer LIKE CONCAT('%', #{keyword}, '%')
+                        </when>
+                    </choose>
+                </when>
+
+                <!-- 전체 검색일 때 -->
+                <otherwise>
+                    AND (
+                           title LIKE CONCAT('%', #{keyword}, '%')
+                        OR content LIKE CONCAT('%', #{keyword}, '%')
+                        OR writer LIKE CONCAT('%', #{keyword}, '%')
+                    )
+                </otherwise>
+            </choose>
+        </if>
+    </sql>
+
+
+    <!-- 게시글 저장 -->
+    <insert id="save" parameterType="openapiReq" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO tbl_openapi (  /* id="save" 2024-05-28 by shanepark */
+            <include refid="openapiColumns" />
+        ) VALUES (
+              #{id}
+            , #{title}
+            , #{content}
+            , #{writer}
+            , #{viewCnt}
+            , #{noticeYn}
+            <choose>
+                <when test="deleteYn != null and deleteYn != ''">
+                    , #{deleteYn}
+                </when>
+                <otherwise>
+                    , 0
+                </otherwise>
+            </choose>
+            <choose>
+                <when test="createdDate != null and createdDate != ''">
+                    , #{createdDate}
+                </when>
+                <otherwise>
+                    , NOW()
+                </otherwise>
+            </choose>
+            <choose>
+                <when test="modifiedDate != null and modifiedDate != ''">
+                    , #{modifiedDate}
+                </when>
+                <otherwise>
+                    , NOW()
+                </otherwise>
+            </choose>
+        )
+    </insert>
+
+
+    <!-- 게시글 상세정보 조회 -->
+    <select id="findById" parameterType="long" resultType="openapiRes">
+        SELECT  /* id="findById" 2024-05-28 by shanepark */
+            <include refid="openapiColumns" />
+        FROM
+            tbl_openapi
+        WHERE
+            id = #{value}
+    </select>
+
+
+    <!-- 게시글 수정 -->
+    <update id="update" parameterType="openapiReq">
+        UPDATE tbl_openapi /* id="update" 2024-05-28 by shanepark */
+        SET
+              modified_date = NOW()
+            <if test="title != null and title != ''">
+                , title = #{title}
+            </if>
+            <if test="content != null and content != ''">
+                , content = #{content}
+            </if>
+            <if test="writer != null and writer != ''">
+                , writer = #{writer}
+            </if>
+            <if test="viewCnt != null and viewCnt != ''">
+                , view_cnt = #{viewCnt}
+            </if>
+            <if test="noticeYn != null and noticeYn != ''">
+                , notice_yn = #{noticeYn}
+            </if>
+            <if test="deleteYn != null and deleteYn != ''">
+                , delete_yn = #{deleteYn}
+            </if>
+        WHERE
+            id = #{id}
+    </update>
+
+
+    <!-- 게시글 삭제 -->
+    <delete id="deleteById" parameterType="long">
+        <!-- 
+        UPDATE tbl_openapi
+        SET
+            delete_yn = 1
+        WHERE
+            id = #{id}
+        -->
+        DELETE FROM tbl_openapi     /* id="deleteById" 2024-05-28 by shanepark */
+        WHERE
+            id = #{value}
+    </delete>
+
+
+    <!-- 게시글 수 카운팅 -->
+    <select id="count" parameterType="searchDto" resultType="int">
+        SELECT  /* id="count" 2024-05-28 by shanepark */
+            COUNT(*)
+        FROM
+            tbl_openapi
+        WHERE
+            delete_yn = 0
+            <include refid="search" />
+    </select>
+
+    <!-- 게시글 리스트 조회 -->
+    <select id="findList" parameterType="searchDto" resultType="openapiRes">
+        SELECT  /* id="findList" 2024-05-28 by shanepark */
+            <include refid="openapiColumns" />
+        FROM
+            tbl_openapi
+        WHERE true
+            <include refid="search" />
+        ORDER BY id DESC
+        LIMIT #{pagination.limitStart}, #{recordSize}
+    </select>
+
+</mapper>

@@ -24,21 +24,22 @@ public class FeedbackController {
     private final FeedbackService feedbackService;
 
     // @GetMapping("/list")
-    // public ResponseEntity<PagingResponse<PostResponse>> feedbackList(@ModelAttribute("params") final SearchDto params) {
+    // public ResponseEntity<PagingResponse<PostResponse>>
+    // feedbackList(@ModelAttribute("params") final SearchDto params) {
 
-    //     log.debug("FeedbackController.feedbackList: 시작");
-        
-    //     PagingResponse<PostResponse> postList = postService.findList(params);
-    //     return ResponseEntity.status(HttpStatus.OK).body(postList);
+    // log.debug("FeedbackController.feedbackList: 시작");
+
+    // PagingResponse<PostResponse> postList = postService.findList(params);
+    // return ResponseEntity.status(HttpStatus.OK).body(postList);
     // }
 
     @PostMapping("/list.do")
     public ResponseEntity<PagingResponse<FeedbackResponse>> feedbackList(
-        @ModelAttribute("params") final SearchDto params,
-        @RequestBody FeedbackRequest feedbackRequest) {
+            @ModelAttribute("params") final SearchDto params,
+            @RequestBody FeedbackRequest feedbackRequest) {
 
         log.debug("FeedbackController.feedbackList: 시작");
-        
+
         params.setPostId(feedbackRequest.getPostId());
         PagingResponse<FeedbackResponse> feedbackList = feedbackService.finAll(params);
         return ResponseEntity.status(HttpStatus.OK).body(feedbackList);

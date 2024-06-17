@@ -1,4 +1,4 @@
-package shane.blog.domain.post;
+package shane.blog.domain.openapi;
 
 import shane.blog.domain.common.dto.MessageDto;
 import shane.blog.domain.common.dto.SearchDto;
@@ -42,18 +42,22 @@ import java.util.List;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 
+import org.springframework.web.client.RestTemplate;
+
 @Slf4j
 @RestController
-@RequestMapping("/post")
+@RequestMapping("/openapi")
 @RequiredArgsConstructor
-public class PostController {
+public class OpenapiController {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    private final PostService postService;
+    private final OpenapiService openapiService;
     private final FeedbackService feedbackService;
     private final FileApiService fileApiService;
     private final FileUtils fileUtils;
+
+    private final RestTemplate restTemplate;
 
     // 사용자에게 메시지를 전달하고, 페이지를 리다이렉트 한다.
     private String showMessageAndRedirect(final MessageDto params, Model model) {
@@ -72,21 +76,27 @@ public class PostController {
         return data;
     }
 
-    // 게시글 리스트 페이지
-    // @GetMapping("/list")
-    // public String postList(@ModelAttribute("params") final SearchDto params,
-    // Model model) {
-    // PagingResponse<PostResponse> response = postService.findAllPost(params);
-    // model.addAttribute("response", response);
-    // return "post/list";
-    // }
+    @RequestMapping(value = "/stat.do", method = { RequestMethod.GET, RequestMethod.POST })
+    public ResponseEntity<?> openapiStat(@ModelAttribute("params") final SearchDto params) {
+
+        logger.debug("/stat.do 시작. \t {}", new Date());
+
+        // 1. 회원 정보 조회
+        String url = "https://sgisapi.kostat.go.kr/OpenAPI3/stats/population.json";
+        String response = restTemplate.getForObject(url, String.class);
+        logger.debug("/stat.do 종료. \t {}", response);
+
+        // 2. 조회 결과 리턴
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
     @RequestMapping(value = "/list.do", method = { RequestMethod.GET, RequestMethod.POST })
-    public ResponseEntity<PagingResponse<PostResponse>> postList(@ModelAttribute("params") final SearchDto params) {
+    public ResponseEntity<PagingResponse<OpenapiResponse>> openapiList(@ModelAttribute("params") final SearchDto params) {
 
         logger.debug("/list.do 시작. \t {}", new Date());
 
         // 1. 회원 정보 조회
-        PagingResponse<PostResponse> response = postService.findList(params);
+        PagingResponse<OpenapiResponse> response = openapiService.findList(params);
         logger.debug("/list.do 종료. \t {}", response);
 
         // 2. 조회 결과 리턴
@@ -95,50 +105,50 @@ public class PostController {
 
     // // 게시글 상세 페이지
     // @GetMapping("/{id}")
-    // public String postDetail(@RequestParam final Long id, Model model) {
-    // PostResponse post = postService.findPostById(id);
-    // model.addAttribute("post", post);
-    // return "post/view";
+    // public String openapiDetail(@RequestParam final Long id, Model model) {
+    // PostResponse openapi = openapiService.findPostById(id);
+    // model.addAttribute("openapi", openapi);
+    // return "openapi/view";
     // }
 
     // 게시글 작성 페이지
     @PostMapping("/write.do")
-    public ResponseEntity<?> postWrite(
-            @RequestBody PostRequest postRequest,
+    public ResponseEntity<?> openapiWrite(
+            @RequestBody OpenapiRequest openapiRequest,
             @AuthenticationPrincipal Member member) {
         Thread currentThread = Thread.currentThread();
         log.info("현재 실행 중인 스레드: " + currentThread.getName());
-        Long id = postService.write(postRequest, member);
+        Long id = openapiService.write(openapiRequest, member);
         return ResponseEntity.status(HttpStatus.CREATED).body(id);
     }
 
     // 게시글 상세 페이지
     @GetMapping("/detail.do/{id}")
-    public ResponseEntity<PostResponse> postDetail(@PathVariable("id") Long id) {
+    public ResponseEntity<OpenapiResponse> openapiDetail(@PathVariable("id") Long id) {
         // PostList.getPostDetail()에서 이렇게 호출한다.
         // @GetMapping("/detail.do")
-        // public ResponseEntity<PostResponse> postDetail(@ModelAttribute("params")
+        // public ResponseEntity<PostResponse> openapiDetail(@ModelAttribute("params")
         // final SearchDto params) {
 
-        log.info("PostController.postDetail() : {}", id);
+        log.info("PostController.openapiDetail() : {}", id);
 
-        PostResponse postResponse = postService.detail(id);
-        return ResponseEntity.status(HttpStatus.OK).body(postResponse);
+        OpenapiResponse openapiResponse = openapiService.detail(id);
+        return ResponseEntity.status(HttpStatus.OK).body(openapiResponse);
     }
 
     // 게시글 상세, 답글쓰기
     @PostMapping("/answer.do")
-    public ResponseEntity<List<FeedbackResponse>> postAnswer(@RequestBody PostRequest postRequest) {
-        // public ResponseEntity<PostResponse> postAnswer(@PathVariable("parentSeq")
+    public ResponseEntity<List<FeedbackResponse>> openapiAnswer(@RequestBody OpenapiRequest openapiRequest) {
+        // public ResponseEntity<PostResponse> openapiAnswer(@PathVariable("parentSeq")
         // Long parentSeq) {
 
-        log.info("PostController.postAnswer() : {}", postRequest);
+        log.info("PostController.openapiAnswer() : {}", openapiRequest);
 
         FeedbackRequest feedbackRequest = new FeedbackRequest();
-        feedbackRequest.setPostId(postRequest.getId());
-        feedbackRequest.setTitle(postRequest.getTitle());
-        feedbackRequest.setContent(postRequest.getContent());
-        feedbackRequest.setWriter(postRequest.getWriter());
+        feedbackRequest.setPostId(openapiRequest.getId());
+        feedbackRequest.setTitle(openapiRequest.getTitle());
+        feedbackRequest.setContent(openapiRequest.getContent());
+        feedbackRequest.setWriter(openapiRequest.getWriter());
 
         List<FeedbackResponse> feedbackResponse = feedbackService.write2(feedbackRequest);
         return ResponseEntity.status(HttpStatus.OK).body(feedbackResponse);
@@ -148,12 +158,12 @@ public class PostController {
     // @PatchMapping("/update.do")
     // public ResponseEntity<Long> update(
     // // @PathVariable Long id,
-    // @RequestBody PostRequest postRequest) {
+    // @RequestBody PostRequest openapiRequest) {
 
-    // log.info("PostController.update() : {}", postRequest);
+    // log.info("PostController.update() : {}", openapiRequest);
 
-    // // postRequest.setId(id);
-    // Long id = postService.update(postRequest);
+    // // openapiRequest.setId(id);
+    // Long id = openapiService.update(openapiRequest);
     // return ResponseEntity.status(HttpStatus.OK).body(id);
     // }
 
@@ -161,10 +171,10 @@ public class PostController {
     @DeleteMapping("/{id}/delete.do")
     public ResponseEntity<?> delete(@PathVariable Long id) {
         try {
-            postService.delete(id);
+            openapiService.delete(id);
             return ResponseEntity.status(HttpStatus.OK).body(id);
         } catch (Exception e) {
-            String errorMessage = "Failed to delete post with id: " + id + ". " + e.getMessage();
+            String errorMessage = "Failed to delete openapi with id: " + id + ". " + e.getMessage();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
         }
     }
@@ -177,20 +187,20 @@ public class PostController {
 
     // 신규 게시글 생성
     @PostMapping("/save.do")
-    public String savePost(final PostRequest params, @RequestPart("multipartFiles") MultipartFile[] multipartFiles,
+    public String savePost(final OpenapiRequest params, @RequestPart("multipartFiles") MultipartFile[] multipartFiles,
             Model model) {
-        Long id = postService.savePost(params);
+        Long id = openapiService.savePost(params);
         // List<FileRequest> files = fileUtils.uploadFiles(params.getFiles());
         List<FileRequest> uploadFiles = fileUtils.uploadFiles(multipartFiles);
         fileApiService.saveFiles(id, uploadFiles);
-        MessageDto message = new MessageDto("게시글 생성이 완료되었습니다.", "/post/list.do", RequestMethod.GET, null);
+        MessageDto message = new MessageDto("게시글 생성이 완료되었습니다.", "/openapi/list.do", RequestMethod.GET, null);
         return showMessageAndRedirect(message, model);
     }
 
     // 기존 게시글 수정
     @PostMapping("/update.do")
-    public ResponseEntity<PagingResponse<PostResponse>> updatePost(
-            @RequestPart("params") PostRequest params,
+    public ResponseEntity<PagingResponse<OpenapiResponse>> updatePost(
+            @RequestPart("params") OpenapiRequest params,
             @RequestPart("multipartFiles") MultipartFile[] multipartFiles,
             final SearchDto queryParams,
             Model model) {
@@ -198,7 +208,7 @@ public class PostController {
         log.info("PostController.updatePost() : {}", params);
 
         // 1. 게시글 정보 수정
-        postService.update(params);
+        openapiService.update(params);
 
         // 2. 파일 업로드 (to disk)
         // List<FileRequest> uploadFiles = fileUtils.uploadFiles(params.getFiles());
@@ -208,15 +218,16 @@ public class PostController {
         fileApiService.saveFiles(params.getId(), uploadFiles);
 
         // 4. 삭제할 파일 정보 조회 (from database)
-        List<FileResponse> deleteFiles = fileApiService.findAllFileByIds(params.getRemoveFileIds());
+        // List<FileResponse> deleteFiles =
+        // fileApiService.findAllFileByIds(params.getRemoveFileIds());
 
         // 5. 파일 삭제 (from disk)
-        fileUtils.deleteFiles(deleteFiles);
+        // fileUtils.deleteFiles(deleteFiles);
 
         // 6. 파일 삭제 (from database)
-        fileApiService.deleteAllFileByIds(params.getRemoveFileIds());
+        // fileApiService.deleteAllFileByIds(params.getRemoveFileIds());
 
-        // MessageDto message = new MessageDto("게시글 수정이 완료되었습니다.", "/post/list.do",
+        // MessageDto message = new MessageDto("게시글 수정이 완료되었습니다.", "/openapi/list.do",
         // RequestMethod.GET, queryParamsToMap(queryParams));
         // return showMessageAndRedirect(message, model);
         SearchDto params2 = new SearchDto();
@@ -226,17 +237,18 @@ public class PostController {
         params2.setKeyword("");
         params2.setId(params.getId());
 
-        PagingResponse<PostResponse> response = postService.findList(params2);
+        PagingResponse<OpenapiResponse> response = openapiService.findList(params2);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @RequestMapping(value = "/upload.do", method = { RequestMethod.GET, RequestMethod.POST })
-    public ResponseEntity<PagingResponse<PostResponse>> postUpload(@ModelAttribute("params") final SearchDto params) {
+    public ResponseEntity<PagingResponse<OpenapiResponse>> openapiUpload(
+            @ModelAttribute("params") final SearchDto params) {
 
         logger.debug("/upload.do 시작. \t {}", new Date());
 
         // 1. 회원 정보 조회
-        PagingResponse<PostResponse> response = postService.findList(params);
+        PagingResponse<OpenapiResponse> response = openapiService.findList(params);
         logger.debug("/upload.do 종료. \t {}", response);
 
         // 2. 조회 결과 리턴
@@ -247,7 +259,7 @@ public class PostController {
     @GetMapping("/delete.do")
     public String deletePost(@RequestParam final Long id, final SearchDto queryParams, Model model) {
         fileApiService.delete(id);
-        MessageDto message = new MessageDto("게시글 삭제가 완료되었습니다.", "/post/list.do", RequestMethod.GET,
+        MessageDto message = new MessageDto("게시글 삭제가 완료되었습니다.", "/openapi/list.do", RequestMethod.GET,
                 queryParamsToMap(queryParams));
         return showMessageAndRedirect(message, model);
     }
