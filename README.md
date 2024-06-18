@@ -415,3 +415,27 @@
     - npm install dotenv
     - GEOCode : 위치정보
     - OpenApi : 인구통계
+
+# 42. 2024-06-18
+
+Failed to parse source map from 'C:\Users\DeltaX_20\Documents\Workspace\react-spring\frontend\node_modules\react-simple-tree-menu\src\sass\main.scss' file: <span style="color: red;">Error:</span> ENOENT: no such file or directory, open 'C:\Users\DeltaX_20\Documents\Workspace\react-spring\frontend\node_modules\react-simple-tree-menu\src\sass\main.scss'
+
+    => frontend\node_modules\react-simple-tree-menu\src\sass\main.scss 생성
+
+        // eslint-disable-next-line
+    
+    => package.json에서 아래 라인 추가
+
+        "devDependencies": {
+            "react-scripts": {
+            "sourceMaps": false
+            }
+        },
+    
+    => webpack.config.js 추가
+
+    - styled component 사용
+        $ npm install styled-components
+
+    - bootstrap
+        $ yarn add react-bootstrap bootstrap

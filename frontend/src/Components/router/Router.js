@@ -38,6 +38,9 @@ import OpenApiExample from "../openapi/OpenApiExample";
 
 // import SerpApiExample from "../serpapi/SerpApiExample";
 
+// CSS Test
+import TestButton from "../testCss/TestButton";
+
 function Router() {
 
 	console.log("[Router.js] render()");
@@ -76,12 +79,17 @@ function Router() {
 
 			{/* <Route path="/oauth-response/:token/:expirationTime" element={<OAuth />}></Route> */}
 			<Route path="/googlecallback" element={<CallBackGoogle />}></Route>
-
 			<Route path="/settinglist" element={<SettingList />}></Route>
-			<Route path="/OpenApi" element={<OpenApi />}></Route>
-			<Route path="/OpenApiExample" element={<OpenApiExample />}></Route>
 
+			{/* web crawling */}
 			{/* <Route path="/SerpApiExample" element={<SerpApiExample />}></Route> */}
+
+			{/* populations statistics */}
+			<Route path="/OpenApi" element={<OpenApi />}></Route>
+			{/* geo code */}
+			<Route path="/OpenApiExample" element={<OpenApiExample />}></Route>
+			{/* test css */}
+			<Route path="/TestButton" element={<TestButton/>}></Route>
 		</Routes>
 	);
 }

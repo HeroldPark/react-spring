@@ -7,6 +7,7 @@ function Menubar() {
 	const [isOpenBbs, setIsOpenBbs] = useState(true);
 	const [isOpenImageManager, setIsOpenImageManager] = useState(true);
 	const [isOpenWebManager, setIsOpenWebManager] = useState(true);
+	const [isOpenTestManager, setIsOpenTestManager] = useState(true);
 
 	const toggleSubMenuBbs = (e) => {
 		e.preventDefault();
@@ -23,6 +24,12 @@ function Menubar() {
 	const toggleSubMenuWebManager = (e) => {
 		e.preventDefault();
 		setIsOpenWebManager(!isOpenWebManager);
+		setIsOpenBbs(false); // 다른 메뉴의 상태 변경
+	};
+
+	const toggleSubMenuTestManager = (e) => {
+		e.preventDefault();
+		setIsOpenTestManager(!isOpenTestManager);
 		setIsOpenBbs(false); // 다른 메뉴의 상태 변경
 	};
 	
@@ -51,9 +58,16 @@ function Menubar() {
 						<li><a href="/postlist">게시판</a></li>
 						<li><a href="/member">사용자리스트</a></li>
 						<li><a href="/SettingList">공통코드</a></li>
-						<li><a href="/OpenApi">Open API</a></li>
-						<li><a href="/OpenApiExample">GEOCode API</a></li>
+						
 						<li><a href="#" onClick={() => alert('준비 중입니다.')}>이력</a></li>
+					</ul>
+				</li>
+				<li className={`has_sub ${isOpenTestManager ? 'open' : ''}`}>
+					<a href="#" className={isOpenTestManager ? 'on' : ''} onClick={toggleSubMenuTestManager}> <span>테스트 베드</span></a>
+					<ul>
+						<li><a href="/OpenApi">인구통계 API</a></li>
+						<li><a href="/OpenApiExample">좌표 API</a></li>
+						<li><a href="/TestButton">Test CSS</a></li>
 					</ul>
 				</li>
 			</ul>

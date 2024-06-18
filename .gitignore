@@ -5,18 +5,18 @@ backend/.gradle
 backend/build
 backend/folder
 
-backend/src/main/resources/static/static/css/main.*.css
-backend/src/main/resources/static/static/css/main.*.css.map
-backend/src/main/resources/static/static/js/main.*.js
-backend/src/main/resources/static/static/js/main.*.js.map
-backend/src/main/resources/static/static/js/main.*.js.LICENSE.txt
+# sass-scss map files
+backend/src/main/resources/static/static/css/*
+backend/src/main/resources/static/static/js/*
 
+# OAuth2 secret-key
 backend/src/main/resources/application.yml
 backend/src/main/resources/application-oauth.properties
 
 frontend/build
 frontend/node_modules
 
+# OpenApi secret-key
 .env
 
 

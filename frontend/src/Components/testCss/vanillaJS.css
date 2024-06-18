@@ -1,0 +1,23 @@
+/*
+<div className="main">
+  <div className="circle circle__orange"></div>
+  <div className="circle circle__blue"></div>
+</div> 
+*/
+.circle {
+  width: 200px;
+  height: 200px;
+  border-radius: 200px;
+}
+
+.circle__orange {
+  background-color: orange;
+}
+
+.circle__blue {
+  background-color: blue;
+}
+
+.main {
+  display: flex;
+}

@@ -9,6 +9,7 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^0.27.2",
     "bootstrap": "^5.3.3",
+    "classnames": "^2.5.1",
     "customize-cra": "^1.0.0",
     "dotenv": "^16.4.5",
     "formik": "^2.4.6",
@@ -19,6 +20,7 @@
     "react": "^18.2.0",
     "react-app-rewired": "^2.2.1",
     "react-axios": "^2.0.6",
+    "react-bootstrap": "^2.10.2",
     "react-cookie": "^7.1.4",
     "react-dom": "^18.2.0",
     "react-js-pagination": "^3.0.3",
@@ -32,6 +34,7 @@
     "react-treebeard": "^3.2.4",
     "sass": "^1.75.0",
     "serpapi": "^2.1.0",
+    "styled-components": "^6.1.11",
     "web-vitals": "^2.1.4"
   },
   "proxy": "http://localhost:8989",
@@ -52,6 +55,11 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+      "react-scripts": {
+      "sourceMaps": false
+      }
   },
   "description": "🤸How to start?\r =",
   "main": "index.js",

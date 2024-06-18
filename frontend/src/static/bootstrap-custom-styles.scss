@@ -1,7 +1,8 @@
 // bootstrap의 설정을 변경하고자 할 때 사용하는 파일입니다.
 
 // bootstrap-custom-styles.scss
-$container-max-width: 1040px; // 변경하고자 하는 값으로 변수를 재정의
+// $container-max-width: 1040px; // 변경하고자 하는 값으로 변수를 재정의
+$container-max-width: 100%; // 변경하고자 하는 값으로 변수를 재정의
 
 // 이후에 Bootstrap 파일을 import 합니다.
 @import 'bootstrap';
