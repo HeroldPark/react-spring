@@ -4,12 +4,12 @@ import Pagination from "react-js-pagination";
 import { Link } from "react-router-dom";
 
 import "../../css/page.css";
-import "../../css/memberlist.css";
+import "../../css/loginlist.css";
 
-// mybatis-spring-boot-starter
-// tbl_member 테이블의 리스트를 보여준다.(로그인 계정이 아님)
-function MemberList() {
-  const [memberList, setMemberList] = useState([]);
+// JPA-spring-boot-starter
+// 로그인 login가 저장된 테이블
+function LoginList() {
+  const [loginList, setMemberList] = useState([]);
 
   // 검색용 Hook
   const [choiceVal, setChoiceVal] = useState("");
@@ -33,19 +33,19 @@ function MemberList() {
   // Member 전체 조회
   const getMemberList = async (page) => {
     try {
-		  const response = await axiosInstance.get("/member/list", {
-			  params: {"page": page},
+		  const response = await axiosInstance.get("/user/list", {
+			  params: {"page": page - 1},
 		  });
 
-      console.log("[MemberList.js] useEffect() success :D");
+      console.log("[LoginList.js] useEffect() success :D");
       console.log(response.data);
 
-      setMemberList(response.data.list);
-      setPageSize(response.data.pagination.pageSize);
-      setTotalPages(response.data.pagination.totalPageCount);
-      setTotalCnt(response.data.pagination.totalRecordCount);
+      setMemberList(response.data.content);
+      setPageSize(response.data.pageSize);
+      setTotalPages(response.data.totalPages);
+      setTotalCnt(response.data.totalElements);
     } catch (error) {
-      console.log("[MemberList.js] useEffect() error :<");
+      console.log("[LoginList.js] useEffect() error :<");
       console.log(error);
     }
   };
@@ -53,7 +53,7 @@ function MemberList() {
   // 게시글 검색
   const search = async () => {
     try {
-      const response = await axiosInstance.get("/member/search", {
+      const response = await axiosInstance.get("/user/search", {
         params: {
           page: page,
           name: choiceVal === "name" ? searchVal : "",
@@ -61,13 +61,13 @@ function MemberList() {
         },
       });
 
-      console.log("[MemberList.js searchBtn()] success :D");
+      console.log("[LoginList.js searchBtn()] success :D");
       console.log(response.data);
 
       setMemberList(response.data.content);
       setTotalCnt(response.data.totalElements);
     } catch (error) {
-      console.log("[MemberList.js searchBtn()] error :<");
+      console.log("[LoginList.js searchBtn()] error :<");
       console.log(error);
     }
   };
@@ -100,8 +100,8 @@ function MemberList() {
                 onChange={changeChoice}
               >
                 <option>검색 옵션 선택</option>
-                <option value="name">성명</option>
-                <option value="role">권한</option>
+                <option value="email">이메일</option>
+                <option value="username">성명</option>
               </select>
             </td>
             <td>
@@ -131,18 +131,19 @@ function MemberList() {
         <thead>
           <tr>
             <th style={{textAlign:"center"}} className="col-1">번호</th>
-            <th style={{textAlign:"center"}} className="col-1">아이디</th>
+            <th style={{textAlign:"center"}} className="col-1">이메일</th>
             <th style={{textAlign:"center"}} className="col-1">성명</th>
-            <th style={{textAlign:"center"}} className="col-1">성별</th>
-            <th style={{textAlign:"center"}} className="col-2">생년월일</th>
-            <th style={{textAlign:"center"}} className="col-2">생성일시</th>
-            <th style={{textAlign:"center"}} className="col-2">수정일시</th>
+            <th style={{textAlign:"center"}} className="col-1">권한</th>
+            <th style={{textAlign:"center"}} className="col-1">사진</th>
+            <th style={{textAlign:"center"}} className="col-1">제공</th>
+            <th style={{textAlign:"center"}} className="col-1">생성일시</th>
+            <th style={{textAlign:"center"}} className="col-1">수정일시</th>
           </tr>
         </thead>
 
         <tbody>
-          {Array.isArray(memberList) && memberList.map(function (member, idx) {
-            return <TableRow obj={member} key={idx} cnt={idx + 1} />;
+          {Array.isArray(loginList) && loginList.map(function (login, idx) {
+            return <TableRow obj={login} key={idx} cnt={idx + 1} />;
           })}
         </tbody>
       </table>
@@ -169,23 +170,24 @@ function MemberList() {
 
 /* 글 목록 테이블 행 컴포넌트 */
 function TableRow(props) {
-  const member = props.obj;
+  const login = props.obj;
 
   return (
     <tr>
       <th style={{textAlign:"center"}} >{props.cnt}</th>
       <td style={{textAlign:"center"}} >
-        <Link to={{ pathname: `/memberdetail/${member.id}` }}>
-          <span className="underline user-name">{member.name}</span>
+        <Link to={{ pathname: `/detail/${login.memberId}` }}>
+          <span className="underline user-name">{login.email}</span>
         </Link>
       </td>
-      <td style={{textAlign:"center"}} >{member.loginId}</td>
-      <td style={{textAlign:"center"}} >{member.gender}</td>
-      <td style={{textAlign:"center"}} >{member.birthday}</td>
-      <td style={{ textAlign: 'center' }}>{member.createdDate}</td>
-      <td style={{ textAlign: 'center' }}>{member.modifiedDate}</td>
+      <td style={{textAlign:"center"}} >{login.username}</td>
+      <td style={{textAlign:"center"}} >{login.roles}</td>
+      <td style={{textAlign:"center"}} >{login.picture}</td>
+      <td style={{textAlign:"center"}} >{login.provider}</td>
+      <td style={{textAlign:'center'}}>{login.createdDate}</td>
+      <td style={{textAlign:'center'}}>{login.modifiedDate}</td>
     </tr>
   );
 }
 
-export default MemberList;
+export default LoginList;

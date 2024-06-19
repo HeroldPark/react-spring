@@ -25,7 +25,9 @@
         "fortawesome",
         "googlecallback",
         "lcontent",
+        "loginlist",
         "memberdetail",
+        "Memberld",
         "memberlist",
         "mybatis",
         "Navi",
@@ -47,6 +49,7 @@
         "transcoord",
         "treebeard",
         "userinfo",
+        "userlist",
         "userwrite",
         "viewcount"
     ],

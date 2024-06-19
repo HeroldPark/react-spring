@@ -2,26 +2,24 @@ package shane.blog.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import shane.blog.common.exception.MemberException;
 import shane.blog.dto.request.member.MemberLoginDto;
 import shane.blog.dto.request.member.MemberRegisterDto;
 import shane.blog.dto.request.member.MemberUpdateDto;
 import shane.blog.dto.response.member.MemberResponseDto;
 import shane.blog.dto.response.member.MemberTokenDto;
 import shane.blog.entity.Member;
-import shane.blog.service.CustomOAuth2UserService;
 import shane.blog.service.LoginService;
 import shane.blog.service.MemberService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.oauth2.client.registration.ClientRegistration;
-import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
-import org.springframework.security.oauth2.core.OAuth2AccessToken;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -31,6 +29,8 @@ import java.util.Map;
 @RequiredArgsConstructor
 @Slf4j
 public class MemberController {
+
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     private final MemberService memberService;
     // private final CustomOAuth2UserService googleService;
@@ -71,5 +71,21 @@ public class MemberController {
             @RequestBody MemberUpdateDto memberUpdateDTO) {
         MemberResponseDto memberUpdate = memberService.update(member, memberUpdateDTO);
         return ResponseEntity.status(HttpStatus.OK).body(memberUpdate);
+    }
+
+    // 계정 리스트 조회
+    @GetMapping("/list")
+    public ResponseEntity<Page<MemberResponseDto>> loginList(
+            @PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
+            @RequestHeader("Authorization") String authorizationHeader) {
+
+        // JWT 인증 토큰 확인을 위해서 추가
+        log.debug("Authorization Header: " + authorizationHeader);
+
+        Page<MemberResponseDto> listDTO = memberService.getAllMembers(pageable);
+
+        log.debug("loginList: " + listDTO.toString());
+
+        return ResponseEntity.status(HttpStatus.OK).body(listDTO);
     }
 }

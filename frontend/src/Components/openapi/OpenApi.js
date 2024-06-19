@@ -3,7 +3,12 @@ import axios from 'axios';
 import Pagination from "react-js-pagination";
 import { Link } from "react-router-dom";
 
+// First, include Moment.js in your project
+const moment = require('moment');
+
 const OpenApi = () => {
+  console.log("[OpenApi.js] 시작");
+
   const [accessToken, setAccessToken] = useState('none');
   const [errCnt, setErrCnt] = useState(0);
   const [allStatData, setAllStatData] = useState([]);
@@ -18,6 +23,8 @@ const OpenApi = () => {
   const [pageSize, setPageSize] = useState(10);
   const [totalPages, setTotalPages] = useState(0);
   const [totalCnt, setTotalCnt] = useState(0);
+
+  const spacing = 20; // em 단위로 공백을 추가하려는 값
 
   const serviceName = process.env.REACT_APP_OPENAPI_SERVICE_NAME;
   const serviceId = process.env.REACT_APP_OPENAPI_SERVICE_ID;
@@ -51,7 +58,7 @@ const OpenApi = () => {
   const fetchAllData = async (token) => {
     const year = '2022';
     const low_search = '1';
-    const adm_cd = '11040';
+    const adm_cd = '1';
 
     try {
       const response = await axios.get('https://sgisapi.kostat.go.kr/OpenAPI3/stats/population.json', {
@@ -63,37 +70,41 @@ const OpenApi = () => {
         },
       });
 
-      switch (parseInt(response.data.errCd)) {
-        case 0:
-            if (response.data.result) {
-                setAllStatData(response.data.result);
-                const totalCnt = response.data.result.length;
-                const totalPages = Math.ceil(totalCnt / pageSize);
-                setTotalPages(totalPages);
-                setTotalCnt(totalCnt);
-                paginateData(1, response.data.result); // Set initial data for page 1
-            } else {
-              setAllStatData([]);
-              setCurrentStatData([]);
-            }
-          break;
-        case -401:
-          setErrCnt((prevErrCnt) => {
-            const newErrCnt = prevErrCnt + 1;
-            if (newErrCnt < 200) {
-              getAccessToken();
-            }
-            return newErrCnt;
-          });
-          break;
-        case -100:
-          console.error('Error -100:', response.data.errMsg);
-          break;
-        default:
-          console.error('Unexpected error code:', response.data.errCd);
-      }
+      responseProc(response);
     } catch (error) {
       console.error('Error fetching stat data:', error);
+    }
+  };
+
+  const responseProc = (response) => {
+    switch (parseInt(response.data.errCd)) {
+      case 0:
+          if (response.data.result) {
+              setAllStatData(response.data.result);
+              const totalCnt = response.data.result.length;
+              const totalPages = Math.ceil(totalCnt / pageSize);
+              setTotalPages(totalPages);
+              setTotalCnt(totalCnt);
+              paginateData(1, response.data.result); // Set initial data for page 1
+          } else {
+            setAllStatData([]);
+            setCurrentStatData([]);
+          }
+        break;
+      case -401:
+        setErrCnt((prevErrCnt) => {
+          const newErrCnt = prevErrCnt + 1;
+          if (newErrCnt < 200) {
+            getAccessToken();
+          }
+          return newErrCnt;
+        });
+        break;
+      case -100:
+        console.error('Error -100:', response.data.errMsg);
+        break;
+      default:
+        console.error('Unexpected error code:', response.data.errCd);
     }
   };
 
@@ -114,22 +125,49 @@ const OpenApi = () => {
   // 검색용
   const search = async () => {
     try {
-      const response = await axiosInstance.get("/stat/search", {
+      const date = new Date();
+      const year = moment(date).format('YYYY') - 2;
+      const low_search = '1';
+      const response = await axios.get('https://sgisapi.kostat.go.kr/OpenAPI3/stats/population.json', {
         params: {
-          page: page,
-          name: choiceVal === "name" ? searchVal : "",
-          role: choiceVal === "role" ? searchVal : "",
+            accessToken: accessToken,
+            year,
+            low_search,
+            adm_cd : choiceVal === "code" ? searchVal : "1"
         },
       });
 
       console.log("[OpenApi.js searchBtn()] success :D");
       console.log(response.data);
 
-    //   setStatData(response.data.content);
-      paginateData(page);
-      setTotalCnt(response.data.totalElements);
+      responseProc(response);
     } catch (error) {
       console.log("[OpenApi.js searchBtn()] error :<");
+      console.log(error);
+    }
+  };
+
+  // 차트용
+  const chart = async () => {
+    try {
+      const date = new Date();
+      const year = moment(date).format('YYYY') - 2;
+      const low_search = '1';
+      const response = await axios.get('https://sgisapi.kostat.go.kr/OpenAPI3/stats/population.json', {
+        params: {
+            accessToken: accessToken,
+            year,
+            low_search,
+            adm_cd : choiceVal === "code" ? searchVal : "1"
+        },
+      });
+
+      console.log("[OpenApi.js chartBtn()] success :D");
+      console.log(response.data);
+
+      responseProc(response);
+    } catch (error) {
+      console.log("[OpenApi.js chartBtn()] error :<");
       console.log(error);
     }
   };
@@ -138,13 +176,14 @@ const OpenApi = () => {
     <div>
         <header className="page_tits">
             <h3>React-Spring</h3>
-            <p className="path"><strong>현재 위치 :</strong> <span>웹서버 관리</span> <span>OpenAPI</span> <span>인구통계</span></p>
+            <p className="path"><strong>현재 위치 :</strong> <span>테스트 베드</span> <span>OpenAPI</span> <span>인구통계</span></p>
         </header>
 
         {/* 조회 */}
         <table className="search">
         <tbody>
         <tr>
+            {/* 검색 */}
             <td>
             <select
                 className="custom-select"
@@ -152,8 +191,8 @@ const OpenApi = () => {
                 onChange={changeChoice}
             >
                 <option>검색 옵션 선택</option>
-                <option value="name">성명</option>
-                <option value="role">권한</option>
+                <option value="code">지역코드</option>
+                <option value="role">지역명</option>
             </select>
             </td>
             <td>
@@ -172,6 +211,29 @@ const OpenApi = () => {
                 onClick={search}
             >
                 <i className="fas fa-search"></i> 검색
+            </button>
+            </td>
+
+            {/* 차트 */}
+            <td style={{marginRight: spacing + 'px'}}>&nbsp;&nbsp;</td>
+            <td>
+            <select
+                className="custom-select"
+                value={choiceVal}
+                onChange={changeChoice}
+            >
+                <option>차트 선택</option>
+                <option value="chart">막대차트</option>
+                <option value="chart">파이차트</option>
+            </select>
+            </td>
+            <td>
+            <button
+                type="button"
+                className="btn btn-outline-secondary"
+                onClick={chart}
+            >
+                <i className="fas fa-search"></i> 그리기
             </button>
             </td>
         </tr>

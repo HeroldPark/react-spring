@@ -14,7 +14,8 @@ import Logout from "../member/Logout";
 import MemberUpdate from "../member/MemberUpdate";
 
 import EmployeeList from "../employee/EmployeeList";
-import MemberList from "../member/MemberList";
+import MemberList from "../member/MemberList";		// MyBatis
+import LoginList from "../member/LoginList";	// JPA
 
 import PictureList from "../picture/PictureList";
 
@@ -63,6 +64,7 @@ function Router() {
 
 			<Route path="/employees" element={<EmployeeList />}></Route>
 			<Route path="/member" element={<MemberList />}></Route>
+			<Route path="/LoginList" element={<LoginList />}></Route>
 
 			<Route path="/PictureList" element={<PictureList />}></Route>
 

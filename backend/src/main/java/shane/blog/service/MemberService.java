@@ -2,7 +2,6 @@ package shane.blog.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import shane.blog.common.exception.MemberException;
 import shane.blog.common.exception.ResourceNotFoundException;
 import shane.blog.dto.request.member.MemberLoginDto;
@@ -17,9 +16,11 @@ import shane.blog.security.jwt.JwtTokenUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
-import javax.management.relation.Role;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -32,7 +33,6 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 @Transactional
-@Slf4j
 public class MemberService {
 
     private final PasswordEncoder encoder;
@@ -96,6 +96,15 @@ public class MemberService {
         );
         updateMember.update(encodePwd, updateDto.getUsername());
         return MemberResponseDto.fromEntity(updateMember);
+    }
+
+    // 사용자 리스트 조회
+    public Page<MemberResponseDto> getAllMembers(Pageable pageable) {
+        Page<Member> members = memberRepository.findAllWithMembers(pageable);
+        List<MemberResponseDto> list = members.getContent().stream()
+                .map(MemberResponseDto::fromEntity)
+                .collect(Collectors.toList());
+        return new PageImpl<>(list, pageable, members.getTotalElements());
     }
 
     /**

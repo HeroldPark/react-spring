@@ -71,10 +71,11 @@ public class Member extends BaseTimeEntity implements UserDetails {
         this.password = password;
         this.username = username;
     }
-    // public void update(String email, String username) {
-    //     this.email = email;
-    //     this.username = username;
-    // }
+
+    // 필드에 직접 접근하는 메서드 추가
+    public Long getMemberld() {
+        return member_id;
+    }
 
     //========== UserDetails implements ==========//
     /**
@@ -86,6 +87,11 @@ public class Member extends BaseTimeEntity implements UserDetails {
     @Override
     public String getUsername() {
         return email;
+    }
+
+    // 필드에 직접 접근하는 메서드 추가
+    public String getUsernameField() {
+        return username;
     }
 
     @Override

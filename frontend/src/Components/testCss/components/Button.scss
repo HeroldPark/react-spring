@@ -12,7 +12,7 @@ $black: rgb(46, 44, 44);
   }
   &.outline {
     color: $color;
-    background: none;
+    background: yellow;
     border: 1px solid $color;
     &:hover {
       background: $color;

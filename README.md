@@ -439,3 +439,7 @@ Failed to parse source map from 'C:\Users\DeltaX_20\Documents\Workspace\react-sp
 
     - bootstrap
         $ yarn add react-bootstrap bootstrap
+
+# 43. 2024-06-19
+    - 계정리스트를 JPA 방식으로 추가
+    - bootstrap-custom-styles.scss에서 container의 max-width 추가
