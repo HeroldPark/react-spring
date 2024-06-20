@@ -9,8 +9,8 @@ spring:
       client:
         registration:
             google:
-                client-id: 33063057275-5rtjgjlas7ia19fdrkfvrh4sm4gc92oi.apps.googleusercontent.com
-                client-secret: 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
+                client-id: 
+                client-secret: 
                 scope: profile, email
                 redirect-uri: http://localhost:8989/login/oauth2/code/google
             # kakao:
