@@ -1,11 +1,7 @@
 package shane.blog.security;
 
-import java.io.PrintWriter;
-import java.nio.charset.StandardCharsets;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -13,9 +9,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 
-import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfigurationSource;
 
@@ -23,8 +17,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import shane.blog.security.jwt.JwtAuthenticationEntryPoint;
 import shane.blog.security.jwt.JwtAuthenticationFilter;
-import shane.blog.security.jwt.JwtTokenUtil;
-import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import shane.blog.service.CustomOAuth2UserService;
 import shane.blog.security.jwt.OAuth2SuccessHandler;
 

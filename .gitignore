@@ -19,4 +19,6 @@ frontend/node_modules
 # OpenApi secret-key
 .env
 
-
+# 
+frontend/package-lock.json
+frontend/yarn.lock

@@ -43,6 +43,9 @@
         <typeAlias type="shane.blog.domain.picture.PictureRequest" alias="pictureReq"/>
         <typeAlias type="shane.blog.domain.picture.PictureResponse" alias="pictureRes"/>
 
+        <typeAlias type="shane.blog.domain.openapi.OpenapiRequest" alias="openapiReq"/>
+        <typeAlias type="shane.blog.domain.openapi.OpenapiResponse" alias="openapiRes"/>
+
     </typeAliases>
 
 </configuration>

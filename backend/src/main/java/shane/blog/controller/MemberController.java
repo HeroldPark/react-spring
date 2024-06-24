@@ -2,9 +2,13 @@ package shane.blog.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import shane.blog.dto.request.board.BoardUpdateDto;
+import shane.blog.dto.request.board.BoardWriteDto;
 import shane.blog.dto.request.member.MemberLoginDto;
 import shane.blog.dto.request.member.MemberRegisterDto;
 import shane.blog.dto.request.member.MemberUpdateDto;
+import shane.blog.dto.response.board.ResBoardDetailsDto;
+import shane.blog.dto.response.board.ResBoardWriteDto;
 import shane.blog.dto.response.member.MemberResponseDto;
 import shane.blog.dto.response.member.MemberTokenDto;
 import shane.blog.entity.Member;
@@ -73,19 +77,4 @@ public class MemberController {
         return ResponseEntity.status(HttpStatus.OK).body(memberUpdate);
     }
 
-    // 계정 리스트 조회
-    @GetMapping("/list")
-    public ResponseEntity<Page<MemberResponseDto>> loginList(
-            @PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
-            @RequestHeader("Authorization") String authorizationHeader) {
-
-        // JWT 인증 토큰 확인을 위해서 추가
-        log.debug("Authorization Header: " + authorizationHeader);
-
-        Page<MemberResponseDto> listDTO = memberService.getAllMembers(pageable);
-
-        log.debug("loginList: " + listDTO.toString());
-
-        return ResponseEntity.status(HttpStatus.OK).body(listDTO);
-    }
 }

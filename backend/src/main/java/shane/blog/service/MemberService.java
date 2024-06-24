@@ -4,11 +4,16 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import shane.blog.common.exception.MemberException;
 import shane.blog.common.exception.ResourceNotFoundException;
+import shane.blog.dto.request.board.BoardUpdateDto;
+import shane.blog.dto.request.board.BoardWriteDto;
 import shane.blog.dto.request.member.MemberLoginDto;
 import shane.blog.dto.request.member.MemberRegisterDto;
 import shane.blog.dto.request.member.MemberUpdateDto;
+import shane.blog.dto.response.board.ResBoardDetailsDto;
+import shane.blog.dto.response.board.ResBoardWriteDto;
 import shane.blog.dto.response.member.MemberResponseDto;
 import shane.blog.dto.response.member.MemberTokenDto;
+import shane.blog.entity.Board;
 import shane.blog.entity.Member;
 import shane.blog.repository.MemberRepository;
 import shane.blog.security.jwt.CustomUserDetailsService;
@@ -105,6 +110,40 @@ public class MemberService {
                 .map(MemberResponseDto::fromEntity)
                 .collect(Collectors.toList());
         return new PageImpl<>(list, pageable, members.getTotalElements());
+    }
+
+    // 게시글 등록
+    public MemberResponseDto write(MemberRegisterDto memberDTO, Member member) {
+
+        member = MemberRegisterDto.ofEntity(memberDTO);
+        Member writerMember = memberRepository.findByEmail(member.getEmail()).orElseThrow(
+                () -> new ResourceNotFoundException("Member", "Member Email", "")
+        );
+        // member.setMappingMember(writerMember);
+        Member saveMember = memberRepository.save(member);
+        return MemberResponseDto.fromEntity(saveMember);
+    }
+
+    // 게시글 상세보기
+    public MemberResponseDto detail(Long memberId) {
+        Member findMember = memberRepository.findById(memberId).orElseThrow(
+               () -> new ResourceNotFoundException("Member", "Member Id", String.valueOf(memberId))
+       );
+       return MemberResponseDto.fromEntity(findMember);
+    }
+
+    // 게시글 수정
+    public MemberResponseDto update(Long memberId, MemberRegisterDto memberDTO) {
+        Member updateMember = memberRepository.findById(memberId).orElseThrow(
+                () -> new ResourceNotFoundException("Member", "Member Id", String.valueOf(memberId))
+        );
+        updateMember.update(memberDTO.getPassword(), memberDTO.getUsername());
+        return MemberResponseDto.fromEntity(updateMember);
+    }
+
+    // 게시글 삭제
+    public void delete(Long memberId) {
+        memberRepository.deleteById(memberId);
     }
 
     /**

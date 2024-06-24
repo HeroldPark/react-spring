@@ -33,7 +33,7 @@ function LoginList() {
   // Member 전체 조회
   const getMemberList = async (page) => {
     try {
-		  const response = await axiosInstance.get("/user/list", {
+		  const response = await axiosInstance.get("/login/list", {
 			  params: {"page": page - 1},
 		  });
 
@@ -53,7 +53,7 @@ function LoginList() {
   // 게시글 검색
   const search = async () => {
     try {
-      const response = await axiosInstance.get("/user/search", {
+      const response = await axiosInstance.get("/login/search", {
         params: {
           page: page,
           name: choiceVal === "name" ? searchVal : "",
@@ -175,14 +175,20 @@ function TableRow(props) {
   return (
     <tr>
       <th style={{textAlign:"center"}} >{props.cnt}</th>
-      <td style={{textAlign:"center"}} >
-        <Link to={{ pathname: `/detail/${login.memberId}` }}>
+      <td style={{ textAlign: "center" }}>
+        <Link to={{ pathname: `/LoginDetail/${login.memberId}` }}>
           <span className="underline user-name">{login.email}</span>
         </Link>
       </td>
       <td style={{textAlign:"center"}} >{login.username}</td>
       <td style={{textAlign:"center"}} >{login.roles}</td>
-      <td style={{textAlign:"center"}} >{login.picture}</td>
+      <td style={{ textAlign: "center" }}>
+        {login.picture ? (
+          <img src={login.picture} alt="Profile" style={{ width: '50px', height: '50px' }} />
+        ) : (
+          <a href={login.picture} className="btn btn-sm btn-success active" role="button">Profile</a>
+        )}
+      </td>
       <td style={{textAlign:"center"}} >{login.provider}</td>
       <td style={{textAlign:'center'}}>{login.createdDate}</td>
       <td style={{textAlign:'center'}}>{login.modifiedDate}</td>

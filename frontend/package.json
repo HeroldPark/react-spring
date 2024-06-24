@@ -56,11 +56,6 @@
       "last 1 safari version"
     ]
   },
-  "devDependencies": {
-      "react-scripts": {
-      "sourceMaps": false
-      }
-  },
   "description": "🤸How to start?\r =",
   "main": "index.js",
   "author": "",

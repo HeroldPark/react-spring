@@ -443,3 +443,11 @@ Failed to parse source map from 'C:\Users\DeltaX_20\Documents\Workspace\react-sp
 # 43. 2024-06-19
     - 계정리스트를 JPA 방식으로 추가
     - bootstrap-custom-styles.scss에서 container의 max-width 추가
+
+# 44. 2024-06-24
+    - compile 오류
+    Description:
+    Parameter 0 of method setFilterChains in org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration required a bean of type 'org.springframework.security.oauth2.client.registration.ClientRegistrationRepository' that could not be found.
+    => OAuth2 관련 오류 : /resources/application.yml 없어서 발생하는 오류
+
+    - 로그인 관련 기능은 LoginController.java에서 구현.(controller 이외에는 그대로 유지)
