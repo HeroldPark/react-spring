@@ -42,7 +42,7 @@ function Menubar() {
 						<li><a href="/bbslist">게시판</a></li>
 						<li><a href="/employees">직원리스트</a></li>
 						<li><a href="#" onClick={() => alert('준비 중입니다.')}>갤러리형</a></li>
-						<li><a href="#" onClick={() => alert('준비 중입니다.')}>카렌다형</a></li>
+						<li><a href="/events">카렌다형</a></li>
 					</ul>
 				</li>
 				<li className={`has_sub ${isOpenImageManager ? 'open' : ''}`}>

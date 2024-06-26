@@ -16,6 +16,7 @@ import shane.blog.entity.Member;
 @NoArgsConstructor
 public class MemberRegisterDto {
 
+    private Long memberId;
     private String email;
     private String password;
     private String passwordCheck;
@@ -23,7 +24,8 @@ public class MemberRegisterDto {
     private Role roles;
 
     @Builder
-    public MemberRegisterDto(String email, String password, String passwordCheck, String username, Role roles) {
+    public MemberRegisterDto(Long memberId, String email, String password, String passwordCheck, String username, Role roles) {
+        this.memberId = memberId;
         this.email = email;
         this.password = password;
         this.passwordCheck = passwordCheck;

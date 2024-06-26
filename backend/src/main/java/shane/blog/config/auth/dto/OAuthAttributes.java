@@ -6,7 +6,6 @@ import shane.blog.common.Role;
 import shane.blog.entity.Member;
 
 import java.util.Map;
-import java.util.Arrays;
 
 @Getter
 public class OAuthAttributes {

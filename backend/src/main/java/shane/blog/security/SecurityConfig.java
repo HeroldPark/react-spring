@@ -48,6 +48,7 @@ public class SecurityConfig {
           "/user/checkId"
         , "/user/register"
         , "/user/login"
+        , "/login/update"
         , "/oauth2/authorization/google"    // 최초 OAuth2 인증 요청(1)
         // , "/api/v1/auth/oauth2/google"   // 최초 OAuth2 인증 요청(2)
         , "/login/oauth2/code/google"       // OAuth2 리다이렉션(google OAuth2에서 CORS 처리를 해 주지 않아 오류 발생한다.)
@@ -89,6 +90,7 @@ public class SecurityConfig {
                             .requestMatchers("/comment/**").hasAnyRole("ADMIN", "USER") // 추가(JPA)
 
                             .requestMatchers("/employees").hasAnyRole("USER") // 추가(JPA)
+                            .requestMatchers("/online/**").hasRole("ADMIN") // 추가(JPA)
 
                             .requestMatchers("/post/**").hasAnyRole("ADMIN", "USER") // 추가(Mybatis)
                             .requestMatchers("/feedback/**").hasAnyRole("ADMIN", "USER") // 추가(Mybatis)

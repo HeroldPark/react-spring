@@ -451,3 +451,10 @@ Failed to parse source map from 'C:\Users\DeltaX_20\Documents\Workspace\react-sp
     => OAuth2 관련 오류 : /resources/application.yml 없어서 발생하는 오류
 
     - 로그인 관련 기능은 LoginController.java에서 구현.(controller 이외에는 그대로 유지)
+    - 오류 발생.(LoginDetail.js)
+        await axiosInstance.patch(`/login/update`, req, {headers: headers})
+        PATCH http://localhost:8989/login/update 401 (Unauthorized)
+
+# 45. 2024-06-26
+    - 온라인 예약관리 시스템(/online/event)
+    - npm install @fullcalendar/core@latest @fullcalendar/react@latest @fullcalendar/daygrid@latest @fullcalendar/interaction@latest

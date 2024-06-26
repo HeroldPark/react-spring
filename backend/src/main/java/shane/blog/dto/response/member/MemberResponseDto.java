@@ -18,6 +18,7 @@ import shane.blog.entity.Member;
 public class MemberResponseDto {
     private Long memberId;
     private String email;
+    private String password;
     private String username;
     private Role roles;
     private String picture;
@@ -26,9 +27,10 @@ public class MemberResponseDto {
     private String modifiedDate;
 
     @Builder
-    public MemberResponseDto(Long memberId, String email, String username, Role roles, String picture, String provider, String createdDate, String modifiedDate) {
+    public MemberResponseDto(Long memberId, String email, String password, String username, Role roles, String picture, String provider, String createdDate, String modifiedDate) {
         this.memberId = memberId;
         this.email = email;
+        this.password = password;
         this.username = username;
         this.roles = roles;
         this.picture = picture;
@@ -42,6 +44,7 @@ public class MemberResponseDto {
         return MemberResponseDto.builder()
                 .memberId(member.getMemberld())
                 .email(member.getEmail())
+                .password(member.getPassword())
                 // .username(member.getUsername())     // 이것을 사용하면 username에 email이 입력된다.
                 .username(member.getUsernameField()) // getUsername() 대신 필드 접근
                 .roles(member.getRoles())

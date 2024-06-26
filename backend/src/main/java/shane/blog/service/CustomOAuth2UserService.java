@@ -1,11 +1,9 @@
 package shane.blog.service;
 
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import shane.blog.common.Role;
 import shane.blog.config.auth.dto.OAuthAttributes;
-import shane.blog.config.auth.dto.SessionUser;
 import shane.blog.entity.Member;
 import shane.blog.repository.MemberRepository;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -18,8 +16,6 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 @Slf4j
 @Service

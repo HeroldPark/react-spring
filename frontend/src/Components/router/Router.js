@@ -17,6 +17,7 @@ import EmployeeList from "../employee/EmployeeList";
 import MemberList from "../member/MemberList";		// MyBatis
 import LoginList from "../member/LoginList";	// JPA
 import LoginDetail from "../member/LoginDetail";	// JPA
+import LoginUpdate from "../member/LoginUpdate";	// JPA
 
 import PictureList from "../picture/PictureList";
 
@@ -43,6 +44,9 @@ import OpenApiExample from "../openapi/OpenApiExample";
 // CSS Test
 import TestButton from "../testCss/TestButton";
 
+// 온라인 예약관리
+import EventList from "../online/EventList";
+
 function Router() {
 
 	console.log("[Router.js] render()");
@@ -67,6 +71,7 @@ function Router() {
 			<Route path="/member" element={<MemberList />}></Route>
 			<Route path="/LoginList" element={<LoginList />}></Route>
 			<Route path="/logindetail/:memberId" element={<LoginDetail />}></Route>
+			<Route path="/loginupdate" element={<LoginUpdate />}></Route>
 
 			<Route path="/PictureList" element={<PictureList />}></Route>
 
@@ -94,6 +99,10 @@ function Router() {
 			<Route path="/OpenApiExample" element={<OpenApiExample />}></Route>
 			{/* test css */}
 			<Route path="/TestButton" element={<TestButton/>}></Route>
+
+			{/* 온라인 예약관리 */}
+			<Route path="/events" element={<EventList/>}></Route>
+			
 		</Routes>
 	);
 }

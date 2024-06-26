@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import shane.blog.common.BaseTimeEntity;
 import shane.blog.common.Role;
+import shane.blog.dto.request.member.MemberUpdateDto;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -70,6 +71,13 @@ public class Member extends BaseTimeEntity implements UserDetails {
     public void update(String password, String username) {
         this.password = password;
         this.username = username;
+    }
+
+    public void update2(String password, MemberUpdateDto dto) {
+        this.password = password;
+        this.email = dto.getEmail();
+        this.username = dto.getUsername();
+        this.roles = dto.getRoles();
     }
 
     // 필드에 직접 접근하는 메서드 추가

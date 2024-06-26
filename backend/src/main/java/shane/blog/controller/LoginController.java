@@ -14,12 +14,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import lombok.extern.slf4j.Slf4j;
 import shane.blog.dto.request.member.MemberRegisterDto;
+import shane.blog.dto.request.member.MemberUpdateDto;
 import shane.blog.dto.response.member.MemberResponseDto;
 import shane.blog.entity.Member;
 import shane.blog.service.LoginService;
@@ -78,19 +80,20 @@ public class LoginController {
 
     @GetMapping("/{memberId}")
     public ResponseEntity<MemberResponseDto> detail(@PathVariable("memberId") Long memberId) {
-        log.debug("MemberController.detail: 시작");
+        log.debug("LoginController.detail: 시작");
 
         MemberResponseDto memberResponseDto = memberService.detail(memberId);
         return ResponseEntity.status(HttpStatus.OK).body(memberResponseDto);
     }
 
-    // 상세보기 -> 수정
-    @PatchMapping("/{memberId}/update")
-    public ResponseEntity<MemberResponseDto> update(
-            @PathVariable Long memberId,
-            @RequestBody MemberRegisterDto memberDTO) {
-                MemberResponseDto memberResponseDto = memberService.update(memberId, memberDTO);
-        return ResponseEntity.status(HttpStatus.OK).body(memberResponseDto);
+    @PatchMapping("/update")
+    public ResponseEntity<MemberResponseDto> update2(
+            @RequestBody MemberUpdateDto memberUpdateDTO) {
+
+        log.debug("LoginController.update2() start");
+
+        MemberResponseDto memberUpdate = memberService.update2(memberUpdateDTO);
+        return ResponseEntity.status(HttpStatus.OK).body(memberUpdate);
     }
 
     // 상세보기 -> 삭제

@@ -253,7 +253,7 @@ DELETE FROM `tbl_post`;
 /*!40000 ALTER TABLE `tbl_post` DISABLE KEYS */;
 INSERT INTO `tbl_post` (`id`, `title`, `content`, `writer`, `view_cnt`, `notice_yn`, `delete_yn`, `created_date`, `modified_date`) VALUES
 	(1, 'Test Title 1', 'Test Content 1', 'tester', 12, 1, 0, '2024-05-09 10:32:23', '2024-05-31 07:41:01'),
-	(2, 'Test Title 2', 'Test Content 2', 'tester', 21, 1, 0, '2024-05-10 09:18:00', '2024-06-05 10:04:38');
+	(2, 'Test Title 2', 'Test Content 2', 'tester', 29, 1, 0, '2024-05-10 09:18:00', '2024-06-24 10:18:30');
 /*!40000 ALTER TABLE `tbl_post` ENABLE KEYS */;
 
 -- 테이블 react-spring.tb_board 구조 내보내기
@@ -268,14 +268,16 @@ CREATE TABLE IF NOT EXISTS `tb_board` (
   PRIMARY KEY (`board_id`),
   KEY `FK_board_member` (`member_id`),
   CONSTRAINT `FK_board_member` FOREIGN KEY (`member_id`) REFERENCES `tb_member` (`member_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
--- 테이블 데이터 react-spring.tb_board:~2 rows (대략적) 내보내기
+-- 테이블 데이터 react-spring.tb_board:~4 rows (대략적) 내보내기
 DELETE FROM `tb_board`;
 /*!40000 ALTER TABLE `tb_board` DISABLE KEYS */;
 INSERT INTO `tb_board` (`board_id`, `title`, `content`, `view_count`, `member_id`, `created_date`, `modified_date`) VALUES
-	(1, 'Hello react-spring world~~', 'start react-spring study...\n\n1. Spring boot + React\n2. Spring boot 3.x.x 은 backend에서 처리함.(여기서 Thymeleaf는 사용하지 않는다)\n3. React는 frontend 아래 배치함.\n4. Optional JPA(Java Persistence API), MyBatis\n5. Left or Header Menu\n6. JWT(Josn Web Token) Security - Authority를 계정에 따라 GUEST, USER, ADMIN으로 설정하여 각각의 메뉴를 권한에 따라 사용 가능하게 함.\n7. 일반 로그인, Google OAuth2 로그인', 43, 1, NULL, '2024/05/31 09:07:05'),
-	(4, 'Development react-spring on the Spring boot framework', '게시판 관리    => JPA ORM 사용\n . 게시판        => Authentication, Authorization 불필요\n . 직원리스트  => USER 권한만 조회 가능\n . 갤러리형     => 준비 중\n . 카렌다형     => 준비 중\n\n웹서버 관리       => MyBatis 사용\n . 게시판           => "ADMIN", "USER" 권한 필요\n . 사용자리스트   => ADMIN 권한만 조회 가능', 71, 1, '2024/05/08 11:22:10', '2024/05/31 15:41:41');
+	(1, 'Hello react-spring world~~', 'start react-spring study...\n\n1. Spring boot + React\n2. Spring boot 3.x.x 은 backend에서 처리함.(여기서 Thymeleaf는 사용하지 않는다)\n3. React는 frontend 아래 배치함.\n4. Optional JPA(Java Persistence API), MyBatis\n5. Left or Header Menu\n6. JWT(Josn Web Token) Security - Authority를 계정에 따라 GUEST, USER, ADMIN으로 설정하여 각각의 메뉴를 권한에 따라 사용 가능하게 함.\n7. 일반 로그인, Google OAuth2 로그인\n8. 로그인 계정 관리에서 관리자인 경우와 자기 자신의 계정에 대해서 수정 가능하게 함. 권한은 관리자만 수정 가능함.\n9. 공토코드 메뉴를 추가하여 웹서버에서 필요로 하는 파라메타의 값을 설정하여 사용할 수 있도록 함.\n10. 테스트 베드를 신설하여 웹서버에서 시험하는 다양한 기능을 추가할 수 있도록 함.', 51, 1, NULL, '2024/06/26 13:53:03'),
+	(4, 'Development react-spring on the Spring boot framework', '게시판 관리    => JPA ORM 사용\n . 게시판        => Authentication, Authorization 불필요\n . 직원리스트  => USER 권한만 조회 가능\n . 갤러리형     => 준비 중\n . 카렌다형     => 준비 중\n\n웹서버 관리       => MyBatis 사용\n . 게시판           => "ADMIN", "USER" 권한 필요\n . 사용자리스트   => ADMIN 권한만 조회 가능', 75, 1, '2024/05/08 11:22:10', '2024/06/26 13:53:33'),
+	(5, '온라인 예약 시스템', '음식점, 호텔, 또는 이벤트를 위한 예약 시스템을 개발합니다. 사용자는 원하는 날짜와\n시간을 예약할 수 있으며, 시스템은 예약 상황을 관리하고 사용자에게 알림을 보냅니다.\n\n실제 구현 시 고려할 사항들:\n\n1. 데이터 유효성 검사\n2. 에러 처리\n3. 보안 (인증/인가)\n4. 페이지네이션 (대량의 이벤트 처리)\n5. 상태 관리 (Redux 등 사용 고려)\n6. UI/UX 개선 (로딩 상태, 에러 메시지 등)', 5, 1, '2024/06/26 13:58:50', '2024/06/26 14:05:42'),
+	(6, '마이크로서비스 전환', '대규모 모놀리식 애플리케이션을 마이크로서비스로 전환하는 프로젝트 입니다.\n이는 시스템의 각 부분을 독립적으로 업데이트하고 유지보수할 수 있게 합니다.', 1, 1, '2024/06/26 14:01:32', '2024/06/26 14:01:34');
 /*!40000 ALTER TABLE `tb_board` ENABLE KEYS */;
 
 -- 테이블 react-spring.tb_comment 구조 내보내기
@@ -333,6 +335,26 @@ INSERT INTO `tb_employee` (`employee_id`, `name`, `role`, `created_date`, `modif
 	(40, 'Bilbo 첫 번째', 'burglar', '2024/04/24 08:30:58', '2024/04/24 08:30:58');
 /*!40000 ALTER TABLE `tb_employee` ENABLE KEYS */;
 
+-- 테이블 react-spring.tb_event 구조 내보내기
+CREATE TABLE IF NOT EXISTS `tb_event` (
+  `id` int(20) NOT NULL AUTO_INCREMENT,
+  `title` varchar(100) NOT NULL DEFAULT '0',
+  `member_id` bigint(20) DEFAULT NULL,
+  `start_time` datetime DEFAULT NULL,
+  `end_time` datetime DEFAULT NULL,
+  `description` varchar(256) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `member_id` (`member_id`),
+  CONSTRAINT `FK_tb_event_tb_member` FOREIGN KEY (`member_id`) REFERENCES `tb_member` (`member_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- 테이블 데이터 react-spring.tb_event:~0 rows (대략적) 내보내기
+DELETE FROM `tb_event`;
+/*!40000 ALTER TABLE `tb_event` DISABLE KEYS */;
+INSERT INTO `tb_event` (`id`, `title`, `member_id`, `start_time`, `end_time`, `description`) VALUES
+	(1, 'aaa', NULL, '2024-06-25 15:00:00', '2024-06-27 14:59:59', NULL);
+/*!40000 ALTER TABLE `tb_event` ENABLE KEYS */;
+
 -- 테이블 react-spring.tb_file 구조 내보내기
 CREATE TABLE IF NOT EXISTS `tb_file` (
   `file_id` bigint(20) NOT NULL,
@@ -360,19 +382,19 @@ CREATE TABLE IF NOT EXISTS `tb_member` (
   `password` varchar(256) NOT NULL,
   `roles` enum('ADMIN','USER','GUEST') DEFAULT NULL,
   `picture` varchar(512) DEFAULT NULL,
+  `provider` varchar(16) DEFAULT NULL,
   `created_date` varchar(50) DEFAULT NULL,
   `modified_date` varchar(50) DEFAULT NULL,
-  `provider` varchar(16) DEFAULT NULL,
   PRIMARY KEY (`member_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 -- 테이블 데이터 react-spring.tb_member:~3 rows (대략적) 내보내기
 DELETE FROM `tb_member`;
 /*!40000 ALTER TABLE `tb_member` DISABLE KEYS */;
-INSERT INTO `tb_member` (`member_id`, `email`, `username`, `password`, `roles`, `picture`, `created_date`, `modified_date`, `provider`) VALUES
-	(1, 'admin@deltax.ai', 'admin', '$2a$10$HTWwKtPoEo2dfnw7rXMJh.m9Iwn2COOcHquv7TMwKC9BufUMBcCW2', 'ADMIN', NULL, '2024/04/02 11:19:39', '2024/04/02 11:19:39', NULL),
-	(3, 'user@deltax.ai', 'user', '$2a$10$f2APTXwqSTjmYn8oAcWw.ugYzdVHlvNyoywXrZZvr2ydajtbax3SK', 'USER', NULL, '2024/05/14 08:57:20', '2024/05/14 08:57:20', NULL),
-	(7, 'heroldpark@gmail.com', '박용렬', 'p@ssw0rd', 'USER', 'https://lh3.googleusercontent.com/a/ACg8ocKOei1-nXJsQQwULK7zncX2e9UIWrcOVjiUWqSHWMmpLmcR12IWGA=s96-c', '2024/05/27 09:53:08', '2024/05/27 09:53:08', NULL);
+INSERT INTO `tb_member` (`member_id`, `email`, `username`, `password`, `roles`, `picture`, `provider`, `created_date`, `modified_date`) VALUES
+	(1, 'admin@deltax.ai', 'admin', '$2a$10$HTWwKtPoEo2dfnw7rXMJh.m9Iwn2COOcHquv7TMwKC9BufUMBcCW2', 'ADMIN', NULL, NULL, '2024/04/02 11:19:39', '2024/04/02 11:19:39'),
+	(3, 'user@deltax.ai', 'user', '$2a$10$hWfZCGH0OtuwLjWdXOUAeuXildYCJs83KW6sWDf8axOrt2vrzTXVW', 'GUEST', NULL, NULL, '2024/05/14 08:57:20', '2024/06/26 13:47:22'),
+	(14, 'heroldpark@gmail.com', '박용렬', 'p@ssw0rd', 'USER', 'https://lh3.googleusercontent.com/a/ACg8ocKOei1-nXJsQQwULK7zncX2e9UIWrcOVjiUWqSHWMmpLmcR12IWGA=s96-c', 'google', '2024/06/20 13:00:04', '2024/06/20 13:00:04');
 /*!40000 ALTER TABLE `tb_member` ENABLE KEYS */;
 
 -- 테이블 react-spring.tb_user 구조 내보내기

@@ -103,6 +103,16 @@ public class MemberService {
         return MemberResponseDto.fromEntity(updateMember);
     }
 
+    public MemberResponseDto update2(MemberUpdateDto updateDto) {
+        checkPassword(updateDto.getPassword(), updateDto.getPasswordCheck());
+        String encodePwd = encoder.encode(updateDto.getPassword());
+        Member updateMember =  memberRepository.findByEmail(updateDto.getEmail()).orElseThrow(
+                () -> new ResourceNotFoundException("Member", "Member Email", updateDto.getEmail())
+        );
+        updateMember.update2(encodePwd, updateDto);
+        return MemberResponseDto.fromEntity(updateMember);
+    }
+
     // 사용자 리스트 조회
     public Page<MemberResponseDto> getAllMembers(Pageable pageable) {
         Page<Member> members = memberRepository.findAllWithMembers(pageable);
@@ -130,15 +140,6 @@ public class MemberService {
                () -> new ResourceNotFoundException("Member", "Member Id", String.valueOf(memberId))
        );
        return MemberResponseDto.fromEntity(findMember);
-    }
-
-    // 게시글 수정
-    public MemberResponseDto update(Long memberId, MemberRegisterDto memberDTO) {
-        Member updateMember = memberRepository.findById(memberId).orElseThrow(
-                () -> new ResourceNotFoundException("Member", "Member Id", String.valueOf(memberId))
-        );
-        updateMember.update(memberDTO.getPassword(), memberDTO.getUsername());
-        return MemberResponseDto.fromEntity(updateMember);
     }
 
     // 게시글 삭제
