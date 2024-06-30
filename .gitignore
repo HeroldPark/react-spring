@@ -22,3 +22,4 @@ frontend/node_modules
 # 
 frontend/package-lock.json
 frontend/yarn.lock
+frontend/autotrade/api_key.txt

@@ -26,7 +26,7 @@ params = {
   "hl": "en",
   "gl": "us",
   "google_domain": "google.com",
-  "api_key": api_key
+  "api_key": "a476ac7b83c15024ff765e9928183545e7d9cb09c2961c4ff6408da09fc4eccd"
 }
 
 search = GoogleSearch(params)
