@@ -3,19 +3,31 @@ package shane.blog.domain.picture;
 import shane.blog.domain.common.dto.SearchDto;
 import shane.blog.domain.common.paging.Pagination;
 import shane.blog.domain.common.paging.PagingResponse;
-
+import shane.blog.domain.commoncode.CodeService;
+import shane.blog.domain.commoncode.CommonResponse;
+import shane.blog.utils.CustomUtil;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.List;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 @Service
 @RequiredArgsConstructor
 public class PictureService {
 
+    @Autowired
+    CodeService codeService;
+
     private final PictureMapper pictureMapper;
+
+    private String uploadPath = "C:\\upload\\files\\";
 
     /**
      * 게시글 저장
@@ -35,6 +47,35 @@ public class PictureService {
      */
     public PictureResponse findPictureById(final Long id) {
         return pictureMapper.findById(id);
+    }
+
+    /**
+     * 이미지 파일 조회
+     * @param id - PK
+     * @return 게시글 상세정보
+     */
+    public String findFilePath(PictureRequest params) {
+        CustomUtil customUtil = new CustomUtil();
+        String osArch = customUtil.getOperatingSystem();
+        List<CommonResponse> codeList = codeService.getSubCodeList("FILE_CONFIG", "PUB", "Y", "N");
+        for (int i = 0; i < codeList.size(); i++) {
+            if (osArch.equals("linux")) {
+                if (codeList.get(i).getCommonCode().equals("FILE_UPLOAD_PATH")) {
+                    uploadPath = codeList.get(i).getReferId1();
+                }
+            }
+            if (osArch.equals("windows")) {
+                if (codeList.get(i).getCommonCode().equals("FILE_UPLOAD_DEFAULT")) {
+                    uploadPath = codeList.get(i).getReferId1();
+                }
+            }
+        }
+
+        // String fullFilePath = uploadPath + params.getFilePath();
+        Path filePath = Paths.get(uploadPath).resolve(params.getFilePath());
+        String filePathString = filePath.toString();
+
+        return filePathString;
     }
 
     /**
@@ -78,6 +119,18 @@ public class PictureService {
         // 계산된 페이지 정보의 일부(limitStart, recordSize)를 기준으로 리스트 데이터 조회 후 응답 데이터 반환
         List<PictureResponse> list = pictureMapper.findList(params);
         return new PagingResponse<>(list, pagination);
+    }
+
+    public PictureResponse detail(Long id) {
+        PictureResponse pictureResponse = pictureMapper.findById(id);
+
+        // 조회수 증가
+        PictureRequest pictureRequest = new PictureRequest();
+        pictureRequest.setId(id);
+        // pictureRequest.setViewCnt(pictureResponse.getViewCnt() + 1);
+        // pictureMapper.update(pictureRequest);
+
+        return pictureResponse;
     }
 
 }

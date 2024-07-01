@@ -184,9 +184,9 @@ function TableRow(props) {
       <td style={{textAlign:"center"}} >{picture.content}</td>
       {/* <td style={{textAlign:"center"}} >{picture.filePath}</td> */}
       <td style={{textAlign:"center"}} >
-        <Link to={{ pathname: `/pictureView/${props.pos}${picture.filePath}` }}>
-          <span className="underline user-name">{picture.filePath}</span>
-        </Link>
+      <Link to={`/pictureView/${encodeURIComponent(picture.filePath)}`}>
+        <span className="underline user-name">{picture.filePath}</span>
+      </Link>
       </td>
       <td style={{textAlign:"center"}} >{picture.writer}</td>
       <td style={{textAlign:"center"}} >{picture.viewCnt}</td>

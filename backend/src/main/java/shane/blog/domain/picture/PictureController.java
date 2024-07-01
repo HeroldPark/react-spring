@@ -7,21 +7,30 @@ import shane.blog.domain.common.paging.PagingResponse;
 import shane.blog.domain.file.FileRequest;
 import shane.blog.domain.file.FileResponse;
 import shane.blog.domain.member.MemberResponse;
+import shane.blog.domain.post.PostResponse;
 import shane.blog.domain.file.FileApiService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @Controller
 @RequiredArgsConstructor
 public class PictureController {
@@ -61,14 +70,14 @@ public class PictureController {
         return "picture/write";
     }
 
+    @GetMapping("/picture/detail.do/{id}")
+    public ResponseEntity<PictureResponse> pictureDetail(@PathVariable("id") Long id) {
+        log.info("PictureController.pictureDetail() : {}", id);
 
-    // 게시글 리스트 페이지
-    // @GetMapping("/picture/list")
-    // public String pictureList(@ModelAttribute("params") final SearchDto params, Model model) {
-    //     PagingResponse<PictureResponse> response = pictureService.findAllPicture(params);
-    //     model.addAttribute("response", response);
-    //     return "picture/list";
-    // }
+        PictureResponse pictureResponse = pictureService.detail(id);
+        return ResponseEntity.status(HttpStatus.OK).body(pictureResponse);
+    }
+
     @RequestMapping(value = "/picture/list", method = { RequestMethod.GET, RequestMethod.POST })
     public ResponseEntity<PagingResponse<PictureResponse>> pictureList(@ModelAttribute("params") final SearchDto params) {
 
@@ -83,12 +92,44 @@ public class PictureController {
     }
 
 
-    // 게시글 상세 페이지
-    @GetMapping("/picture/view.do")
-    public String pictureView(@RequestParam final Long id, Model model) {
-        PictureResponse picture = pictureService.findPictureById(id);
-        model.addAttribute("picture", picture);
-        return "picture/view";
+    // 이미지 파일 Full Path + Image File
+    @PostMapping("/picture/view.do")
+    public ResponseEntity<?> pictureView(@RequestBody PictureRequest params) {
+        log.info("PictureController.pictureView() : {}", params.getFilePath());
+
+        String fullFilePath = pictureService.findFilePath(params);
+        // model.addAttribute("picture", picture);
+
+        return ResponseEntity.status(HttpStatus.OK).body(fullFilePath);
+    }
+
+    // 이미지 파일
+    @PostMapping("/picture/image")
+    public ResponseEntity<?> pictureImage(@RequestParam String filePath) {
+        log.info("PictureController.pictureImage() : {}", filePath);
+
+        try {
+            Path fileFullPath = Paths.get(filePath);
+            
+            // 파일이 존재하는지 확인
+            if (!Files.exists(fileFullPath)) {
+                return ResponseEntity.notFound().build();
+            }
+
+            // 파일 데이터를 바이트 배열로 읽기
+            byte[] imageBytes = Files.readAllBytes(fileFullPath);
+
+            // 파일 확장자에 따른 Content-Type 설정
+            String contentType = Files.probeContentType(fileFullPath);
+
+            // 이미지 데이터 반환
+            return ResponseEntity.ok()
+                    .contentType(MediaType.parseMediaType(contentType))
+                    .body(imageBytes);
+        } catch (IOException e) {
+            log.error("Error reading image file", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error reading image file");
+        }
     }
 
 
