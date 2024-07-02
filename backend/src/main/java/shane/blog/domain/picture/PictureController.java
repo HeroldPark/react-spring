@@ -70,6 +70,7 @@ public class PictureController {
         return "picture/write";
     }
 
+    // 이미지+동영상 파일 살세정보
     @GetMapping("/picture/detail.do/{id}")
     public ResponseEntity<PictureResponse> pictureDetail(@PathVariable("id") Long id) {
         log.info("PictureController.pictureDetail() : {}", id);
@@ -92,18 +93,17 @@ public class PictureController {
     }
 
 
-    // 이미지 파일 Full Path + Image File
+    // 이미지+동영상 파일 fullFilePath 리턴
     @PostMapping("/picture/view.do")
     public ResponseEntity<?> pictureView(@RequestBody PictureRequest params) {
         log.info("PictureController.pictureView() : {}", params.getFilePath());
 
         String fullFilePath = pictureService.findFilePath(params);
-        // model.addAttribute("picture", picture);
 
         return ResponseEntity.status(HttpStatus.OK).body(fullFilePath);
     }
 
-    // 이미지 파일
+    // 이미지+동영상 파일 보기(너무 길지 않을때)
     @PostMapping("/picture/image")
     public ResponseEntity<?> pictureImage(@RequestParam String filePath) {
         log.info("PictureController.pictureImage() : {}", filePath);

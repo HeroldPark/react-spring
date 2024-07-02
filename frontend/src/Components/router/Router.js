@@ -20,6 +20,7 @@ import LoginDetail from "../member/LoginDetail";	// JPA
 import LoginUpdate from "../member/LoginUpdate";	// JPA
 
 import PictureList from "../picture/PictureList";
+import PictureDetail from "../picture/PictureDetail";
 import PictureView from "../picture/PictureView";
 
 import PostAnswer from "../post/PostAnswer";
@@ -75,7 +76,8 @@ function Router() {
 			<Route path="/loginupdate" element={<LoginUpdate />}></Route>
 
 			<Route path="/PictureList" element={<PictureList />}></Route>
-			<Route path="/pictureView/:filePath*" element={<PictureView />}></Route>
+			<Route path="/pictureDetail/:id" element={<PictureDetail />}></Route>
+			<Route path="/pictureView/:filePath" element={<PictureView />}></Route>
 
             <Route path="/postlist" element={<PostList />}></Route>
 			<Route path="/postwrite" element={<PostWrite />}></Route>

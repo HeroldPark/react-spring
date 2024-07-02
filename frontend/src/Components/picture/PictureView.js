@@ -9,6 +9,8 @@ import { HttpHeadersContext } from "../context/HttpHeadersProvider";
 import "../../css/pictureview.css";
 import FileDisplay from "../file/FileDisplay";
 
+// 이 버젼은 동영상 파일이 크지 않을때는 가능하다.
+// 파일이 커지면 서버에서 URL을 알려주는 방식 또는 스트리밍 서버를 사용해야 한다.
 function PictureView() {
   console.log("[PictureView.js] render()");
 
@@ -31,6 +33,13 @@ function PictureView() {
     }
   });
 
+  const getFileType = (fileName) => {
+    const extension = fileName.split('.').pop().toLowerCase();
+    if (['jpg', 'jpeg', 'png', 'gif'].includes(extension)) return 'image';
+    if (['mp4', 'webm', 'ogg'].includes(extension)) return 'video';
+    return 'unknown';
+  };
+
   useEffect(() => {
     if (decodedFilePath) {
       getPictureView(decodedFilePath);
@@ -39,13 +48,13 @@ function PictureView() {
 
   useEffect(() => {
     if (picture && picture.filePath) {
-      loadImageData(picture.filePath);
+      loadFileData(picture.filePath);
     }
   }, [picture]);
 
   const getPictureView = async (filePath) => {
     try {
-      const params = { filePath: filePath };
+      const params = { filePath: filePath };  // "picture/john-lee.jpg"
       const response = await axiosInstance.post(`/picture/view.do`, params);
   
       console.log("[PictureView.js] getPictureView() success :D");
@@ -67,7 +76,7 @@ function PictureView() {
     }
   };
 
-  const loadImageData = async (filePath) => {
+  const loadFileData = async (filePath) => {
     try {
       const response = await axiosInstance.post('/picture/image', null, {
         params: { filePath: filePath },
@@ -81,11 +90,13 @@ function PictureView() {
       );
       setImageData(base64);
     } catch (error) {
-      console.error("Error fetching image:", error);
+      console.error("Error fetching file:", error);
     }
   };
 
   const renderPicture = (picture) => {
+    const fileType = getFileType(picture.fileName);
+  
     return (
       <div key={picture.id || picture.filePath}>
         <div className="my-3 d-flex justify-content-end">
@@ -98,12 +109,23 @@ function PictureView() {
         </div>
         {imageData && (
           <div>
-            <h2>이미지 보기</h2>
-            <img 
-              src={`data:image/jpeg;base64,${imageData}`} 
-              alt="Picture" 
-              style={{maxWidth: '100%', height: 'auto'}}
-            />
+            <h2>파일 보기</h2>
+            {fileType === 'image' && (
+              <img 
+                src={`data:image/jpeg;base64,${imageData}`} 
+                alt="Picture" 
+                style={{maxWidth: '100%', height: 'auto'}}
+              />
+            )}
+            {fileType === 'video' && (
+              <video controls style={{maxWidth: '100%', height: 'auto'}}>
+                <source src={`data:video/mp4;base64,${imageData}`} type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+            )}
+            {fileType === 'unknown' && (
+              <p>Unsupported file type</p>
+            )}
           </div>
         )}
         <p>File Path: {picture.filePath}</p>

@@ -71,7 +71,10 @@ public class PictureService {
             }
         }
 
-        // String fullFilePath = uploadPath + params.getFilePath();
+        if(params.getFilePath().charAt(0) == '/') { // "/picture/john-lee.jpg"에서 첫번째 '/' 삭제
+            String fileString = params.getFilePath().replaceFirst("/", "");
+            params.setFilePath(fileString);
+        }
         Path filePath = Paths.get(uploadPath).resolve(params.getFilePath());
         String filePathString = filePath.toString();
 
@@ -124,7 +127,6 @@ public class PictureService {
     public PictureResponse detail(Long id) {
         PictureResponse pictureResponse = pictureMapper.findById(id);
 
-        // 조회수 증가
         PictureRequest pictureRequest = new PictureRequest();
         pictureRequest.setId(id);
         // pictureRequest.setViewCnt(pictureResponse.getViewCnt() + 1);

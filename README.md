@@ -458,3 +458,9 @@ Failed to parse source map from 'C:\Users\DeltaX_20\Documents\Workspace\react-sp
 # 45. 2024-06-26
     - 온라인 예약관리 시스템(/online/event)
     - npm install @fullcalendar/core@latest @fullcalendar/react@latest @fullcalendar/daygrid@latest @fullcalendar/interaction@latest
+
+# 56. 2024-07-02
+    - 이미지 화면 출력 완료
+    - Error while trying to use the following icon from the Manifest: http://localhost:3000/logo192.png (Download error or resource isn't a valid image)
+    => pubic/logo192.png 참조 : 정상 확인
+    - 이미지나 동영상을 client에서 base64로 encoding 하는 방식이다.
