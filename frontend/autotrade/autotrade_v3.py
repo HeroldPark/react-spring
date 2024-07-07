@@ -21,6 +21,21 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
+# Chrome WebDriver 경로 설정
+# from webdriver_manager.chrome import ChromeDriverManager
+
+# ChromeDriver 경로 설정
+# service = Service('/usr/local/bin/chromedriver')
+# driver = webdriver.Chrome(service=service)
+
+# 또 다른 방법
+# from selenium import webdriver
+# from webdriver_manager.chrome import ChromeDriverManager
+
+# driver = webdriver.Chrome(ChromeDriverManager().install())
+###
+
+
 # Setup
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 upbit = pyupbit.Upbit(os.getenv("UPBIT_ACCESS_KEY"), os.getenv("UPBIT_SECRET_KEY"))

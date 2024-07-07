@@ -1,10 +1,35 @@
+import os
+
 import pyupbit
+from dotenv import load_dotenv
+from openai import OpenAI
 
-access = "PRxRGT50Add4NHtzmUkLXIh8HM450T6kwggM..."
-secret = "ghhEXwWUWjOwCKNhBSiepYPAxaAtacVipUDU..."
-upbit = pyupbit.Upbit(access, secret)
+# Load environment variables from .env file
+load_dotenv()
 
-# 업비트 > 총 보유자산 에서
-print(upbit.get_balance("KRW-BTC")) # KRW-BTC(비트코인) 조회
-print(upbit.get_balance("KRW-XRP")) # KRW-XRP(리플) 조회
-print(upbit.get_balance("KRW"))     # 보유 현금(원화) 조회
+# Initialize OpenAI client
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+
+# # Initialize Upbit client
+upbit = pyupbit.Upbit(os.getenv("UPBIT_ACCESS_KEY"), os.getenv("UPBIT_SECRET_KEY"))
+
+# Test OpenAI API call
+try:
+    response = client.chat.completions.create(
+        model="gpt-4o",
+        messages=[
+            {"role": "system", "content": "You are helpful assistant."},
+            {"role": "user", "content": "Hello ~~~"}
+        ]
+    )
+    print(response.model)
+    print(response.choices[0].message.content)
+except Exception as e:
+    print(f"Error with OpenAI API: {e}")
+
+# Test Upbit API call
+try:
+    balance = upbit.get_balance("KRW")
+    print("UPBIT Balance: ", balance)
+except Exception as e:
+    print(f"Error with Upbit API: {e}")
