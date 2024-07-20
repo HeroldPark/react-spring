@@ -22,7 +22,7 @@ def main():
     st.write("---")
     df = load_data()
     if not df.empty:
-        start_value = 2000000
+        start_value = 1000000
         current_price = pyupbit.get_orderbook(ticker="KRW-BTC")['orderbook_units'][0]["ask_price"]
         latest_row = df.iloc[-1]
         btc_balance = latest_row['btc_balance']
@@ -45,7 +45,18 @@ def main():
         st.write("BTC 매수 평균가격:", btc_avg_buy_price, "원")
         st.write("현재 원화 가치 평가:", current_value, "원")
 
-        st.dataframe(df, use_container_width=True)
+        # st.dataframe(df, use_container_width=True)
+        st.dataframe(
+            df,
+            use_container_width=True,
+            hide_index=False,
+            column_config={col: st.column_config.Column(
+                col,
+                width="medium",
+                help=f"Click to copy {col}",
+                required=True,
+            ) for col in df.columns}
+        )
 
 if __name__ == '__main__':
     main()
